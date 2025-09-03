@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosCreateDlg" widgetVar="DocumentosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateDocumentosTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosCreateForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display" rendered="#{entradaMesaEntradaAdministrativaController.entradaDocumentoResolucion != null}">
+
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Nro Identificacion" />
+                        <h:panelGroup>
+                            <h:outputText id="nroIdentificacion" value="#{entradaMesaEntradaAdministrativaController.entradaDocumentoResolucion.nroIdentificacion}" title="#{mensajes.CreateEntradasDocumentosJudicialesTitle_nroIdentificacion}" />
+                            <p:tooltip for="nroIdentificacion" value="#{entradaMesaEntradaAdministrativaController.getComponentMessages('nroIdentificacion', mensajes.CreateEntradasDocumentosJudicialesHelpText_nroIdentificacion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDocumentosResolucionLabel_nroResolucion}" for="nroResolucion" />
+                        <h:panelGroup>
+                            <p:inputText id="nroResolucion" value="#{entradaMesaEntradaAdministrativaController.nroResolucion}" title="#{mensajes.CreateDocumentosResolucionTitle_nroResolucion}" size="20" maxlength="40"/>
+                            <p:tooltip for="nroResolucion" value="#{entradaMesaEntradaAdministrativaController.getComponentMessages('nroResolucion', mensajes.CreateDocumentosResolucionHelpText_nroResolucion)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.CreateEntradasDocumentosJudicialesLabel_tituloResolucion}" for="tituloResolucion" />
+                        <h:panelGroup>
+                            <p:inputText id="tituloResolucion" value="#{entradaMesaEntradaAdministrativaController.tituloResolucion}" title="#{mensajes.CreateEntradasDocumentosJudicialesTitle_tituloResolucion}" size="70" maxlength="60"/>
+                            <p:tooltip for="tituloResolucion" value="#{entradaMesaEntradaAdministrativaController.getComponentMessages('tituloResolucion', mensajes.CreateEntradasDocumentosJudicialesHelpText_tituloResolucion)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.CreateDocumentosResolucionLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputTextarea required="true" rows="4" cols="70" id="descripcion" value="#{entradaMesaEntradaAdministrativaController.descripcion}" disabled="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_descripcion}" title="#{mensajes.CreateDocumentosJudicialesTitle_descripcion}"/>
+                            <p:tooltip for="descripcion" value="#{entradaMesaEntradaAdministrativaController.getComponentMessages('descripcion', mensajes.CreateDocumentosJudicialesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                        <h:outputText value="Adjuntar Documento"/>
+                        <p:panelGrid columns="2">
+                            <p:fileUpload value="#{entradaMesaEntradaAdministrativaController.file}" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                        </p:panelGrid>
+                    </p:panelGrid>
+
+                    <p:commandButton value="#{mensajes.Save}" icon="ui-icon-arrow-u" ajax="false" update="display,:DocumentosJudicialesListForm:datalist,:DocumentosJudicialesListForm:imprimirButton,:DocumentosJudicialesListForm:imprimirButton4,:DocumentosJudicialesListForm:editButton,:DocumentosJudicialesListForm:dptoButton,:growl" actionListener="#{entradaMesaEntradaAdministrativaController.saveNew()}" disabled="false" oncomplete="handleSubmit(xhr,status,args,PF('DocumentosCreateDialog'));" />
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DocumentosCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+
+
+                                
+                                <p:outputLabel value="Contraseña" for="contrasena" />
+                                <h:panelGroup>
+                                    <p:inputText id="contrasena" widgetVar="varContrasena" type="password" required="true" value="#{entradaMesaEntradaAdministrativaController.contrasena}" title="Contraseña" size="50" maxlength="60">
+                                    </p:inputText>
+                                    <p:tooltip for="contrasena" value="#{entradaMesaEntradaAdministrativaController.getComponentMessages('contrasena', 'Ingrese Contraseña')}"/>
+                                </h:panelGroup>
+
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="recibidoPor" value="#{documentosController.selected.recibidoPor}"  converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="recibidoPorItem"
+                                               itemValue="#{recibidoPorItem}"
+                                               itemLabel="#{recibidoPorItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="recibidoPor" value="#{documentosController.getComponentMessages('recibidoPor', mensajes.CreateDocumentosHelpText_recibidoPor)}"/>
+                        </h:panelGroup>
+-->
+<!--
+                        <p:outputLabel value="#{mensajes.CreateDocumentosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{documentosController.selected.fechaHoraAlta}" title="#{mensajes.CreateDocumentosTitle_fechaHoraAlta}"  showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{documentosController.getComponentMessages('fechaHoraAlta', mensajes.CreateDocumentosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+<p:outputLabel value="#{mensajes.CreateDocumentosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{documentosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateDocumentosTitle_fechaHoraUltimoEstado}"  showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{documentosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateDocumentosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+<p:outputLabel value="#{mensajes.CreateDocumentosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioAlta" value="#{documentosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateDocumentosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{documentosController.getComponentMessages('usuarioAlta', mensajes.CreateDocumentosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDocumentosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioUltimoEstado" value="#{documentosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateDocumentosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{documentosController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateDocumentosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+ <p:outputLabel value="#{mensajes.CreateDocumentosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{documentosController.selected.empresa}"  converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{documentosController.getComponentMessages('empresa', mensajes.CreateDocumentosHelpText_empresa)}"/>
+                        </h:panelGroup>
+-->

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ArchivosJuridicaCreateDlg" widgetVar="ArchivosJuridicaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateArchivosJuridicaTitle}" closeOnEscape="true">
+
+            <h:form id="ArchivosJuridicaCreateForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display" rendered="#{archivosJuridicaController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+                        
+                         <p:outputLabel value="#{mensajes.CreateArchivosJuridicaLabel_fecha}" for="fecha" />
+                        <h:panelGroup>
+                            <p:calendar id="fecha" required="false" pattern="dd/MM/yyyy"  yearRange="c-100:c+0" navigator="true" timeZone="America/Asuncion" value="#{documentosAdministrativosController.selected.fecha}" title="#{mensajes.CreateArchivosJuridicaTitle_fecha}" requiredMessage="#{mensajes.CreateArchivosJuridicaRequiredMessage_fecha}" showOn="button"/>
+                            <p:tooltip for="fecha" value="#{archivosJuridicaController.getComponentMessages('fecha', mensajes.CreateArchivosJuridicaHelpText_fecha)}"/>
+                        </h:panelGroup>
+                         
+                         
+                        <p:outputLabel value="#{mensajes.CreateDocumentosAdministrativoLabel_nroArchivo}" for="nroArchivo" />
+                        <h:panelGroup>
+                            <p:inputText id="nroArchivo" value="#{archivosJuridicaController.selected.nroArchivo}" title="#{mensajes.CreateDocumentosAdministrativoTitle_nroArchivo}" requiredMessage="#{mensajes.CreateDocumentosAdministrativoRequiredMessage_nroArchivo}" size="50" maxlength="50"/>
+                            <p:tooltip for="nroArchivo" value="#{archivosJuridicaController.getComponentMessages('nroArchivo', mensajes.CreateDocumentosAdministrativoHelpText_nroArchivo)}"/>
+                        </h:panelGroup>
+                        
+                         <p:outputLabel value="Descripcion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="5" cols="80" id="descripcion" value="#{archivosJuridicaController.selected.descripcion}" title="#{mensajes.CreateArchivosJuridicaTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateArchivosJuridicaRequiredMessage_descripcion}"/>
+                            <p:tooltip for="descripcion" value="#{archivosJuridicaController.getComponentMessages('descripcion', mensajes.CreateArchivosJuridicaHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                         
+                         
+                          <h:outputText value="Adjuntar Documento"/>
+                        <p:panelGrid columns="2" >
+                            <p:fileUpload value="#{archivosJuridicaController.file}" mode="simple" accept=".pdf,.PDF" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{archivosJuridicaController.saveNew}" value="#{mensajes.Save}" update="display,:ArchivosJuridicaListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ArchivosJuridicaCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ArchivosJuridicaCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MarcasViewDlg" widgetVar="MarcasViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewMarcasTitle}" closeOnEscape="true">
+
+            <h:form id="MarcasViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{marcasController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_id}"/>
+                        <h:outputText value="#{marcasController.selected.id}" title="#{mensajes.ViewMarcasTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_descripcion}"/>
+                        <h:outputText value="#{marcasController.selected.descripcion}" title="#{mensajes.ViewMarcasTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{marcasController.selected.fechaHoraAlta}" title="#{mensajes.ViewMarcasTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{marcasController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewMarcasTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_empresa}"/>
+                        <h:outputText value="#{marcasController.selected.empresa.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_usuarioAlta}"/>
+                        <h:outputText value="#{MarcasController.selected.usuarioAlta.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewMarcasLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{marcasController.selected.usuarioUltimoEstado.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('MarcasViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:remove>
+        <f:metadata>
+            <f:event listener="#{verDocumentosAdministrativosMesaController.verifDocumentosAtencion()}" type="preRenderView"></f:event>
+        </f:metadata>
+    </ui:remove>
+    <div class="ui-g">
+        <h:form id="AccionOperativaListForm"  enctype="multipart/form-data">
+
+            <p:panel header="EJE PRINCIPAL">
+                <p:tabView id="TabView" effect="fade" effectDuration="slow" activeIndex="#{detallesPlanEstrategicasController.activeTab}">
+                    <p:ajax event="tabChange" update=":growl,:AccionOperativaListForm:TabView:datalist,:AccionOperativaListForm:TabView:datalistArchivos" />
+                    <p:tab id="TabView2" title="INFORMES">
+
+                        <p:fieldset style="width: 100%" legend="EJE PRINCIPAL">
+
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+
+                                <p:commandButton id="subirArchivo"   style="visibility: visible;" icon="ui-icon-plus" value="Subir Archivo" update=":InformesAlzarArchivoForm" oncomplete="PF('InformesAlzarArchivoDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or (detallesPlanEstrategicasController.selected.estado.codigo != '1' and detallesPlanEstrategicasController.selected.estado.codigo != '7')}"/>
+                                <p:commandButton id="dptoButton" style="visibility: visible;" value="Transferir Doc" update="InformesEditDptoForm"  actionListener="#{detallesPlanEstrategicasController.prepareTransferir()}" oncomplete="PF('InformesEditDptoDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario or not detallesPlanEstrategicasController.desabilitarBotonCambioEstado()}"/>
+                                <p:commandButton id="dpto2Button"   rendered="false" style="visibility: visible;" icon="ui-icon-pencil" value="Transferir Doc2" update="InformesEditDptoForm" oncomplete="PF('InformesEditDptoDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or detallesPlanEstrategicasController.selected.estado.codigo == '1'}"/>
+                                <p:commandButton id="editObsButton"  rendered="false" style="visibility: visible;" icon="ui-icon-plus" value="Agregar Obs" actionListener="#{detallesPlanEstrategicasController.prepareObs()}" update=":DocumentosJudicialesEditObsForm" oncomplete="PF('DocumentosJudicialesEditObsDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario or not detallesPlanEstrategicasController.desabilitarBotonCambioEstado()}" />
+                                <p:commandButton id="editButton2" style="visibility: visible;" icon="ui-icon-pencil" value="Agregar Obs1" actionListener="#{detallesPlanEstrategicasController.prepareEdit()}" update=":DocumentosJudicialesEditObsForm" oncomplete="PF('DocumentosJudicialesEditObsDialog').show()"  disabled="#{empty detallesPlanEstrategicasController.selected}"/>
+
+                                <p:commandButton id="agregarButton"                style="visibility: visible;" value="Agregar Valor Variable" update=":VariablesEditForm" oncomplete="PF('VariablesEditDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected  or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario or (detallesPlanEstrategicasController.selected.estado.codigo != '2')or (detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'MI' and detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'TI' and detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'PR' and detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'IE' and detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'CI' and detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'FC')}"/>
+                                <p:commandButton id="cambiarPresupuestoButton"   style="visibility: visible;" value="Presupuesto Ejecutado" update=":PresupuestoEjecutadoEditForm" oncomplete="PF('PresupuestoEjecutadoEditDialog').show()"   disabled="#{empty detallesPlanEstrategicasController.selected  or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario  or (detallesPlanEstrategicasController.selected.estado.codigo != '2')or (detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'RF')}"/>
+                                <p:commandButton id="agregarSumatoriaButton"                style="visibility: visible;" value="Agregar Sumatoria" update=":SumatoriaEditForm" oncomplete="PF('SumatoriaEditDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected  or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario  or (detallesPlanEstrategicasController.selected.estado.codigo != '2')or (detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'CO' and detallesPlanEstrategicasController.selected.tipoDocumentos.codigo != 'PI' )}"/>
+                                <p:commandButton id="viewObsButton" rendered="#{not detallesPlanEstrategicasController.deshabilitarVerObs()}" onclick="monitorExporting(startHandler(0), endHandler)" icon="ui-icon-search"   value="Ver Obs1" action="#{detallesPlanEstrategicasController.navigateObservacionesDocumentosJudicialesCollection()}" disabled="#{empty detallesPlanEstrategicasController.selected}" ajax="false"/>
+
+                                <p:commandButton id="cambiarEstadoButton" style="visibility: visible;"  value="Cambiar Estado" update="CambiarEstadosCreateForm" oncomplete="PF('CambiarEstadosCreateDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or (detallesPlanEstrategicasController.selected.estado.codigo != '4' and detallesPlanEstrategicasController.selected.estado.codigo != '5' and detallesPlanEstrategicasController.selected.estado.codigo != '6')}" />
+
+                                <p:commandButton id="viewButton"   rendered="false" style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":InformesViewForm" oncomplete="PF('InformesViewDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected}" />
+                                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{detallesPlanEstrategicasController.delete}" update=":growl,datalist" disabled="#{empty detallesPlanEstrategicasController.selected}" >
+                                    <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                                    <p:commandButton id="dptoButton2"                    style="visibility: hidden;" value="Transferir" update="InformesEditDptoForm" actionListener="#{detallesPlanEstrategicasController.prepareTransferir()}" oncomplete="PF('InformesEditDptoDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario or not detallesPlanEstrategicasController.desabilitarBotonCambioEstado()}"/>
+                                </p:commandButton>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:dataTable id="datalist"
+                                             value="#{detallesPlanEstrategicasController.items}"
+                                             rowStyleClass="#{(item.responsable == detallesPlanEstrategicasController.usuario )? ((item.estado.codigo == '1' or item.estado.codigo == '2' or item.estado.codigo == '3' or iatem.estado.codigo == '4' or iatem.estado.codigo == '5')? 'red' : 'green'): ''}"
+                                             tableStyle="width: auto"
+                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                             rowKey="#{item.id}"
+                                             var="item" filterEvent="enter"
+                                             paginator="true"
+                                             paginatorPosition="bottom"
+                                             rows="10"
+                                             rowsPerPageTemplate="10,20,30,40,50"
+                                             selectionMode="single"
+                                             selection="#{detallesPlanEstrategicasController.selected}">
+
+
+
+                                    <p:ajax event="rowSelect"   update="@form:TabView:cambiarEstadoButton,@form:TabView:agregarSumatoriaButton,@form:TabView:cambiarPresupuestoButton,@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,@form:TabView:viewButton,@form:TabView:deleteButton,:AccionOperativaListForm:TabView:datalistArchivos" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="rowUnselect" update="@form:TabView:cambiarEstadoButton,@form:TabView:agregarSumatoriaButton,@form:TabView:cambiarPresupuestoButton,@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,@form:TabView:viewButton,@form:TabView:deleteButton,:AccionOperativaListForm:TabView:datalistArchivos" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="contextMenu" update="@form:TabView:cambiarEstadoButton,@form:TabView:agregarSumatoriaButton,@form:TabView:cambiarPresupuestoButton,@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,  @form:TabView:viewButton  @form:TabView:deleteButton" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="rowDblselect" onsuccess="document.getElementById(':TabView:viewButton').click();"/>
+
+                                    <p:column sortBy="#{item.planEstrategica.tiposObjetivos.objetivo}" filterMatchMode="contains" filterBy="#{item.planEstrategica.tiposObjetivos.objetivo}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Objetivo Principal"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.planEstrategica.tiposObjetivos.objetivo}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.actividad.descripcion}" filterMatchMode="contains" filterBy="#{item.actividad.descripcion}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Accion Operativa"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.actividad.descripcion}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.planEstrategica.programacion.año}" filterMatchMode="contains" filterBy="#{item.planEstrategica.programacion.año}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Año"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.planEstrategica.programacion.año}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.planEstrategica.programacion.formula}" filterMatchMode="contains" filterBy="#{item.planEstrategica.programacion.formula}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Indicadores"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.planEstrategica.programacion.formula}"/>
+                                    </p:column>
+
+
+
+
+                                    <p:column sortBy="#{item.responsable}" filterMatchMode="contains" filterBy="#{item.responsable}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Responsable Actual"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.responsable}"/>
+                                    </p:column>
+
+
+                                    <p:column sortBy="#{item.estado.descripcion}" filterMatchMode="contains" filterBy="#{item.estado.descripcion}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Estado"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.estado.descripcion}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">   
+                                <p:fieldset style="width: 100%" legend="ARCHIVOS ADJUNTOS">
+                                    <p:dataTable id="datalistArchivos"
+                                                 value="#{detallesPlanEstrategicasController.listaArchivos}"
+                                                 tableStyle="width: auto"
+                                                 paginatorPosition="bottom"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item" filterEvent="enter"
+                                                 paginator="true"
+                                                 rows="10"
+                                                 rowsPerPageTemplate="10,20,30,40,50">                                           
+
+                                        <p:column filterMatchMode="contains" filterBy="#{item.descripcion}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Descripción"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.descripcion}"/>
+                                        </p:column>
+
+                                        <p:column filterMatchMode="startsWith" filterBy="#{detallesPlanEstrategicasController.customFormatDate3(item.fechaHoraAlta)}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Fecha Hora Carga"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.fechaHoraAlta}">
+                                                <f:convertDateTime pattern="#{detallesPlanEstrategicasController.datePattern3()}" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Usuario"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.usuarioAlta.nombresApellidos}"/>
+                                        </p:column>
+
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Ver"/>
+                                            </f:facet>
+                                            <p:commandButton value="Ver" update="DocumentosJudicialesViewDocForm" actionListener="#{detallesPlanEstrategicasController.prepareVerDoc(item)}" oncomplete="PF('DocumentosJudicialesViewDocDialog').show(); PF('DocumentosJudicialesViewDocDialog').toggleMaximize();"/>
+                                        </p:column>
+
+
+                                        <p:column rendered="#{detallesPlanEstrategicasController.renderedBorrarArchivo()}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Borrar" rendered="#{detallesPlanEstrategicasController.renderedBorrarArchivo()}"/>
+                                            </f:facet>
+                                            <p:commandButton value="Borrar" rendered="#{detallesPlanEstrategicasController.renderedBorrarArchivo()}" disabled="#{detallesPlanEstrategicasController.deshabilitarBorrarArchivo(item)}" update="datalistArchivos" actionListener="#{detallesPlanEstrategicasController.borrarArchivo(item)}" >
+                                                <p:confirm header="#{mensajes.ConfirmationHeader}" message="¿Desea borrar el archivo?" icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+
+                                    </p:dataTable>
+                                </p:fieldset>
+                            </div>
+                        </p:fieldset>
+                    </p:tab>
+
+
+                </p:tabView>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>
+<!--  <p:commandButton id="cambiarCantidadButton"  rendered="false" style="visibility: visible;" value="Agregar Variable" oncomplete="PF('VariablesEditDialog').show()" update=":VariablesEditForm,:growl"  disabled="#{empty detallesPlanEstrategicasController.selected}"/>
+                                <p:commandButton id="editButton2" style="visibility: visible;" icon="ui-icon-pencil" value="Agregar Obs1" actionListener="#{detallesPlanEstrategicasController.prepareEdit()}" update=":DocumentosJudicialesEditObsForm" oncomplete="PF('DocumentosJudicialesEditObsDialog').show()"  disabled="#{empty detallesPlanEstrategicasController.selected or empty detallesPlanEstrategicasController.selected.observacionDocumentoJudicial or detallesPlanEstrategicasController.selected.responsable != detallesPlanEstrategicasController.usuario}"/>
+
+                         <p:commandButton id="viewObsButton" onclick="monitorExporting(startHandler(0), endHandler)" icon="ui-icon-search"   value="Ver Obs" action="#{detallesPlanEstrategicasController.navigateObservacionesDocumentosJudicialesCollection}" disabled="#{empty detallesPlanEstrategicasController.selected}" ajax="false"/>
+
+
+     <p:column rendered="#{detallesPlanEstrategicasController.renderedBorrarArchivo()}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Borrar" rendered="#{detallesPlanEstrategicasController.renderedBorrarArchivo()}"/>
+                                            </f:facet>
+                                            <p:commandButton value="Borrar" rendered="#{detallesPlanEstrategicasController.renderedBorrarArchivo()}" disabled="#{detallesPlanEstrategicasController.deshabilitarBorrarArchivo(item)}" update="datalistArchivos" actionListener="#{detallesPlanEstrategicasController.borrarArchivo(item)}" >
+                                                <p:confirm header="#{mensajes.ConfirmationHeader}" message="¿Desea borrar el archivo?" icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+
+ <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":VariablesEditForm" oncomplete="PF('ProgramacionEditDialog').show()"  disabled="#{empty detallesPlanEstrategicasController.selected}" />
+ rowStyleClass="#{(item.responsable == detallesPlanEstrategicasController.usuario)? ((item.estado.codigo == '1' or item.estado.codigo == '2' or item.estado.codigo == '3' or iatem.estado.codigo == '4')? 'red' : 'green'): ''}"
+
+-->
+
+

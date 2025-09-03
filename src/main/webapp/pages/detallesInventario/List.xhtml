@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:event listener="#{reporteInventarioValorizadoController.verifArticulosPorVencer()}" type="preRenderView"></f:event>
+
+    </f:metadata>
+
+    <h:form id="DetallesInventarioListForm">
+
+        <p:panel header="Articulos Vencidos">
+           
+            <p:dataTable id="datalist"
+                         value="#{reporteInventarioValorizadoController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.codigo}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{reporteInventarioValorizadoController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{detallesEntradaArticuloController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+               <!-- <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DetallesEntradaArticuloDataTableContextMenu" listener="#{detallesEntradaArticuloController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DetallesEntradaArticuloDataTableContextMenu" listener="#{detallesEntradaArticuloController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{detallesEntradaArticuloController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('DetallesEntradaArticuloListForm:viewButton').click();"/>
+                -->
+
+
+                <p:column sortBy="#{item.articulo.descripcion}" filterBy="#{item.articulo.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesInventarioTitle_articulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.descripcion}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.fechaEntrada}" filterBy="#{item.fechaEntrada}">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha Entrada"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaEntrada}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+
+
+                <p:column sortBy="#{item.cantEntrada}" filterBy="#{item.cantEntrada}">
+                    <f:facet name="header">
+                        <h:outputText value="Cantidad Entrada"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantEntrada}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.cantSalida}" filterBy="#{item.cantSalida}">
+                    <f:facet name="header">
+                        <h:outputText value="Cantidad Salida"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantSalida}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.sede.descripcion}" filterBy="#{item.sede.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Deposito"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sede.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.fechaVencimiento}" filterBy="#{item.fechaVencimiento}">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha Vencimiento"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaVencimiento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

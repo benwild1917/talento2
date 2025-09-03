@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="MarcasEditDlg" widgetVar="MarcasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditMarcasTitle}" closeOnEscape="true">
+
+            <h:form id="MarcasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{marcasController.selected != null}">
+
+                        <p:outputLabel value="#{mensajes.EditMarcasLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{marcasController.selected.descripcion}" title="#{mensajes.EditMarcasTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditMarcasRequiredMessage_descripcion}" size="100" maxlength="200"/>
+                            <p:tooltip for="descripcion" value="#{marcasController.getComponentMessages('descripcion', mensajes.EditMarcasHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{marcasController.save}" value="#{mensajes.Save}" update="display,:MarcasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('MarcasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('MarcasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputLabel value="#{mensajes.EditMarcasLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{marcasController.selected.id}" />
+                            <p:tooltip for="id" value="#{marcasController.getComponentMessages('id', mensajes.EditMarcasHelpText_id)}"/>
+                        </h:panelGroup>
+-->
+<!--
+                        <p:outputLabel value="#{mensajes.EditMarcasLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{marcasController.selected.fechaHoraAlta}" title="#{mensajes.EditMarcasTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditMarcasRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{marcasController.getComponentMessages('fechaHoraAlta', mensajes.EditMarcasHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditMarcasLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{marcasController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditMarcasTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditMarcaswRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{marcasController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditMarcasHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditMarcasLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="empresa" value="#{marcasController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditMarcasRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{marcasController.getComponentMessages('empresa', mensajes.EditMarcasHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditMarcasLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioAlta" value="#{marcasController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditMarcasRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{marcasController.getComponentMessages('usuarioAlta', mensajes.EditMarcasHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditMarcasLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioUltimoEstado" value="#{marcasController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditMarcasRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{marcasController.getComponentMessages('usuarioUltimoEstado', mensajes.EditMarcasHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

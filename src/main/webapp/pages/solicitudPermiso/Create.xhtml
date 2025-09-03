@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SolicitudPermisoCreateDlg" widgetVar="SolicitudPermisoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Cargar Formulario" closeOnEscape="true">
+
+            <h:form id="SolicitudPermisoCreateForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display" rendered="#{formulariosPermisosController.selected != null}">
+                    <p:panel>
+                            <p:panelGrid columns="2">
+                                <p:panelGrid columns="2" columnClasses="column">
+
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_fecha_registro}" for="fechaRegistro" />
+                                    <h:panelGroup>
+                                        <p:calendar id="fechaRegistro" required="false" pattern="dd/MM/yyyy"  yearRange="c-100:c+0" navigator="true" timeZone="America/Asuncion" value="#{formulariosPermisosController.selected.fechaRegistro}" title="#{mensajes.CreateFormulariosPermisosTitle_fecha_registro}" requiredMessage="#{mensajes.CreateFormulariosPermisosRequiredMessage_fecha_registro}" showOn="button"/>
+                                        <p:tooltip for="fechaRegistro" value="#{formulariosPermisosController.getComponentMessages('fechaRegistro', mensajes.CreateFormulariosPermisosHelpText_fecha_registro)}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="Funcionario" />
+                                    <h:panelGroup>
+                                        <p:selectOneMenu filter="true" filterMatchMode="contains" id="funcionario" value="#{formulariosPermisosController.funcionario}" required="true" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_funcionario}" converter="usuariosConverter">
+                                            <p:ajax event="change"   update="SolicitudPermisoCreateForm:direccionGeneral,SolicitudPermisoCreateForm:nroDocumento,SolicitudPermisoCreateForm:departamento" listener="#{formulariosPermisosController.cargarDatosAdicionales()}" />
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{usuariosController.items}"
+                                                           var="usuariosItem"
+                                                           itemValue="#{usuariosItem}"
+                                                           itemLabel="#{usuariosItem.nombresApellidos}"
+                                                           />
+
+                                        </p:selectOneMenu>
+                                        <p:tooltip for="funcionario" value="#{formulariosPermisosController.getComponentMessages('funcionario', mensajes.CreateFormulariosPermisosHelpText_funcionario)}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_nro_documento}" for="nroDocumento" />
+                                    <h:panelGroup>
+                                        <p:inputText id="nroDocumento" value="#{formulariosPermisosController.nroDocumento}" title="#{mensajes.CreateFormulariosPermisosTitle_nro_documento}" required="true" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_nro_documento}" size="20" maxlength="20"/>
+                                        <p:tooltip for="nroDocumento" value="#{formulariosPermisosController.getComponentMessages('nroDocumento', mensajes.CreateFormulariosPermisosHelpText_nro_documento)}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="Dependencia" />
+                                    <h:panelGroup>
+                                        <p:selectOneMenu filter="true" filterMatchMode="contains" id="departamento" value="#{formulariosPermisosController.dependencia}" required="true" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_dependencia}" converter="departamentosConverter">
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{departamentosController.items}"
+                                                           var="departamentosItem"
+                                                           itemValue="#{departamentosItem}"
+                                                           itemLabel="#{departamentosItem.nombre}"
+                                                           />
+
+                                        </p:selectOneMenu>
+                                        <p:tooltip for="departamento" value="#{formulariosPermisosController.getComponentMessages('departamento', mensajes.CreateFormulariosPermisosHelpText_dependencia)}"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_direccion_general}" for="direccionGeneral" />
+                                    <h:panelGroup>
+                                        <p:inputText id="direccionGeneral" value="#{formulariosPermisosController.direccionGeneral}" title="#{mensajes.CreateFormulariosPermisosTitle_direccion_general}" required="false" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_direccion_general}" size="50" maxlength="60"/>
+                                        <p:tooltip for="direccionGeneral" value="#{formulariosPermisosController.getComponentMessages('direccionGeneral', mensajes.CreateFormulariosPermisosHelpText_direccion_general)}"/>
+                                    </h:panelGroup>
+
+
+
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_jefatura}" for="jefatura" />
+                                    <h:panelGroup>
+                                        <p:inputText id="jefatura" value="#{formulariosPermisosController.selected.jefatura}" title="#{mensajes.CreateFormulariosPermisosTitle_jefatura}" required="false" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_jefatura}" size="50" maxlength="60"/>
+                                        <p:tooltip for="jefatura" value="#{formulariosPermisosController.getComponentMessages('jefatura', mensajes.CreateFormulariosPermisosHelpText_jefatura)}"/>
+                                    </h:panelGroup>
+
+
+
+                                    <p:outputLabel value="Tipo Formulario" />
+                                    <h:panelGroup>
+                                        <p:selectOneMenu filter="true" filterMatchMode="contains" id="tiposFormulario" value="#{formulariosPermisosController.tiposFormulario}" required="true" requiredMessage="#{mensajes.CreateFomularioPermisosRequiredMessage_tipo_formulario}" converter="tiposFormularioConverter">
+                                            <p:ajax  event="change" listener="#{formulariosPermisosController.resetearListas(formulariosPermisosController.tiposFormulario)}"   update=":SolicitudPermisoCreateForm:tiposPermiso"/>
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{tiposFormularioController.items}"
+                                                           var="tiposFormularioItem"
+                                                           itemValue="#{tiposFormularioItem}"
+                                                           itemLabel="#{tiposFormularioItem.descripcion}"
+                                                           />
+
+                                        </p:selectOneMenu>
+                                        <p:tooltip for="tiposFormulario" value="#{accionesController.getComponentMessages('tiposFormulario', mensajes.CreateFormulariosPermisosHelpText_tipo_formulario)}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="Tipo Permiso" />
+                                    <h:panelGroup>
+                                        <p:selectOneMenu filter="true" filterMatchMode="contains" id="tiposPermiso"  disabled="#{empty formulariosPermisosController.tiposFormulario}" value="#{formulariosPermisosController.selected.tiposPermisos}" required="false" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_tiposPermiso}" converter="tiposPermisosConverter">
+
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{formulariosPermisosController.listaTiposPermisos}"
+                                                           var="tiposPermisosItem"
+                                                           itemValue="#{tiposPermisosItem}"
+                                                           itemLabel="#{tiposPermisosItem.descripcion}"
+                                                           />
+
+                                        </p:selectOneMenu>
+
+                                        <p:tooltip for="tiposPermiso" value="#{formulariosPermisosController.getComponentMessages('tiposPermiso', mensajes.CreateFormulariosPermisosHelpText_tiposPermiso)}"/>
+                                    </h:panelGroup>                         
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2">
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <p:outputLabel value="POR LA PRESENTE SOLICITO EL USUFRUCTO DE:" />
+                                    <h:panelGroup>
+                                        <p:inputText id="cantidadDia" value="#{formulariosPermisosController.selected.cantidadDia}" title="#{mensajes.CreateFormulariosPermisosTitle_cantidad_dia}" required="false" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_cantidad_dia}" size="10" maxlength="20"/>
+                                        <p:outputLabel value="DÍAS DE MIS VACACIONES" />
+                                        <p:tooltip for="cantidadDia" value="#{formulariosPermisosController.getComponentMessages('cantidadDia', mensajes.CreateFormulariosPermisosHelpText_cantidad_dia)}"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <p:outputLabel value="POR LA PRESENTE SOLICITO ACUMULACION DE:" />
+                                    <h:panelGroup>
+                                        <p:inputText id="acumulacion" value="#{formulariosPermisosController.selected.acumulacion}" title="#{mensajes.CreateFormulariosPermisosTitle_acumulacion}" required="false" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_acumulacion}" size="10" maxlength="20"/>
+                                        <p:outputLabel value="DÍAS DE MIS VACACIONES" />
+                                        <p:tooltip for="acumulacion" value="#{formulariosPermisosController.getComponentMessages('acumulacion', mensajes.CreateFormulariosPermisosHelpText_acumulacion)}"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2">
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <p:outputLabel value="DESDE LA HORA:" />
+                                    <p:calendar size="7" id="horaDesde" required="true"  pattern="HH:mm:ss"  navigator="true" value="#{formulariosPermisosController.selected.horaDesde}" title="Hora Desde"  showOn="button">
+                                    </p:calendar>
+
+                                    <p:outputLabel value="HASTA LA HORA:" />
+                                    <p:calendar size="7" id="horaHasta" required="true"  pattern="HH:mm:ss"  navigator="true" value="#{formulariosPermisosController.selected.horaHasta}" title="Hora Hasta"  showOn="button">
+                                    </p:calendar>
+
+                                    <p:outputLabel value="CANTIDAD HORAS" />
+                                    <h:panelGroup>
+                                        <p:inputText id="horas" value="#{formulariosPermisosController.selected.horas}" title="#{mensajes.CreateFormulariosPermisosTitle_horas}" required="true" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_horas}" size="20" maxlength="20"/>
+                                        <p:tooltip for="horas" value="#{formulariosPermisosController.getComponentMessages('horas', mensajes.CreateFormulariosPermisosHelpText_horas)}"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <p:outputLabel value="CORRESPONDIENTE AL EJERCICIO DEL AÑO:" />
+                                    <h:panelGroup>
+                                        <p:inputText id="año" value="#{formulariosPermisosController.selected.año}" title="#{mensajes.CreateFormulariosPermisosTitle_año}" required="false" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_año}" size="10" maxlength="20"/>
+                                        <p:outputLabel value="A PARETIR:" />
+                                        <p:tooltip for="año" value="#{formulariosPermisosController.getComponentMessages('año', mensajes.CreateFormulariosPermisosHelpText_año)}"/>
+                                    </h:panelGroup>
+
+
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_fecha_desde}" for="fechaDesde" />
+                                    <h:panelGroup>
+                                        <p:calendar id="fechaDesde" required="false" pattern="dd/MM/yyyy"  yearRange="c-100:c+0" navigator="true" timeZone="America/Asuncion" value="#{formulariosPermisosController.selected.fechaDesde}" title="#{mensajes.CreateFormulariosPermisosTitle_fecha_desde}" requiredMessage="#{mensajes.CreateFormulariosPermisosRequiredMessage_fecha_desde}" showOn="button"/>
+                                        <p:tooltip for="fechaDesde" value="#{formulariosPermisosController.getComponentMessages('fechaDesde', mensajes.CreateFormulariosPermisosHelpText_fecha_desde)}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_fecha_Hasta}" for="fechaHasta" />
+                                    <h:panelGroup>
+                                        <p:calendar id="fechaHasta" required="false" pattern="dd/MM/yyyy"  yearRange="c-100:c+0" navigator="true" timeZone="America/Asuncion" value="#{formulariosPermisosController.selected.fechaHasta}" title="#{mensajes.CreateFormulariosPermisosTitle_fecha_Hasta}" requiredMessage="#{mensajes.CreateFormulariosPermisosRequiredMessage_fecha_Hasta}" showOn="button"/>
+                                        <p:tooltip for="fechaHasta" value="#{formulariosPermisosController.getComponentMessages('fechaHasta', mensajes.CreateFormulariosPermisosHelpText_fecha_Hasta)}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="CANTIDAD DÍAS" />
+                                    <h:panelGroup>
+                                        <p:inputText id="dias" value="#{formulariosPermisosController.selected.dias}" title="#{mensajes.CreateFormulariosPermisosTitle_dias}" required="true" requiredMessage="#{mensajes.CreateSolicitudPermisoRequiredMessage_dias}" size="20" maxlength="20"/>
+                                        <p:tooltip for="dias" value="#{formulariosPermisosController.getComponentMessages('dias', mensajes.CreateFormulariosPermisosHelpText_dias)}"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2">
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <p:outputLabel value="#{mensajes.CreateFormulariosPermisosLabel_observacion}" for="observacion" />
+                                    <h:panelGroup>
+                                        <p:inputTextarea required="true" rows="4" cols="70" id="observacion" value="#{formulariosPermisosController.selected.observacion}" disabled="false" requiredMessage="#{mensajes.CreateFormulariosPermisosRequiredMessage_observacion}" title="#{mensajes.CreateFormulariosPermisosTitle_observacion}"/>
+                                        <p:tooltip for="observacion" value="#{formulariosPermisosController.getComponentMessages('observacion', mensajes.CreateFormulariosPermisosHelpText_observacion)}"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" columnClasses="column">
+                                    <h:outputText value="Adjuntar Documento"/>
+                                    <p:panelGrid columns="2">
+                                        <p:fileUpload value="#{formulariosPermisosController.file}" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                                    </p:panelGrid>
+
+                                </p:panelGrid>
+                            </p:panelGrid>
+            
+                    <p:commandButton actionListener="#{formulariosPermisosController.saveNew()}" value="#{mensajes.Save}" update="display,:SolicitudPermisoListForm:datalist,:SolicitudPermisoListForm:createButton,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SolicitudPermisoCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('SolicitudPermisoCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                    </p:panel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

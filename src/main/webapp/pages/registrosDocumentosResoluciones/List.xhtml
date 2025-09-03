@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="DocumentosJudicialesListForm"  enctype="multipart/form-data">         
+            <p:panel header="RESOLUCIONES ">                      
+                <ui:remove>
+                    <p:panel>
+                        <h:outputText value="Fecha Presentacion:" style="padding-right: 20px" />
+
+                        <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                        <p:calendar style="padding-right: 10px" id="fechaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy HH:mm:ss" navigator="true" value="#{entradaDocumentosResolucionesController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHasta" />
+                        <p:calendar style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy HH:mm:ss" navigator="true" value="#{entradaDocumentosResolucionesController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                        <p:commandButton value="Buscar por Fecha de Presentacion" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist" action="#{entradaDocumentosResolucionesController.buscarPorFechaPresentacion()}"></p:commandButton>
+                    </p:panel>
+
+                    <div class="ui-sm-12 ui-md-2 ui-g-2">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:panelGrid columns="1" style="width: 100%">
+                                <p:selectOneRadio layout="pageDirection" id="eleccion" style="width: 100%" value="#{entradaDocumentosResolucionesController.eleccionFiltro}" >
+                                    <p:ajax  event="change" update="fechaDesde, fechaHasta, asunto, texto" />
+                                    <f:selectItem itemLabel="Por fecha" itemValue="1"/>
+                                    <f:selectItem itemLabel="Por descripción" itemValue="2"/>
+                                    <f:selectItem itemLabel="Por mesa entrada" itemValue="3"/>
+                                </p:selectOneRadio>
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <p:commandButton id="buscarButton" style="width: 100%" ajax="false" value="Buscar" update="datalist" actionListener="#{entradaDocumentosResolucionesController.buscarPorFiltro()}" />
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-md-10 ui-g-10">
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                    <div align="left">
+                                        <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px" />
+                                    </div>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                    <div align="left">
+                                        <p:calendar size="7" id="fechaDesde" disabled="#{entradaDocumentosResolucionesController.deshabilitarFechaDesdeFiltro()}" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{entradaDocumentosResolucionesController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                    <div align="left">
+                                        <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                                    </div>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                    <div align="left">
+                                        <p:calendar size="7" id="fechaHasta" disabled="#{entradaDocumentosResolucionesController.deshabilitarFechaHastaFiltro()}" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{entradaDocumentosResolucionesController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                    <div align="left">
+                                        <p:outputLabel value="Descripción" for="asunto" style="padding-right: 5px" />
+                                    </div>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                    <div align="left">
+                                        <p:inputText id="asunto" style="width: 100%" disabled="#{entradaDocumentosResolucionesController.deshabilitarAsuntoFiltro()}" value="#{entradaDocumentosResolucionesController.asuntoFiltro}" title="Descripción" />
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                    <div align="left">
+                                        <p:outputLabel value="Nro mesa entrada" for="texto" style="padding-right: 5px" />
+                                    </div>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                    <div align="left">
+                                        <p:inputText id="texto" style="width: 100%" disabled="#{entradaDocumentosResolucionesController.deshabilitarTextoFiltro()}" value="#{entradaDocumentosResolucionesController.textoFiltro}" title="Nro mesa entrada" />
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                    </div>
+                </ui:remove>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{entradaDocumentosResolucionesController.prepareCreate}" update=":DocumentosCreateForm" oncomplete="PF('DocumentosCreateDialog').show()"/>
+                    <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":DocumentosJudicialesEditForm" oncomplete="PF('DocumentosJudicialesEditDialog').show()" disabled="#{empty entradaDocumentosResolucionesController.selected or entradaDocumentosResolucionesController.selected.responsable != entradaDocumentosResolucionesController.usuario or (entradaDocumentosResolucionesController.selected.estado.codigo != '-1')}"/>
+                    <p:commandButton id="dptoButton" style="visibility: visible;" value="Enviar Doc" update="DocumentosJudicialesEditDptoForm"  actionListener="#{entradaDocumentosResolucionesController.prepareTransferir()}" oncomplete="PF('DocumentosJudicialesEditDptoDialog').show()" disabled="#{empty entradaDocumentosResolucionesController.selected or entradaDocumentosResolucionesController.selected.responsable != entradaDocumentosResolucionesController.usuario or (entradaDocumentosResolucionesController.selected.estado.codigo != '-1')}"/>
+                    <p:commandButton id="deleteButton"  style="visibility: hidden;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{entradaDocumentosResolucionesController.delete}" update=":growl,datalist" disabled="#{empty entradaDocumentosResolucionesController.selected}">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </div>
+
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:dataTable id="datalist"
+                                 value="#{entradaDocumentosResolucionesController.items}"
+                                 rowStyleClass="#{(item.responsable == entradaDocumentosResolucionesController.usuario)? ((item.estado.codigo == '-1' )? 'green' : 'green'): ''}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item" filterEvent="enter"
+                                 tableStyle="width:auto"
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{entradaDocumentosResolucionesController.selected}">
+
+
+                        <p:ajax event="rowSelect"   update="@form:deleteButton,@form:createButton,@form:editButton,@form:dptoButton,:DocumentosJudicialesListForm:datalistDestinatarios" listener="#{entradaDocumentosResolucionesController.resetParents}"/>
+                        <p:ajax event="rowUnselect" update="@form:deleteButton,@form:createButton,@form:editButton,@form:dptoButton,:DocumentosJudicialesListForm:datalistDestinatarios" listener="#{entradaDocumentosResolucionesController.resetParents}"/>
+                        <p:ajax event="contextMenu" update="@form:deleteButton @form:createButton @form:editButton @form:dptoButton" listener="#{entradaDocumentosResolucionesController.resetParents}"/>
+                        <p:ajax event="rowDblselect" onsuccess="document.getElementById('DocumentosJudicialesListForm:editButton').click();"/>
+                        <ui:remove>
+                            <p:column sortBy="#{item.id}" filterMatchMode="contains" filterBy="#{item.id}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_id}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+                        </ui:remove>
+                        <ui:remove>
+                            <p:column sortBy="#{item.entradaDocumento}" filterMatchMode="contains" filterBy="#{item.entradaDocumento}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_entradaDocumento}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.entradaDocumento}"/>
+                            </p:column>
+                        </ui:remove>
+                        <p:column sortBy="#{entradaDocumentosResolucionesController.customFormatDate(item.fechaHoraAlta)}" filterMatchMode="startsWith" filterBy="#{entradaDocumentosResolucionesController.customFormatDate(item.fechaHoraAlta)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Registro"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="#{entradaDocumentosResolucionesController.datePattern()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column sortBy="#{item.entradaDocumento.nroIdentificacion}" filterMatchMode="contains" filterBy="#{item.entradaDocumento.nroIdentificacion}">
+                            <f:facet name="header">
+                                <h:outputText value="Nro Identificacion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.entradaDocumento.nroIdentificacion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.nroResolucion}" filterMatchMode="contains" filterBy="#{item.nroResolucion}">
+                            <f:facet name="header">
+                                <h:outputText value="Nro Resolucion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroResolucion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.fechaResolucion}" filterMatchMode="startsWith" filterBy="#{item.fechaResolucion}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Resolución"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaResolucion}">
+                                <f:convertDateTime pattern="#{entradaDocumentosResolucionesController.datePattern()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column sortBy="#{item.tituloResolucion}" filterMatchMode="contains" filterBy="#{item.tituloResolucion}">
+                            <f:facet name="header">
+                                <h:outputText value="Título"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tituloResolucion}"/>
+                        </p:column>
+
+
+                        <ui:remove>
+                            <p:column sortBy="#{item.departamento.nombre}" filterMatchMode="contains" filterBy="#{item.departamento.nombre}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_departamento}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.departamento.nombre}"/>
+                            </p:column>
+                        </ui:remove>                     
+
+                        <p:column sortBy="#{item.descripcion}" filterMatchMode="contains" filterBy="#{item.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Descripcion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.estado.descripcion}" filterMatchMode="contains" filterBy="#{item.estado.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Estado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.responsable}" filterMatchMode="contains" filterBy="#{item.responsable}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_responsable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.responsable}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Doc"/>
+                            </f:facet>
+                            <p:commandButton value="Ver" update=":DocumentosJudicialesViewDocForm" disabled="#{entradaDocumentosResolucionesController.deshabilitarVerDoc(item)}" actionListener="#{entradaDocumentosResolucionesController.prepareVerDoc(item)}" oncomplete="PF('DocumentosJudicialesViewDocDialog').show(); PF('DocumentosJudicialesViewDocDialog').toggleMaximize();"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+                <div class="ui-sm-12 ui-md-6 ui-g-6">   
+                    <p:fieldset style="width: 100%" legend="DESTINATARIOS">
+                        <p:dataTable id="datalistDestinatarios"
+                                     value="#{entradaDocumentosResolucionesController.listaDestinatarios}"
+                                     paginatorPosition="bottom"
+                                     lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                     rowKey="#{item.id}"
+                                     var="item" filterEvent="enter"
+                                     paginator="true"
+                                     rows="10"
+                                     rowsPerPageTemplate="10,20,30,40,50">
+
+                            <p:column filterMatchMode="startsWith ">
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha hora transferencia"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fechaHoraAlta}">
+                                    <f:convertDateTime pattern="#{entradaDocumentosResolucionesController.datePattern3()}" timeZone="America/Asuncion" />
+                                </h:outputText>
+                            </p:column>
+                            <ui:remove>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Enviado Por"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.responsableAnterior.nombresApellidos}"/>
+                                </p:column>
+                            </ui:remove>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Destintarios"/>
+                                </f:facet>
+                                <h:outputText value="#{item.responsable.nombresApellidos}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Departamento"/>
+                                </f:facet>
+                                <h:outputText value="#{item.departamento.nombre}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado"/>
+                                </f:facet>
+                                <h:outputText value="#{item.estado.descripcion}"/>
+                            </p:column>
+                            <ui:remove>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Reenviar"/>
+                                    </f:facet>
+                                    <p:commandButton id="dptoButton" style="visibility: visible;" value="Reenviar Doc" update="DocumentosJudicialesEditDptoForm"  actionListener="#{destinatariosController.prepareTransferir()}" oncomplete="PF('DocumentosJudicialesEditDptoDialog').show()" disabled="#{empty destinatariosController.selected or destinatariosController.selected.responsable != destinatariosController.usuario or (destinatariosController.selected.estado.codigo != '-3')}"/>
+                                </p:column>
+                            </ui:remove>
+                        </p:dataTable>
+                    </p:fieldset>
+                </div>
+
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+</ui:composition>

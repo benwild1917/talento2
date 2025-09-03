@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PlanEditDptoDlg" widgetVar="PlanEditDptoDialog" modal="true" resizable="false"  appendTo="@(body)" header="Transferir al Responsable" closeOnEscape="true">
+
+            <h:form id="PlanEditDptoForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{detallesPlanEstrategicasController.selected != null}">
+
+                        <p:outputLabel value="Responsable" for="responsable" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="responsable" value="#{detallesPlanEstrategicasController.selected.responsable}" required="true" requiredMessage="Elija Responsable"  converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.listaUsuariosElegir}"
+                                               var="usuarioItem"
+                                               itemValue="#{usuarioItem}"
+                                               itemLabel="#{usuarioItem}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="responsable" value="#{detallesPlanEstrategicasController.getComponentMessages('responsable', 'Ingrese Responsable')}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{detallesPlanEstrategicasController.saveNew}" value="#{mensajes.Save}" update="display,:AccionOperativaListForm:TabView:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PlanEditDptoDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PlanEditDptoDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+                        <h:outputLabel value="#{mensajes.EditInformesLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{informesController.selected.id}" />
+                            <p:tooltip for="id" value="#{informesController.getComponentMessages('id', mensajes.EditInformesHelpText_id)}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_entradaDocumento}" for="entradaDocumento" />
+                        <h:panelGroup>
+                            <p:inputText id="entradaDocumento" value="#{informesController.selected.entradaDocumento}" title="#{mensajes.EditInformesTitle_entradaDocumento}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_entradaDocumento}"/>
+                            <p:tooltip for="entradaDocumento" value="#{informesController.getComponentMessages('entradaDocumento', mensajes.EditInformesHelpText_entradaDocumento)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_descripcionMesaEntrada}" for="descripcionMesaEntrada" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="4" cols="30" id="descripcionMesaEntrada" value="#{informesController.selected.descripcionMesaEntrada}" title="#{mensajes.EditInformesTitle_descripcionMesaEntrada}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_descripcionMesaEntrada}"/>
+                            <p:tooltip for="descripcionMesaEntrada" value="#{informesController.getComponentMessages('descripcionMesaEntrada', mensajes.EditInformesHelpText_descripcionMesaEntrada)}"/>
+                        </h:panelGroup>
+
+-->
+<!--
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_departamento}" for="departamento" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="departamento" value="#{informesController.selected.departamento}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_departamento}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{informesController.getComponentMessages('departamento', mensajes.EditInformesHelpText_departamento)}"/>
+                        </h:panelGroup>
+-->
+
+<!--
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{informesController.selected.fechaHoraAlta}" title="#{mensajes.EditInformesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{informesController.getComponentMessages('fechaHoraAlta', mensajes.EditInformesHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{informesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditInformesTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{informesController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditInformesHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="empresa" value="#{informesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{informesController.getComponentMessages('empresa', mensajes.EditInformesHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{informesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{informesController.getComponentMessages('usuarioAlta', mensajes.EditInformesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditInformesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{informesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditInformesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{informesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditInformesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AccionesCreateDlg" widgetVar="AccionesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateAccionesTitle}" closeOnEscape="true">
+
+            <h:form id="AccionesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{accionesController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+
+                        <p:outputLabel value="Objetivo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tiposObjetivos" value="#{accionesController.selected.tiposObjetivos}" required="false" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_tiposObjetivos}" converter="tiposObjetivosConverter">
+
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tiposObjetivosItem"
+                                               itemValue="#{tiposObjetivosItem}"
+                                               itemLabel="#{tiposObjetivosItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tiposObjetivos" value="#{accionesController.getComponentMessages('tiposObjetivos', mensajes.CreateInformesHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Descripcion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="5" cols="100" id="descripcion" value="#{accionesController.selected.descripcion}" title="#{mensajes.CreateAccionesTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateAccionesRequiredMessage_descripcion}"/>
+                            <p:tooltip for="descripcion" value="#{accionesController.getComponentMessages('descripcion', mensajes.CreateAccionesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Departamento Responsable" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="departamento" value="#{accionesController.selected.departamento}" required="false" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_tiposObjetivos}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentosItem"
+                                               itemValue="#{departamentosItem}"
+                                               itemLabel="#{departamentosItem.nombre}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{actividadesController.getComponentMessages('departamento', mensajes.CreateInformesHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{accionesController.saveNew}" value="#{mensajes.Save}" update="display,:AccionesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccionesCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('AccionesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

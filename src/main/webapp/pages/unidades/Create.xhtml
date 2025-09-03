@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UnidadesCreateDlg" widgetVar="UnidadesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateUnidadesTitle}" closeOnEscape="true">
+
+            <h:form id="UnidadesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{unidadesController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateUnidadesLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{unidadesController.selected.codigo}" validatorMessage="El codigo debe contener solo letras en mayusculas y/o numeros" title="#{mensajes.CreateUnidadesTitle_codigo}" required="true" requiredMessage="#{mensajes.CreateUnidadesRequiredMessage_codigo}" size="2" maxlength="2">
+                            <f:validateRegex pattern="^[A-Z0-9]+$" />
+                        </p:inputText>
+                        <p:outputLabel value="#{mensajes.CreateUnidadesLabel_descripcion}" for="descripcion" />
+                        <p:inputText id="descripcion" value="#{unidadesController.selected.descripcion}" title="#{mensajes.CreateUnidadesTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateUnidadesRequiredMessage_descripcion}" size="50" maxlength="60"/>
+
+                        <p:outputLabel value="#{mensajes.CreateUnidadesLabel_simbolo}" for="simbolo" />
+                        <p:inputText id="simbolo" value="#{unidadesController.selected.simbolo}" title="#{mensajes.CreateUnidadesTitle_simbolo}" required="true" requiredMessage="#{mensajes.CreateUnidadesRequiredMessage_simbolo}" size="10" maxlength="10"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{unidadesController.saveNew}" value="#{mensajes.Save}" update="display,:UnidadesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('UnidadesCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('UnidadesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <p:outputLabel value="#{mensajes.CreateUnidadesLabel_empresa}" for="empresa" />
+                        <p:selectOneMenu id="empresa" value="#{unidadesController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateUnidadesRequiredMessage_empresa}" converter="empresasConverter">
+                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                            <f:selectItems value="#{empresasController.items}"
+                                           var="empresaItem"
+                                           itemValue="#{empresaItem}"
+                                           itemLabel="#{empresaItem.id.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+-->
+

@@ -1,0 +1,45 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/manhattan">
+
+    <div class="layout-topbar">
+        <a href="#" id="layout-menu-btn" class="menu-btn">
+            <i class="fa fa-bars"></i>
+        </a>        
+        <a href="http://www.jem.gov.py" target="_blank">
+            <p:graphicImage value="#{usuariosController.imagenLogo}" height="100%"/>
+        </a>
+        <div class="layout-topbar-menu-wrapper">            
+            <ul class="topbar-menu">
+                <li class="profile-item">
+                    <a href="#">              
+                        <p:outputLabel style="font-size: 20px; font-weight: bold" value="#{usuariosController.nombreUsu}"/> 
+                    </a>
+                </li>
+                <li class="profile-item">
+                    <a href="#">             
+                        <h:form id="menuForm">
+                            <p:panel visible="#{articulosStockCriticoController.hayArticulosStockCritico}" id="nuevos" closable="false" >
+                                <p:commandButton id="verArticulosStockCritico" style="color: red; font-size: 20px; font-weight: bold" rendered="true" ajax="false" value="Existen Articulos en Stock Critico" action="#{articulosStockCriticoController.navigateArticulosStockCritico()}" />
+                            </p:panel>
+                            <p:panel visible="#{pedidosArticuloController.hayPedidosArticulo}" id="nuevosPedidos" closable="false" >
+                                <p:commandButton id="verPedidosArticulo" style="color: red; font-size: 20px; font-weight: bold" rendered="true" ajax="false" value="Existen Nuevos Pedidos de Articulos" action="#{pedidosArticuloController.navigatePedidosArticulo()}" />
+                            </p:panel>
+                            <p:panel visible="#{verDocumentosJudicialesMesaController.hayDocumentosAtencion}" id="nuevosDocumentosAtencion" closable="false" rendered="false">
+                                <p:commandButton id="verDocumentosMesa" style="color: red; font-size: 20px; font-weight: bold" disabled="true" rendered="true" ajax="false" value="Existen Documentos a Recibir" />
+                            </p:panel>
+                            <p:panel visible="#{pedidosArticuloController.hayPedidosArticuloPorAutotizar}" id="nuevosPedidosAutorizar" closable="false" >
+                                <p:commandButton id="verPedidosParaAutorizar" style="color: red; font-size: 20px; font-weight: bold" rendered="true" ajax="false" value="Existen Pedidos Por Autorizar" action="#{pedidosArticuloController.navigatePedidosArticulo()}" />
+                            </p:panel>
+                        </h:form> 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</ui:composition>

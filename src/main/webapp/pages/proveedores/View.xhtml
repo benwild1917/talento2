@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProveedoresViewDlg" widgetVar="ProveedoresViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewProveedoresTitle}" closeOnEscape="true">
+
+            <h:form id="ProveedoresViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{proveedoresController.selected != null}">
+
+                        
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_nombre}"/>
+                        <h:outputText value="#{proveedoresController.selected.nombre}" title="#{mensajes.ViewProveedoresTitle_nombre}"/>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_direccion}"/>
+                        <h:outputText value="#{proveedoresController.selected.direccion}" title="#{mensajes.ViewProveedoresTitle_direccion}"/>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_ruc}"/>
+                        <h:outputText value="#{proveedoresController.selected.ruc}" title="#{mensajes.ViewProveedoresTitle_ruc}"/>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_telefono}"/>
+                        <h:outputText value="#{proveedoresController.selected.telefono}" title="#{mensajes.ViewProveedoresTitle_telefono}"/>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{proveedoresController.selected.fechaHoraAlta}" title="#{mensajes.ViewProveedoresTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{proveedoresController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewProveedoresTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_usuarioAlta}"/>
+                        <h:outputText value="#{proveedoresController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewProveedoresLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{proveedoresController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ProveedoresViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

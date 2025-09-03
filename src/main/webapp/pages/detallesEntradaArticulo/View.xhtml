@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DetallesEntradaArticuloViewDlg" widgetVar="DetallesEntradaArticuloViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDetallesEntradaArticuloTitle}" closeOnEscape="true">
+
+            <h:form id="DetallesEntradaArticuloViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{detallesEntradaArticuloController.selected != null}">
+
+                       
+                        
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_articulo}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.articulo.descripcion}"/>
+
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_cantidad}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.cantidad}" title="#{mensajes.ViewDetallesEntradaArticuloTitle_cantidad}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_nroFactura}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.nroFactura}" title="#{mensajes.ViewDetallesEntradaArticuloTitle_nroFactura}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_nroLlamado}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.nroLlamado}" title="#{mensajes.ViewDetallesEntradaArticuloTitle_nroLlamado}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.fechaHoraAlta}" title="#{mensajes.ViewDetallesEntradaArticuloTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewDetallesEntradaArticuloTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_proveedor}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.proveedor.nombre}"/>
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_entradaArticulo}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.entradaArticulo.concepto}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_usuarioAlta}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesEntradaArticuloLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{detallesEntradaArticuloController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DetallesEntradaArticuloViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

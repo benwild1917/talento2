@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:pm="http://primefaces.org/manhattan">
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <p:panel header="#{mensajes.Welcome}"/>
+            <center>
+                <h:form id="indexForm">
+                    <div class="ui-g">
+                        <ui:remove>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="center">
+                                <p:commandButton value="VOLVER" id="volver" disabled="#{usuariosController.deshabilitarMenues(2)}" actionListener="#{usuariosController.menu(1)}" update=":menuform:menuPrincipal, :indexForm:fluido, :indexForm:volver, :growl" />
+                            </div>
+                        </ui:remove>
+                        <div class="ui-sm-12 ui-md-8 ui-lg-10 ui-g-10" align="center">
+                            <pe:fluidGrid id="fluido" hGutter="30" vGutter="30" style="margin-top: 10px;" >
+                                    
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink action="#{memorandumController.verDoc('mfunciones', 'pdf')}" ajax="false" update=":growl">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/mfunciones.jpg" title="Manual de Funciones" styleClass="modalResponsivo" />
+                                        <div align="center">
+                                            <h:outputText style="color: #305a8e" value="Manual de Funciones" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </p:commandLink>
+                                </pe:fluidGridItem>
+                                
+                               
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink action="#{memorandumController.verDoc('c_etica', 'pdf')}" ajax="false" update=":growl">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/c_etica.jpg" title="Código de Etica" styleClass="modalResponsivo" />
+                                        <div align="center">
+                                            <h:outputText style="color: #305a8e" value="Código de Etica" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </p:commandLink>
+                                </pe:fluidGridItem>
+                                
+                                <ui:remove>
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink action="#{memorandumController.verDoc('permiso_vacaciones', 'pdf')}" ajax="false" update=":growl">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/vacaciones.jpg" title="Solicitud de Vacaciones" styleClass="modalResponsivo" />
+                                        <div align="center">
+                                            <h:outputText style="color: #305a8e" value="Solicitud de Vacaciones" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </p:commandLink>
+                                </pe:fluidGridItem>
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink action="#{memorandumController.verDoc('comision_de_trabajo', 'pdf')}" ajax="false" update=":growl">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/ausencia.jpg" title="Comisión de Trabajo" styleClass="modalResponsivo" />
+                                        <div align="center">
+                                            <h:outputText style="color: #305a8e" value="Comisión de Trabajo" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </p:commandLink>
+                                </pe:fluidGridItem>
+                            </pe:fluidGrid>
+                            </ui:remove>
+                        </div>
+                    </div>
+                </h:form>
+            </center>
+            <h:outputStylesheet id="fluidGridCSS">
+                .pe-fluidgrid {
+                max-width: 700px;
+                }
+
+                .pe-fluidgrid .pe-fluidgrid-item {
+                width:  60px;
+                height: 60px;
+                border-radius: 5px;
+                text-align: center;
+                }
+
+                .pe-fluidgrid-item.w2 {width: 200px;}
+                .pe-fluidgrid-item.w3 {width: 200px;}    
+                .pe-fluidgrid-item.h2 {height: 200px;}
+                .pe-fluidgrid-item.h3 {height: 130px;}
+            </h:outputStylesheet>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

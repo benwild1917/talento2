@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DetallesPedidoArticuloEditDlg" widgetVar="DetallesPedidoArticuloEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="Editar" closeOnEscape="true">
+
+            <h:form id="DetallesPedidoArticuloEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{pedidosArticuloController.detalleSelected != null}">
+
+                        <p:outputLabel value="Cantidad" for="cantidad" />
+                        <h:panelGroup>
+                            <p:inputNumber id="cantidad" value="#{pedidosArticuloController.nuevaCantidad}" required="true" decimalSeparator="," decimalPlaces="0" thousandSeparator="." requiredMessage="Debe ingresar una cantidad" title="Cantidad"/>
+                            <p:tooltip for="cantidad" value="Ingrese nueva cantidad"/>
+                        </h:panelGroup>
+                        
+                        <p:outputLabel value="Observacion" for="observacion" />
+                        <h:panelGroup>
+                            <p:inputTextarea autoResize="false" rows="6" cols="100" id="observacion" value="#{pedidosArticuloController.observacion}" title="Observacion" required="true" requiredMessage="Debe ingresar obsevacion"/>
+                            <p:tooltip for="observacion" value="Ingrese una observacion"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pedidosArticuloController.guardarCambio()}" value="#{mensajes.Save}" update="display,:PedidosArticuloListForm:datalist,:PedidosArticuloListForm:datalistDetalle,:PedidosArticuloListForm:datalistCambios,:PedidosArticuloListForm:deleteButton,:PedidosArticuloListForm:entregarButton,:PedidosArticuloListForm:cambioButton,:PedidosArticuloListForm:dptoButton,:PedidosArticuloListForm:createButton,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DetallesPedidoArticuloEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DetallesPedidoArticuloEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                  <h:outputLabel value="#{mensajes.EditPedidosArticuloLabel_id}" for="id" />
+                     <h:panelGroup>
+                         <h:outputText id="id" value="#{pedidosArticuloController.selected.id}" />
+                         <p:tooltip for="id" value="#{pedidosArticuloController.getComponentMessages('id', mensajes.EditPedidosArticuloHelpText_id)}"/>
+                     </h:panelGroup>
+                  <p:outputLabel value="#{mensajes.EditPedidosArticuloLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                     <h:panelGroup>
+                         <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{pedidosArticuloController.selected.fechaHoraAlta}" title="#{mensajes.EditPedidosArticuloTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditPedidosArticuloRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                         <p:tooltip for="fechaHoraAlta" value="#{pedidosArticuloController.getComponentMessages('fechaHoraAlta', mensajes.EditPedidosArticuloHelpText_fechaHoraAlta)}"/>
+                     </h:panelGroup>
+
+                     <p:outputLabel value="#{mensajes.EditPedidosArticuloLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                     <h:panelGroup>
+                         <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{pedidosArticuloController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditPedidosArticuloTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditPedidosArticuloRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                         <p:tooltip for="fechaHoraUltimoEstado" value="#{pedidosArticuloController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditPedidosArticuloHelpText_fechaHoraUltimoEstado)}"/>
+                     </h:panelGroup>
+                    <p:outputLabel value="#{mensajes.EditPedidosArticuloLabel_usuarioAlta}" for="usuarioAlta" />
+                     <h:panelGroup>
+                         <p:selectOneMenu id="usuarioAlta" value="#{pedidosArticuloController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditPedidosArticuloRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                             <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                             <f:selectItems value="#{usuariosController.items}"
+                                            var="usuarioAltaItem"
+                                            itemValue="#{usuarioAltaItem}"
+                                            itemLabel="#{usuarioAltaItem.id.toString()}"
+                                            />
+
+                         </p:selectOneMenu>
+                         <p:tooltip for="usuarioAlta" value="#{pedidosArticuloController.getComponentMessages('usuarioAlta', mensajes.EditPedidosArticuloHelpText_usuarioAlta)}"/>
+                     </h:panelGroup>
+
+                     <p:outputLabel value="#{mensajes.EditPedidosArticuloLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                     <h:panelGroup>
+                         <p:selectOneMenu id="usuarioUltimoEstado" value="#{pedidosArticuloController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditPedidosArticuloRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                             <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                             <f:selectItems value="#{usuariosController.items}"
+                                            var="usuarioUltimoEstadoItem"
+                                            itemValue="#{usuarioUltimoEstadoItem}"
+                                            itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                            />
+
+                         </p:selectOneMenu>
+                         <p:tooltip for="usuarioUltimoEstado" value="#{pedidosArticuloController.getComponentMessages('usuarioUltimoEstado', mensajes.EditPedidosArticuloHelpText_usuarioUltimoEstado)}"/>
+                     </h:panelGroup>
+-->

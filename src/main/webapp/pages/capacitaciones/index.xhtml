@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:pm="http://primefaces.org/manhattan">
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <p:panel header="#{mensajes.Welcome}"/>
+            <center>
+                <h:form id="indexForm">
+                    <div class="ui-g">
+                         <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="center">
+                            <p:commandButton value="VOLVER" id="volver" action="/index.xhtml" update=":indexForm:fluido, :indexForm:volver, :growl" />
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10" align="center">
+                            
+                            <pe:fluidGrid id="fluido" hGutter="30" vGutter="60" style="margin-top: 10px;" >
+                                     
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="https://www.youtube.com/watch?v=m8i4fMUCpK0" target="_blank">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/excel.jpg" title="Curso de Excel" styleClass="modalResponsivo" />
+                                    </a>                                    
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'; color: #305a8e"  value="Curso de Excel" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="https://www.youtube.com/watch?v=n0yn3TZ1lSQ" target="_blank">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/word.jpeg" title="Curso de Word" styleClass="modalResponsivo" />
+                                    </a>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'; color: #305a8e"  value="Curso de Word" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="https://www.youtube.com/watch?v=ra0hKJv8zbw" target="_blank">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/este2.jpg" title="Curso de Power Point" styleClass="modalResponsivo" />
+                                    </a>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'; color: #305a8e"  value="Curso Power Point" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="https://intranet.jem.gov.py/intranet/tutoriales/" target="_blank">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/tutoriales.jpg" title="Tutoriales" styleClass="modalResponsivo" />
+                                    </a>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'; color: #305a8e"  value="Tutoriales" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="https://webmail.jem.gov.py/" target="_blank">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/webmail.jpg" title="WEBMAIL" styleClass="modalResponsivo" />
+                                    </a>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'; color: #305a8e"  value="WEBMAIL" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                
+                                <pe:fluidGridItem styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="https://intranet.jem.gov.py/intranet/js-support-ticket-controlpanel/" target="_blank">
+                                        <h:graphicImage value="#{parametrosSistemaController.servidorPuerto}/images/soporteTecnico.jpg" title="SERVICIO TÉCNICO" styleClass="modalResponsivo" />
+                                    </a>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'; color: #305a8e"  value="SERVICIO TÉCNICO" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                                               
+                                   
+                            </pe:fluidGrid>
+                        </div>
+                    </div>
+                </h:form>
+            </center>
+            <h:outputStylesheet id="fluidGridCSS">
+                .pe-fluidgrid {
+                max-width: 700px;
+                }
+
+                .pe-fluidgrid .pe-fluidgrid-item {
+                width:  60px;
+                height: 60px;
+                border-radius: 5px;
+                text-align: center;
+                }
+
+                .pe-fluidgrid-item.w2 {width: 200px;}
+                .pe-fluidgrid-item.w3 {width: 200px;}    
+                .pe-fluidgrid-item.h2 {height: 200px;}
+                .pe-fluidgrid-item.h3 {height: 130px;}
+            </h:outputStylesheet>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

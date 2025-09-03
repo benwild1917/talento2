@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:event listener="#{detallesEntradaArticuloController.verifArticulosPorVencer()}" type="preRenderView"></f:event>
+
+    </f:metadata>
+
+    <h:form id="DetallesEntradaArticuloListForm">
+
+        <p:panel header="Articulos Vencidos">
+            <p:contextMenu id="DetallesEntradaArticuloDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('DetallesEntradaArticuloListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('DetallesEntradaArticuloListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('DetallesEntradaArticuloListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('DetallesEntradaArticuloListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{mensajes.DetallesEntradaArticuloMenuItem_proveedor}" icon="ui-icon-search"  actionListener="#{detallesEntradaArticuloController.prepareProveedor}" update=":ProveedoresViewForm" oncomplete="PF('ProveedoresViewDialog').show()" disabled="#{empty detallesEntradaArticuloController.selected.proveedor}"/>  
+                <p:menuitem value="#{mensajes.DetallesEntradaArticuloMenuItem_usuarioAlta}" icon="ui-icon-search"  actionListener="#{detallesEntradaArticuloController.prepareUsuarioAlta}" update=":UsuariosViewForm" oncomplete="PF('UsuariosViewDialog').show()" disabled="#{empty detallesEntradaArticuloController.selected.usuarioAlta}"/>  
+                <p:menuitem value="#{mensajes.DetallesEntradaArticuloMenuItem_usuarioUltimoEstado}" icon="ui-icon-search"  actionListener="#{detallesEntradaArticuloController.prepareUsuarioUltimoEstado}" update=":UsuariosViewForm" oncomplete="PF('UsuariosViewDialog').show()" disabled="#{empty detallesEntradaArticuloController.selected.usuarioUltimoEstado}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{detallesEntradaArticuloController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{detallesEntradaArticuloController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{detallesEntradaArticuloController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+               <!-- <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DetallesEntradaArticuloDataTableContextMenu" listener="#{detallesEntradaArticuloController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DetallesEntradaArticuloDataTableContextMenu" listener="#{detallesEntradaArticuloController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{detallesEntradaArticuloController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('DetallesEntradaArticuloListForm:viewButton').click();"/>
+                -->
+
+<!-- <p:column sortBy="#{item.entradaArticulo.concepto}" filterBy="#{item.entradaArticulo.concepto}">
+     <f:facet name="header">
+         <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_entradaArticulo}"/>
+     </f:facet>
+     <h:outputText value="#{item.entradaArticulo.concepto}"/>
+ </p:column>-->
+
+                <p:column sortBy="#{item.articulo.descripcion}" filterBy="#{item.articulo.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_articulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.descripcion}"/>
+                </p:column>
+
+
+
+                <p:column sortBy="#{item.cantidad}" filterBy="#{item.cantidad}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_cantidad}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantidad}"/>
+                </p:column>
+
+
+
+
+
+                <p:column sortBy="#{item.nroFactura}" filterBy="#{item.nroFactura}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_nroFactura}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroFactura}"/>
+                </p:column>
+
+
+
+
+              <!--  <p:column sortBy="#{item.nroLlamado}" filterBy="#{item.nroLlamado}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_nroLlamado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroLlamado}"/>
+                </p:column>-->
+
+                <!--
+                                <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_fechaHoraAlta}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraAlta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_fechaHoraUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                        </h:outputText>
+                                    </p:column>
+                -->
+
+                <p:column sortBy="#{item.proveedor.nombre}" filterBy="#{item.proveedor.nombre}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_proveedor}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.proveedor.nombre}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.fechaVencimiento}" filterBy="#{item.fechaVencimiento}">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha Vencimiento"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaVencimiento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+
+
+                <!--
+                                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_usuarioAlta}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_empresa}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.empresa.id}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="ChartDocumentosSecretariaPorDiaForm">
+                <p:panel header="Grafico de Documentos Ingresados Por dia Por Funcionario">
+                    <p:panelGrid columns="5">
+                        <p:outputLabel value="Fecha de Carga" style="padding-right: 20px;" />
+                        <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px" />
+                        <p:calendar style="padding-right: 10px" id="fechaDesde" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{chartDocumentosSecretariaPorDiaController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                        <p:calendar style="padding-right: 10px" id="fechaHasta" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{chartDocumentosSecretariaPorDiaController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                        <p:outputLabel value="Funcionarios" for="tipoDocumento" />
+                        <h:panelGroup>
+                            <p:selectCheckboxMenu label="Elija los funcionarios" filter="true" filterMatchMode="contains" id="tipoDocumento" value="#{chartDocumentosSecretariaPorDiaController.listaTiposDoc}" required="true" requiredMessage="Funcionarios: campo requerido"  converter="usuariosConverter">
+                                <f:selectItems value="#{usuariosController.funcionariosSecretaria}"
+                                               var="tipoDocItem"
+                                               itemValue="#{tipoDocItem}"
+                                               itemLabel="#{tipoDocItem.nombresApellidos}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="tipoDocumento" value="#{chartDocumentosSecretariaPorDiaController.getComponentMessages('tipoDocumento', 'Debe elegir uno o mas tipos de documento')}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="Tipo de Grafico" for="tipoGrafico" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tipoGrafico" value="#{chartDocumentosSecretariaPorDiaController.tipoGrafico}" required="true" requiredMessage="Debe elegir un tipo de grafico">
+                                <f:selectItem itemLabel="Barras" itemValue="Barras"/>
+                                <f:selectItem itemLabel="Lineas" itemValue="Lineas"/>
+                                <f:selectItem itemLabel="Torta" itemValue="Torta"/>
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoGrafico" value="Debe elegir un tipo de grafico"/>
+                        </h:panelGroup>
+                        <p:commandButton value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="dashPanel, datalist" action="#{chartDocumentosSecretariaPorDiaController.initChartDocumentosSecretariaPorDia()}"></p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1">
+                        <p:dashboard id="dashPanel" model="#{chartDocumentosSecretariaPorDiaController.dashboardModel}" >
+
+                            <p:panel id="chartDocumentosSecretariaPorDiaBar"  header="Cantidad de Documentos Por Dia Del Mes" >
+                                <p:chart type="bar" model="#{chartDocumentosSecretariaPorDiaController.modelDocumentosSecretariaPorDiaBar}" responsive="true" rendered="#{not empty chartDocumentosSecretariaPorDiaController.modelDocumentosSecretariaPorDiaBar}" style="height:300px;width:1000px"/>
+                            </p:panel>
+                            <p:panel id="chartDocumentosSecretariaPorDiaLineal" header="Documentos Por Dia Del Mes" >
+                                <p:chart type="line" model="#{chartDocumentosSecretariaPorDiaController.modelDocumentosSecretariaPorDiaLinear}" responsive="true" rendered="#{not empty chartDocumentosSecretariaPorDiaController.modelDocumentosSecretariaPorDiaLinear}" style="height:300px;width:1000px"/>
+                            </p:panel>
+                            <p:panel id="chartDocumentosSecretariaPorDiaPie" header="Documentos Por Dia Del Mes" >
+                                <p:chart type="pie" model="#{chartDocumentosSecretariaPorDiaController.modelDocumentosSecretariaPorDiaPie}" responsive="true" rendered="#{not empty chartDocumentosSecretariaPorDiaController.modelDocumentosSecretariaPorDiaPie}" style="height:350px;width:500px"/>
+                            </p:panel>   
+                        </p:dashboard>
+                        <p:dataTable id="datalist"
+                                     value="#{chartDocumentosSecretariaPorDiaController.lista}"
+                                     lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                     rowKey="#{item.codigo}"
+                                     var="item"
+                                     paginator="false"
+                                     rows="0"
+                                     disabledSelection="true"
+                                     rendered="#{not empty chartDocumentosSecretariaPorDiaController.lista}">
+                            <!--
+                                     To enable Lazy Loading, please copy/replace the following lines above,
+                                     and be sure to replace the word HASH with the # symbol:
+                            
+                                     value="HASH{presidentesComiteController.lazyItems}"
+                                     lazy="true"
+                                     rowKey="HASH{item.id}"  <<< Remove this line
+                            -->
+                            <p:column sortBy="#{item.descripcionTipoDocumentoJudicial}" filterMatchMode="contains" filterBy="#{item.descripcionTipoDocumentoJudicial}">
+                                <f:facet name="header">
+                                    <h:outputText value="Funcionario"/>
+                                </f:facet>
+                                <h:outputText value="#{item.descripcionTipoDocumentoJudicial}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{item.fechaPresentacion}" filterMatchMode="contains" filterBy="#{item.fechaPresentacion}">
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha de Carga"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.cantidad}" filterMatchMode="contains" filterBy="#{item.cantidad}">
+                                <f:facet name="header">
+                                    <h:outputText value="Cantidad"/>
+                                </f:facet>
+                                <div align="right">
+                                    <h:outputText value="#{item.cantidad}">
+                                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

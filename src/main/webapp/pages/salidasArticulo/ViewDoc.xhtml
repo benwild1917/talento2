@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+     
+            <p:dialog id="SalidasArticuloViewDocDlg" positionType="absolute" widgetVar="SalidasArticuloViewDocDlg"  maximizable="true" modal="true" resizable="true"  appendTo="@(body)" header="#{mensajes.ViewSalidaArticuloDocTitle}" closeOnEscape="true">
+                <p:ajax event="close" listener="#{archivosReporteController.prepareCerrarDialogoVerDoc()}" />
+                
+               <div id="container2" style="width: 98%; justify-content: center; position: absolute !important; vertical-align: top !important;">
+                     <p:panel rendered="#{filtroURL.verifPermiso('firmaDigital')}">
+                    <h:form>
+                        <p:commandButton id="firmarButton" style="visibility: visible;" icon="ui-icon-arrow" value="#{mensajes.Firmar}" update=":SalidasArticuloVerifTokenForm" oncomplete="PF('SalidasArticuloVerifTokenDlg').show()" />
+                    </h:form>
+                </p:panel>
+            </div>
+
+                <pe:documentViewer id="visualizacion" style="height: 100%; width: 100%" value="#{archivosReporteController.content}" />
+          
+        </p:dialog>
+
+    </ui:composition>
+
+
+</html>

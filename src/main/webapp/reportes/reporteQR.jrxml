@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.13.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5bea6059-a9d0-4469-88c8-61409367dd1b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="qr" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="fecha" class="java.util.Date"/>
+	<field name="accion" class="java.lang.String"/>
+	<field name="personal" class="java.lang.String"/>
+	<field name="observacion" class="java.lang.String"/>
+	<title>
+		<band height="132" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="5" width="572" height="127" uuid="e2cf385a-ff02-4e83-9fec-d657b4b59d81"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="175" y="69" width="285" height="38" uuid="9c67caa6-0210-446c-8adb-9bc7832ed279"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EJEMPLO DE QR]]></text>
+			</staticText>
+			<image>
+				<reportElement x="208" y="20" width="375" height="50" uuid="ab391e81-12ff-4ce3-8e6b-a426a6a72429"/>
+				<imageExpression><![CDATA["logoJEM.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="20" width="161" height="59" uuid="cccefdd8-3fc0-47bb-b4e4-1df103eb5771"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[JURADO DE ENJUICIAMIENTO DE MAGISTRADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="49" width="37" height="20" uuid="34b23f7b-a3b9-46c0-a5ae-9b73ee15c45d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="69" width="37" height="20" uuid="0a7191dd-b6ef-4af8-9dbe-cfedae46856a"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="70" width="37" height="20" uuid="43f24fe9-de5e-4740-bb51-a2837e498ce1"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="20" width="220" height="29" uuid="558c145a-a1db-4c2e-8ec4-8c5edd5c2135"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECRETARIA JURIDICA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="85" splitType="Stretch">
+			<image>
+				<reportElement positionType="Float" x="308" y="9" width="85" height="67" uuid="b65b82b9-eefe-40e1-87a3-da16a7dc5489">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{qr} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+    new com.google.zxing.qrcode.QRCodeWriter().encode(
+            $P{qr}, com.google.zxing.BarcodeFormat.QR_CODE, 200, 200));]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

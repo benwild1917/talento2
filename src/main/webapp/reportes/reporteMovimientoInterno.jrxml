@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.13.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error" uuid="f383af01-8e46-4598-b6f0-16396157ac06">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.util.Date"/>
+	<parameter name="hasta" class="java.lang.String"/>
+	<parameter name="estado" class="java.lang.String"/>
+	<parameter name="numeracion" class="java.lang.Integer"/>
+	<parameter name="mes" class="java.lang.String"/>
+	<parameter name="ano" class="java.lang.String"/>
+	<parameter name="dia" class="java.lang.String"/>
+	<field name="dependencia1" class="java.lang.String"/>
+	<field name="dependencia2" class="java.lang.String"/>
+	<field name="donacion" class="java.lang.String"/>
+	<field name="s/c" class="java.lang.String"/>
+	<field name="bienes" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="182" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="2" y="82" width="478" height="98" uuid="f531c1ed-a105-48b5-9466-2cec5bee2c40"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="42" y="129" width="420" height="20" uuid="c67f7c89-5241-45e4-a28f-c360bab3d6c1"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMIENTO INTERNO DE BIENES DE USO]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="221" y="3" width="294" height="50" uuid="774dbc55-3cb8-4b70-b373-87de57a49c8c"/>
+				<imageExpression><![CDATA["logoJEM.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="3" y="43" width="747" height="39" uuid="0550f511-1ebd-4f0b-a8e6-71121c40158c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Misión: Órgano Constitucional que juzga el desempeño de los Magistrados Judiciales, Agentes Fiscales y Defensores Públicos por la supuesta comisión de delitos o mal desempeño en el ejercicio de sus funciones, velando por la correcta administración de justicia, en tutela de los derechos de los ciudadanos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="82" width="100" height="36" uuid="e780bc68-cd76-4753-b87e-2124b1806c5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="580" y="82" width="171" height="36" uuid="fc935878-6341-44be-9c4e-8542b7fb0e7e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{numeracion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="480" y="118" width="271" height="22" uuid="ae906adb-b593-47bf-9ee4-721f51e11a28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA (2)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="480" y="140" width="100" height="40" uuid="40500ebd-602a-44cd-8ca6-bd29c3baef86"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="140" width="100" height="40" uuid="c3f0b9c8-b328-4cd1-881c-6eec69c2980a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="680" y="140" width="71" height="40" uuid="61975c62-bc45-4cc0-9a16-72cbad668934"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ano}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="158" width="56" height="20" uuid="8eb7dc6a-f5a9-4946-a185-bc48b78c2131"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FC - 11]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="285" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="379" height="33" uuid="40b1f1f5-9deb-42bb-a57e-1603eb3dbb55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEPENDENCIA REMITENTE (3)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="370" height="32" uuid="c97e5cb3-07b5-44db-a708-cb697418a4e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEPENDENCIA DESTINATARIA  (4)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="33" width="750" height="1" uuid="4c5afcd2-68dc-4523-a429-db316623887a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="1" y="64" width="278" height="40" uuid="311d1e11-a4e2-4e67-87bc-f49a2601a019"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUMERO DE                                                                                           ROTULO (5)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="62" width="300" height="42" uuid="a316b059-a2b6-4332-8c22-b6e4f17eafd4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION                                                                                     (6)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="659" y="82" width="44" height="23" uuid="f24a4d70-fdc2-43e8-baab-d78aaccc1aed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[T]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="703" y="82" width="48" height="23" uuid="db2a3de3-c22d-46d5-ac95-423d71061fb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="659" y="105" width="44" height="20" uuid="b014585e-4523-4dba-8bc2-aa69b708ea68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="703" y="105" width="48" height="20" uuid="fdd1e97c-2fda-4027-a58b-2c2b1271d553"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="105" width="279" height="20" uuid="1e454ae4-ceeb-47e1-b037-8c711a752fd2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{s/c}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="105" width="300" height="20" uuid="f17b576f-f36e-45a8-b40e-387db6d9093f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bienes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="125" width="278" height="37" uuid="7b208693-3109-4095-a4ed-fe4cbd3849c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dependecia Remitente ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="125" width="150" height="37" uuid="cc513817-5223-4bc0-a460-94a942cb946d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dependencia Destinaria ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="125" width="151" height="37" uuid="25697d7d-d4f3-4a3f-83d7-64c011454bb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dpto. de Patrimonio ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="581" y="126" width="170" height="37" uuid="36abfdd6-9eb2-4ea3-adec-96fcfba3c603"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(11) Distribución]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="162" width="278" height="88" uuid="11c73ec3-d269-43f6-80de-774c8f3551cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="163" width="150" height="86" uuid="fbaceede-cbf8-4600-b529-8c7735b2ce3d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="163" width="150" height="86" uuid="fa530e10-cb1e-454d-9b69-d410bab293fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="581" y="163" width="171" height="86" uuid="dfb4cb21-157a-4550-9fa1-85e60b8919f9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Original: Sección Patrimonio                 Copias:   Dependencia                                                                   Destinataria,                                           Dependencia                                          Remitente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="250" width="750" height="28" uuid="3e7a2cca-a1e8-4fff-9ccc-d8513881f4e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REFERENTE:                 I= Inservible                           P= Préstamo               T= Transferencia                  F= Faltantes ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="35" width="369" height="27" uuid="d32064f1-e8fd-468f-a37b-60f0f3965434"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependencia2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="35" width="380" height="27" uuid="4ef34434-0485-4fbb-af1a-f8e5e5d5a17a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependencia1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="580" y="63" width="170" height="19" uuid="76e004a0-d979-41ef-84a2-a67fe3dab956"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOTIVO (7)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="581" y="83" width="38" height="21" uuid="ab5e2a93-ad2f-47f8-9a7a-4c745af5f54a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[T]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="619" y="82" width="40" height="23" uuid="49fe616e-43d4-422f-9cb7-e24b32fd1be1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="105" width="40" height="20" uuid="de233490-b3c4-4739-a6d2-fb5405bd900c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="105" width="38" height="20" uuid="74ffa142-bd37-4b25-ae26-76dccb05b31e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="95">
+			<staticText>
+				<reportElement x="10" y="54" width="723" height="38" uuid="1e47495b-0754-4da5-9bf2-7085098b4ad2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visión: Ser una institución confiable y reconocida por la aplicación de procesos transparentes, objetivos e imparciales en el cumplimiento de su rol constitucional, para el fortalecimiento del estado de derecho, en beneficio de la. sociedad
+14 de Mayo esq. Oliva - Ed. El Ciervo		Tel: (595 21) 442662
+                                                           www.jem.gov.py 		                                                    Asunción - Paraguay                                                                                          
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="50" width="736" height="1" uuid="882fa58c-136a-4f31-8a27-517053014f81"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

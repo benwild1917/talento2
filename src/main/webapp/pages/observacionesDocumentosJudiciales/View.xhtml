@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ObservacionesDocumentosJudicialesViewDlg" widgetVar="ObservacionesDocumentosJudicialesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewObservacionesDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <h:form id="ObservacionesDocumentosJudicialesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{observacionesDocumentosJudicialesController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_id}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.id}" title="#{mensajes.ViewObservacionesDocumentosJudicialesTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_observacion}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.observacion}" title="#{mensajes.ViewObservacionesDocumentosJudicialesTitle_observacion}"/>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.fechaHoraAlta}" title="#{mensajes.ViewObservacionesDocumentosJudicialesTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewObservacionesDocumentosJudicialesTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_documentoJudicial}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.informe.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_usuarioAlta}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewObservacionesDocumentosJudicialesLabel_empresa}"/>
+                        <h:outputText value="#{observacionesDocumentosJudicialesController.selected.empresa.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ObservacionesDocumentosJudicialesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

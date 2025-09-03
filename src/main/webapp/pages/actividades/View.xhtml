@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ActividadesViewDlg" widgetVar="ActividadesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewActividadesTitle}" closeOnEscape="true">
+
+            <h:form id="ActividadesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{actividadesController.selected != null}">
+
+                       
+                        <h:outputText value="Acción Estratégica"/>
+                        <h:outputText value="#{actividadesController.selected.accion.descripcion}"/>
+                        
+                         <h:outputText value="Departamento Responsable"/>
+                         <h:outputText value="#{actividadesController.selected.departamento.nombre}"/>
+                         
+                         <h:outputText value="Tipo Documento"/>
+                         <h:outputText value="#{actividadesController.selected.tiposDocumento.descripcion}"/>
+
+
+
+                        <h:outputText value="#{mensajes.ViewActividadesLabel_descripcion}"/>
+                        <h:outputText value="#{actividadesController.selected.descripcion}" title="#{mensajes.ViewActividadesTitle_descripcion}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ActividadesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

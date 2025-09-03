@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProgramacionViewDlg" widgetVar="ProgramacionViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewProgramacionTitle}" closeOnEscape="true">
+
+            <h:form id="ProgramacionViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{programacionController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewProgramacionLabel_tiposObjetivos}"/>
+                        <h:outputText value="#{programacionController.selected.tiposObjetivos.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewProgramacionLabel_accion}"/>
+                        <h:outputText value="#{programacionController.selected.accion.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewProgramacionLabel_año}"/>
+                        <h:outputText value="#{programacionController.selected.año}" title="#{mensajes.ViewProgramacionTitle_año}"/>
+
+                        <h:outputText value="#{mensajes.ViewProgramacionLabel_meta}"/>
+                        <h:outputText value="#{programacionController.selected.meta}" title="#{mensajes.ViewProgramacionTitle_meta}"/>
+
+
+                        <h:outputText value="#{mensajes.ViewProgramacionLabel_formula}"/>
+                        <h:outputText value="#{programacionController.selected.formula}" title="#{mensajes.ViewProgramacionTitle_formula}"/>
+                           
+
+                        <h:outputText value="Valor Programado"/>
+                        <h:outputText value="#{programacionController.selected.valorVariable}" title="#{mensajes.ViewProgramacionTitle_valorVariable}"/>
+                            
+                        <h:outputText value="#{mensajes.ViewProgramacionLabel_programaPresupuestario}"/>
+                        <h:outputText value="#{programacionController.selected.programaPresupuestario}" title="#{mensajes.ViewProgramacionTitle_programaPresupuestario}">
+                              <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+
+
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ProgramacionViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

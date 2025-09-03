@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="AccionesEditDlg" widgetVar="AccionesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditAccionesTitle}" closeOnEscape="true">
+
+            <h:form id="AccionesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{accionesController.selected != null}">
+
+
+                        <p:outputLabel value="#{mensajes.EditAccionesLabel_tiposObjetivos}" for="tiposObjetivos" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="tiposObjetivos" value="#{accionesController.selected.tiposObjetivos}" required="true" requiredMessage="#{mensajes.EditAccionesRequiredMessage_tiposObjetivos}" converter="tiposObjetivosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tiposObjetivosItem"
+                                               itemValue="#{tiposObjetivosItem}"
+                                               itemLabel="#{tiposObjetivosItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tiposObjetivos" value="#{accionesController.getComponentMessages('tiposObjetivos', mensajes.EditAccionesHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+                        
+                           <p:outputLabel value="Departamento Responsable" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="departamento" value="#{accionesController.selected.departamento}" required="true" requiredMessage="#{mensajes.EditAccionesRequiredMessage_tiposObjetivos}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{accionesController.getComponentMessages('departamento', mensajes.EditAccionesHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+                        
+                        
+                        <p:outputLabel value="#{mensajes.EditAccionesLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{accionesController.selected.descripcion}" title="#{mensajes.EditAccionesTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditAccionesRequiredMessage_descripcion}" size="100" maxlength="80"/>
+                            <p:tooltip for="descripcion" value="#{accionesController.getComponentMessages('descripcion', mensajes.EditAccionesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                        
+
+                       
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{accionesController.save}" value="#{mensajes.Save}" update="display,:AccionesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccionesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('AccionesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

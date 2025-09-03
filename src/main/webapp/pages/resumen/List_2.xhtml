@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <div class="ui-g">
+        <h:form id="ResumenListForm">
+
+            <p:panel header="RESULTADO DEL AVANCE">
+
+
+                <p:tab id="TabView2" title="INFORMES">
+   
+                    <p:panelGrid columns="2">
+                         <p:outputLabel value="#{mensajes.CreateProgramacionLabel_año}" for="año" />
+                        <h:panelGroup>
+                            <p:inputText id="año" value="#{planEstrategicasController.año}" title="#{mensajes.CreateProgramacionTitle_año}" required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_año}" size="50" maxlength="60"/>
+                            <p:tooltip for="año" value="#{programacionController.getComponentMessages('año', mensajes.CreateProgramacionHelpText_año)}"/>
+                        </h:panelGroup>   
+                        <f:facet name="footer">
+                            <p:commandButton value="Buscar" ajax="false"  update="datalist, dataTableDetalle" actionListener="#{planEstrategicasController.buscarPorFecha()}"></p:commandButton>
+                        </f:facet>
+                          
+                    </p:panelGrid>
+                    <p:commandButton id="imprimirButton"    ajax="false"    onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" icon="ui-icon-plus"   value="Imprimir" action="#{planEstrategicasController.reporteAvanceResultado(false)}" />
+
+                   
+
+                    <p:dataTable id="datalist"
+                                 value="#{planEstrategicasController.items}"
+                                 tableStyle="width: auto"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item" filterEvent="enter"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{planEstrategicasController.selected}">
+
+
+
+                                    <!-- <p:ajax event="rowSelect"   update="@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,@form:TabView:viewButton,@form:TabView:deleteButton,:AccionOperativaListForm:TabView:datalistArchivos" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="rowUnselect" update="@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,@form:TabView:viewButton,@form:TabView:deleteButton,:AccionOperativaListForm:TabView:datalistArchivos" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="contextMenu" update="@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,  @form:TabView:viewButton  @form:TabView:deleteButton" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="rowDblselect" onsuccess="document.getElementById(':TabView:viewButton').click();"/>
+                        -->
+                        <p:column sortBy="#{item.tiposObjetivos.descripcion}" filterMatchMode="contains" filterBy="#{item.tiposObjetivos.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Objetivo Principal"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tiposObjetivos.descripcion}"/>
+                        </p:column>
+
+
+                        <p:column sortBy="#{item.programacion.accion.descripcion}" filterMatchMode="contains" filterBy="#{item.programacion.accion.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Accion Estratégicas"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.accion.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.programacion.año}" filterMatchMode="contains" filterBy="#{item.programacion.año}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Periodo"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.programacion.año}"/>
+                                </p:column>
+
+
+                        <p:column sortBy="#{item.programacion.meta}">
+                            <f:facet name="header">
+                                <h:outputText value="Meta"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.meta}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.programacion.formula}">
+                            <f:facet name="header">
+                                <h:outputText value="Formula"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.formula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.variable2}">
+                            <f:facet name="header">
+                                <h:outputText value="Variables"/>
+                            </f:facet>
+                            <h:outputText value="#{item.variable2}">
+                             <f:convertNumber type="number" maxIntegerDigits="12" groupingUsed="true" locale="es"/>
+                            </h:outputText>          
+                        </p:column>
+                        
+                           <p:column sortBy="#{item.programacion.valorVariable}">
+                            <f:facet name="header">
+                                <h:outputText value="Valor Programado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.valorVariable}">
+                             <f:convertNumber type="number" maxIntegerDigits="12" groupingUsed="true" locale="es"/>
+                            </h:outputText>          
+                        </p:column>
+
+                        <p:column sortBy="#{item.resultado}">
+                            <f:facet name="header">
+                                <h:outputText value="Resultado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.resultado}"> 
+                                <f:convertNumber type="number" maxIntegerDigits="12" groupingUsed="true" locale="es"/>
+                            </h:outputText>
+
+                              
+                        </p:column>
+
+
+                       <p:column headerText="Estado">
+                           
+                                <c:set var="B" value="#{item.resultado}" />
+                                <h:outputText value="#{B}" 
+                               style="display: block; background-color: #{B lt 50 ? 'red' : (B lt 90 ? 'yellow' : 'green')}" />
+                       
+                        </p:column>
+                        
+                        <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Metas Alcanzada"/>
+                        </f:facet>                                    
+                        <h:selectBooleanCheckbox value="#{item.metasAlcanzada}" >
+                            <p:ajax event="change" listener="#{planEstrategicasController.actualizarMetasAlcanzada(item)}" update="datalist,:growl" />
+                        </h:selectBooleanCheckbox>
+                    </p:column>
+
+                       
+                    </p:dataTable>
+                  
+
+
+                </p:tab>
+
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>
+
+
+<!--<p:outputLabel value="Fecha Desde" for="fechaDesde" />
+                        <p:calendar id="fechaDesde" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{planEstrategicasController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel value="Fecha Hasta" for="fechaHasta" />
+                        <p:calendar id="fechaHasta" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{planEstrategicasController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>-->

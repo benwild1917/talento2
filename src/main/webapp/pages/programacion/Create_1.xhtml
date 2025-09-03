@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProgramacionCreateDlg" widgetVar="ProgramacionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateProgramacionTitle}" closeOnEscape="true">
+
+            <h:form id="ProgramacionCreateForm">
+
+                <h:panelGroup id="display" rendered="#{programacionController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateProgramacionLabel_tiposObjetivos}" for="tiposObjetivos" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tiposObjetivos" value="#{programacionController.tiposObjetivos}" required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_tiposObjetivos}" converter="tiposObjetivosConverter">
+                              <p:ajax  event="change" listener="#{programacionController.resetearListas(programacionController.tiposObjetivos)}"   update=":ProgramacionCreateForm:accion"/>
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tiposObjetivosItem"
+                                               itemValue="#{tiposObjetivosItem}"
+                                               itemLabel="#{tiposObjetivosItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tiposObjetivos" value="#{programacionController.getComponentMessages('tiposObjetivos', mensajes.CreateProgramacionHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Acción Estratégicas" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="accion" disabled="#{empty programacionController.tiposObjetivos}"  value="#{programacionController.selected.accion}"  required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_accion}" converter="accionesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{programacionController.listaAcciones}"
+                                               var="accionItem"
+                                               itemValue="#{accionItem}"
+                                               itemLabel="#{accionItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="accion" value="#{programacionController.getComponentMessages('accion', mensajes.CreateProgramacionHelpText_accion)}"/>
+                        </h:panelGroup>
+                        
+                           <p:outputLabel value="#{mensajes.CreateProgramacionLabel_año}" for="año" />
+                        <h:panelGroup>
+                            <p:inputText id="año" value="#{programacionController.selected.año}" title="#{mensajes.CreateProgramacionTitle_año}" required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_año}" size="50" maxlength="60"/>
+                            <p:tooltip for="año" value="#{programacionController.getComponentMessages('año', mensajes.CreateProgramacionHelpText_año)}"/>
+                        </h:panelGroup>                     
+
+                        <p:outputLabel value="#{mensajes.CreateProgramacionLabel_meta}" for="meta" />
+                        <h:panelGroup>
+                            <p:inputText id="meta" value="#{programacionController.selected.meta}" title="#{mensajes.CreateProgramacionTitle_meta}" required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_meta}" size="50" maxlength="60"/>
+                            <p:tooltip for="meta" value="#{programacionController.getComponentMessages('meta', mensajes.CreateProgramacionHelpText_meta)}"/>
+                        </h:panelGroup>
+   
+                       <p:outputLabel value="#{mensajes.CreateProgramacionLabel_formula}" for="formula" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="5" cols="80" id="formula" value="#{programacionController.selected.formula}" title="#{mensajes.CreateAccionesTitle_formula}" required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_formula}"/>
+                            <p:tooltip for="formula" value="#{programacionController.getComponentMessages('descripcion', mensajes.CreateProgramacionHelpText_formula)}"/>
+                        </h:panelGroup>
+                        
+                         <p:outputLabel value="Valor Programado" />
+                        <h:panelGroup>
+                            <p:inputText id="valorVariable" value="#{programacionController.selected.valorVariable}" title="#{mensajes.CreateProgramacionTitle_valorVariable}" required="false" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_valorVariable}" size="50" maxlength="60"/>
+                            <p:tooltip for="valorVariable" value="#{programacionController.getComponentMessages('valorVariable', mensajes.CreateProgramacionHelpText_valorVariable)}"/>
+                        </h:panelGroup>
+                        
+                        
+                         <p:outputLabel value="#{mensajes.CreateProgramacionLabel_programaPresupuestario}" for="programaPresupuestario" />
+                        <h:panelGroup>
+                            <p:inputText id="programaPresupuestario" value="#{programacionController.selected.programaPresupuestario}" title="#{mensajes.CreateProgramacionTitle_programaPresupuestario}" required="true" requiredMessage="#{mensajes.CreateProgramacionRequiredMessage_programaPresupuestario}" size="50" maxlength="60"/>
+                            <p:tooltip for="programaPresupuestario" value="#{programacionController.getComponentMessages('programaPresupuestario', mensajes.CreateProgramacionHelpText_programaPresupuestario)}"/>
+                        </h:panelGroup>
+                          
+                       
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{programacionController.saveNew}" value="#{mensajes.Save}" update="display,:ProgramacionListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ProgramacionCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ProgramacionCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

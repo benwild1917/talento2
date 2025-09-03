@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PlanEstrategicasViewDlg" widgetVar="PlanEstrategicasViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewPlanEstrategicasTitle}" closeOnEscape="true">
+
+            <h:form id="PlanEstrategicasViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{planEstrategicasController.selected != null}">
+
+                       <h:outputText value="Objetivo"/>
+                       <h:outputText value="#{planEstrategicasController.selected.id}" title="Id"/>
+                        
+                        <h:outputText value="Objetivo"/>
+                        <h:outputText value="#{planEstrategicasController.selected.tiposObjetivos.descripcion}" title="Objetivo"/>
+                        
+                         <h:outputText value="#{mensajes.ViewPlanEstrategicasLabel_accion}"/>
+                         <h:outputText value="#{planEstrategicasController.selected.programacion.accion.descripcion}" title="#{mensajes.ViewPlanEstrategicasTitle_accion}"/>
+                         
+                         <h:outputText value="#{mensajes.ViewPlanEstrategicasLabel_periodo}"/>
+                         <h:outputText value="#{planEstrategicasController.selected.programacion.año}" title="#{mensajes.ViewPlanEstrategicasTitle_periodo}"/>
+                                        
+                        <h:outputText value="#{mensajes.ViewPlanEstrategicasLabel_meta}"/>
+                        <h:outputText value="#{planEstrategicasController.selected.programacion.meta}" title="#{mensajes.ViewPlanEstrategicasTitle_meta}"/>
+                        
+                        
+                        
+                       
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('PlanEstrategicasViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

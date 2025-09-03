@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="BajaArticulosDlg" widgetVar="BajaArticulosDlg" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateBajaArticulosTitle}" closeOnEscape="true">
+
+            <h:form id="BajaArticulosForm">
+
+                <h:panelGroup id="display" rendered="#{articulosController.selected != null}">
+
+
+                    <p:tab id="BajaArticulosTab1" title="#{mensajes.TabHeaderPrefix} 1">
+                        <p:panelGrid columns="2" columnClasses="column">
+
+
+
+                            <p:outputLabel value="Justificación" />
+                            <h:panelGroup>
+                                <p:inputTextarea rows="4" cols="30" id="descripcion" value="#{bajaArticulosController.selected.descripcion}" title="#{mensajes.CreateCreateBajaArticulosTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateCreateBajaArticuloRequiredMessage_descripcion}"/>
+                                <p:tooltip for="descripcion" value="#{bajaArticulosController.getComponentMessages('descripcion', mensajes.CreateCreateBajaArticulosHelpText_descripcion)}"/>
+                            </h:panelGroup>
+
+
+                            <p:outputLabel value="Canidad" />                        
+                            <p:inputNumber id="cantidad"  decimalSeparator="" decimalPlaces="0" thousandSeparator="" value="#{bajaArticulosController.selected.cantidad}" title="#{mensajes.CreateBajaArticulosTitle_cantidad}">
+                            </p:inputNumber>  
+
+
+                            <p:outputLabel value="Depósito" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="sede" value="#{bajaArticulosController.selected.sede}" required="false" requiredMessage="#{mensajes.CreateBajaArticulosRequiredMessage_sede}" converter="sedeConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{sedeController.items}"
+                                                   var="sedeItem"
+                                                   itemValue="#{sedeItem}"
+                                                   itemLabel="#{sedeItem.descripcion.toString()}"
+                                                   />
+                                </p:selectOneMenu>
+                                <p:tooltip for="sede" value="#{bajaArticulosController.getComponentMessages('sede', mensajes.CreateBajaArticulosHelpText_sede)}"/>
+                            </h:panelGroup>
+
+                            <ui:remove>
+
+                                <p:outputLabel value="Descripcion" />
+                                <h:panelGroup>
+                                    <p:inputText id="descripcion" value="#{bajaArticulosController.selected.descripcion}" title="#{mensajes.CreateBajaArticulosTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateBajaArticuloRequiredMessage_descripcion}" size="200" maxlength="200"/>
+                                    <p:tooltip for="descripcion" value="#{bajaArticulosController.getComponentMessages('descripcion', mensajes.CreateBajaArticulosHelpText_descripcion)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreateBajaArticulosLabel_cantidad}" for="cantidad" />
+                                <h:panelGroup>
+                                    <p:inputText id="cantidad" value="#{bajaArticulosController.selected.cantidad}" title="#{mensajes.CreateBajaArticulosTitle_cantidad}" required="true" requiredMessage="#{mensajes.CreateBajaArticuloRequiredMessage_cantidad}" size="20" maxlength="20"/>
+                                    <p:tooltip for="cantidad" value="#{bajaArticulosController.getComponentMessages('cantidad', mensajes.CreateBajaArticulosHelpText_cantidad)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreateBajaArticulosLabel_sede}" for="sede" />
+                                <h:panelGroup>
+                                    <p:selectOneMenu id="sede" value="#{bajaArticulosController.selected.sede}" required="false" requiredMessage="#{mensajes.CreateBajaArticulosRequiredMessage_sede}" converter="sedeConverter">
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{sedeController.items}"
+                                                       var="sedeItem"
+                                                       itemValue="#{sedeItem}"
+                                                       itemLabel="#{sedeItem.descripcion.toString()}"
+                                                       />
+                                    </p:selectOneMenu>
+                                    <p:tooltip for="sede" value="#{bajaArticulosController.getComponentMessages('sede', mensajes.CreateBajaArticulosHelpText_sede)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreateBajaArticulosLabel_articulo}" for="articulo" />
+                                <h:panelGroup>
+                                    <p:selectOneMenu id="articulo" value="#{bajaArticulosController.selected.articulo}" required="false" requiredMessage="#{mensajes.CreateBajaArticulosRequiredMessage_articulo}" converter="articulosConverter">
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{articulosController.items}"
+                                                       var="articuloItem"
+                                                       itemValue="#{articuloItem}"
+                                                       itemLabel="#{articuloItem.descripcion.toString()}"
+                                                       />
+                                    </p:selectOneMenu>
+                                    <p:tooltip for="articulo" value="#{bajaArticulosController.getComponentMessages('articulo', mensajes.CreateBajaArticulosHelpText_articulo)}"/>
+                                </h:panelGroup>
+
+
+                            </ui:remove>
+                        </p:panelGrid>
+                    </p:tab>
+
+                    <p:commandButton actionListener="#{bajaArticulosController.saveNewDeposito()}" value="#{mensajes.Save}" update="display,:ArticulosListForm:datalist,:growl " oncomplete="handleSubmit(xhr,status,args,PF('BajaArticulosDlg'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('BajaArticulosDlg').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

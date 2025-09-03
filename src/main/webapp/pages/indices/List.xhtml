@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="IndicesListForm">
+
+        <p:panel header="#{mensajes.ListIndicesTitle}">
+            <p:contextMenu id="IndicesDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('IndicesListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('IndicesListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('IndicesListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('IndicesListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{mensajes.IndicesMenuItem_empresa}" icon="ui-icon-search"  actionListener="#{indicesController.prepareEmpresa}" update=":EmpresasViewForm" oncomplete="PF('EmpresasViewDialog').show()" disabled="#{empty indicesController.selected.empresa}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{indicesController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{indicesController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{indicesController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:IndicesDataTableContextMenu" listener="#{indicesController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:IndicesDataTableContextMenu" listener="#{indicesController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{indicesController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('IndicesListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.id}" filterMatchMode="contains" filterBy="#{item.id}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListIndicesTitle_id}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.nombreIndice}" filterMatchMode="contains" filterBy="#{item.nombreIndice}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListIndicesTitle_nombreIndice}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombreIndice}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.orden}" filterMatchMode="contains" filterBy="#{item.orden}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListIndicesTitle_orden}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.orden}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.valorX}" filterMatchMode="contains" filterBy="#{item.valorX}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListIndicesTitle_valorX}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.valorX}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.valorY}" filterMatchMode="contains" filterBy="#{item.valorY}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListIndicesTitle_valorY}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.valorY}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.empresa.id}" filterMatchMode="contains" filterBy="#{item.empresa.id}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListIndicesTitle_empresa}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.empresa.id}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{indicesController.prepareCreate}" update=":IndicesCreateForm" oncomplete="PF('IndicesCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{mensajes.View}" update=":IndicesViewForm" oncomplete="PF('IndicesViewDialog').show()" disabled="#{empty indicesController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":IndicesEditForm" oncomplete="PF('IndicesEditDialog').show()" disabled="#{empty indicesController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{indicesController.delete}" update=":growl,datalist" disabled="#{empty indicesController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

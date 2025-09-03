@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="693" pageHeight="842" columnWidth="653" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7dd4cda-c3b7-467e-9fd8-5f126cc226b7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechaDesde" class="java.lang.String"/>
+	<parameter name="fechaHasta" class="java.lang.String"/>
+	<parameter name="descProveedor" class="java.lang.String"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<field name="articulo" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="nroLlamado" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="proveedor" class="java.lang.String"/>
+	<field name="fechaEntrada" class="java.lang.String"/>
+	<field name="nroFactura" class="java.lang.String"/>
+	<field name="precioUnitario" class="java.math.BigDecimal"/>
+	<field name="importeTotal" class="java.math.BigDecimal"/>
+	<field name="fechaLlamado" class="java.util.Date"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="fechaSalida" class="java.util.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="148" splitType="Stretch">
+			<textField>
+				<reportElement x="205" y="107" width="100" height="20" uuid="3d8d1348-c852-49e5-be1f-28f351f98ea6"/>
+				<textFieldExpression><![CDATA[$P{descProveedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="518" y="30" width="100" height="20" uuid="7198d97a-ea3b-4575-9979-c6a0938c1c78"/>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="518" y="50" width="100" height="20" uuid="808c6fa3-d5b8-40d8-99ad-ca796cbaf89a"/>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="39" width="100" height="20" uuid="38c1b572-1f0a-4985-9634-ceb5067d359a"/>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="18" y="2" width="100" height="20" uuid="33e5db05-76fe-496e-9a03-a403bef61902"/>
+				<text><![CDATA[articulo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="2" width="100" height="20" uuid="4af300fe-fffe-4d3e-b7ad-9a2d7e3a5c6c"/>
+				<text><![CDATA[cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="2" width="100" height="20" uuid="7750e56c-a68a-45d4-851a-91623afa7998"/>
+				<text><![CDATA[fechaSalida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="2" width="100" height="20" uuid="d4bc4054-aca9-483b-9bf4-de4af4b37c1e"/>
+				<text><![CDATA[codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="2" width="100" height="20" uuid="78b0be3b-b8d1-4f7f-b5d4-f4a96d033a4d"/>
+				<text><![CDATA[importeTotal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="18" y="0" width="100" height="20" uuid="2a93ad47-bb9e-4505-829b-cffa8784b0fb"/>
+				<textFieldExpression><![CDATA[$F{articulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="0" width="100" height="20" uuid="e521270f-941c-42ae-9dcc-1653bc9beabf"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="236" y="0" width="100" height="20" uuid="3bb8d4b6-645c-47f1-a89e-7d5df2e9c456"/>
+				<textFieldExpression><![CDATA[$F{fechaSalida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="352" y="0" width="100" height="20" uuid="a9b43804-6d5b-40d4-ad2a-e85ab97984e6"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="0" width="71" height="20" uuid="aaa779f9-8dd2-4979-b34d-ef6c48e39470"/>
+				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="536" y="0" width="100" height="20" uuid="80f793c6-44ea-495d-9eea-fd0f602b0b9e"/>
+				<textFieldExpression><![CDATA[$F{importeTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

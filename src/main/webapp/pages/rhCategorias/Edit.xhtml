@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="RhCategoriasEditDlg" widgetVar="RhCategoriasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditRhCategoriasTitle}" closeOnEscape="true">
+
+            <h:form id="RhCategoriasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{rhCategoriasController.selected != null}">
+
+
+                        <p:outputLabel value="#{mensajes.EditRhCategoriasLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{rhCategoriasController.selected.descripcion}" title="#{mensajes.EditRhCategoriasTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditRhCategoriasRequiredMessage_descripcion}" size="100" maxlength="200"/>
+                            <p:tooltip for="descripcion" value="#{rhCategoriasController.getComponentMessages('descripcion', mensajes.EditRhCategoriasHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rhCategoriasController.save}" value="#{mensajes.Save}" update="display,:RhCategoriasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RhCategoriasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RhCategoriasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+
+
+
+                        <p:outputLabel value="#{mensajes.EditRhCategoriasLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCategoriasController.selected.fechaHoraAlta}" title="#{mensajes.EditRhCategoriasTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditRhCategoriasRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{rhCategoriasController.getComponentMessages('fechaHoraAlta', mensajes.EditRhCategoriasHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRhCategoriasLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCategoriasController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditRhCategoriasTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditRhCategoriasRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{rhCategoriasController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditRhCategoriasHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRhCategoriasLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{rhCategoriasController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditRhCategoriasRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{rhCategoriasController.getComponentMessages('usuarioAlta', mensajes.EditRhCategoriasHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRhCategoriasLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{rhCategoriasController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditRhCategoriasRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{rhCategoriasController.getComponentMessages('usuarioUltimoEstado', mensajes.EditRhCategoriasHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel value="#{mensajes.EditRhCategoriasLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{rhCategoriasController.selected.id}" />
+                            <p:tooltip for="id" value="#{rhCategoriasController.getComponentMessages('id', mensajes.EditRhCategoriasHelpText_id)}"/>
+                        </h:panelGroup>
+
+-->

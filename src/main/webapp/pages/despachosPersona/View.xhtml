@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DespachosPersonaViewDlg" widgetVar="DespachosPersonaViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDespachosPersonaTitle}" closeOnEscape="true">
+
+            <h:form id="DespachosPersonaViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{despachosPersonaController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_id}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.id}" title="#{mensajes.ViewDespachosPersonaTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_nombresApellidos}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.nombresApellidos}" title="#{mensajes.ViewDespachosPersonaTitle_nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_ci}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.ci}" title="#{mensajes.ViewDespachosPersonaTitle_ci}"/>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_estado}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.estado}" title="#{mensajes.ViewDespachosPersonaTitle_estado}"/>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.fechaHoraAlta}" title="#{mensajes.ViewDespachosPersonaTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_usuarioAlta}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.usuarioAlta}" title="#{mensajes.ViewDespachosPersonaTitle_usuarioAlta}"/>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewDespachosPersonaTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.usuarioUltimoEstado}" title="#{mensajes.ViewDespachosPersonaTitle_usuarioUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_cargoPersona}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.cargoPersona.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewDespachosPersonaLabel_empresa}"/>
+                        <h:outputText value="#{despachosPersonaController.selected.empresa.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DespachosPersonaViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ReporteFCDoceDialog" widgetVar="ReporteFCDoceDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditReporteFCDoceTitle}" closeOnEscape="true">
+
+            <h:form id="ReporteFCDoceDialogForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column">
+                        <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px; padding-left: 20px"/>
+                        <p:calendar required="true" style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{inventariosController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                          <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_articulo}" for="articulo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="articulo" onblur="endHandler();" onfocus="endHandler();" widgetVar="wvArticulo" filter="true" filterMatchMode="contains" value="#{inventariosController.articulo}" required="false" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                                <f:selectItem itemLabel="Seleccione"/>
+                                <f:selectItems value="#{articulosController.items}"
+                                               var="articuloItem"
+                                               itemValue="#{articuloItem}"
+                                               itemLabel="#{articuloItem.codigo} - #{articuloItem.descripcionLarga}"
+                                               />
+                            </p:selectOneMenu>
+                            <p:tooltip for="articulo" value="#{detallesSalidaArticuloController.getComponentMessages('articulo', mensajes.CreateEntradasArticuloHelpText_articulo)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid> 
+                   
+                    <p:commandButton ajax="false" onclick="this.form.target='_blank'" icon="ui-icon-plus"   value="Reporte FC12" action="#{inventariosController.pdfFCDoce()}" update="display,:InventariosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ReporteFCDoceDialog'));" />
+                    
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ReporteFCDoceDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

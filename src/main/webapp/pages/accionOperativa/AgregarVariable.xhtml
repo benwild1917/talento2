@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="VariablesEditDlg" widgetVar="VariablesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="Agregar Valor Variable" closeOnEscape="true">
+
+            <h:form id="VariablesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:tabView id="VariablesTabView">
+
+                        <p:tab id="VariablesTab1" title="#{mensajes.TabHeaderPrefix} 1">
+                            <p:panelGrid  columns="2" columnClasses="column" rendered="#{detallesPlanEstrategicasController.selected != null}">
+
+
+                                <h:outputText value="Valor Programado"/>
+                                <h:panelGroup>
+                                    <h:outputText value="#{detallesPlanEstrategicasController.selected.planEstrategica.programacion.valorVariable}" title="#{mensajes.ViewInformesTitle_periodo}">            
+
+                                    </h:outputText>
+
+                                   <!--<p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":VariablesEditForm" oncomplete="PF('ProgramacionEditDialog').show()"/>-->
+                                   <!-- <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":ProgramacionEditForm" oncomplete="PF('ProgramacionEditDialog').show()"/>-->
+                                    <p:commandButton id="cambiarVariableButton"  actionListener="#{detallesPlanEstrategicasController.prepararCambio(item)}" value="Editar" oncomplete="PF('ProgramacionEditDialog').show()" update=":VariablesEditForm,:growl"/>
+
+                                </h:panelGroup>
+
+                                <h:outputText value="Valor Anterior"/>
+                                <h:outputText value="#{detallesPlanEstrategicasController.selected.planEstrategica.variable2}" title="#{mensajes.ViewInformesTitle_periodo}"/>
+
+
+
+                                <p:outputLabel value="Cargar Variable:" />
+                                <h:panelGroup>
+                                    <p:inputText id="valor" value="#{detallesPlanEstrategicasController.valor}" title="#{mensajes.CreatePlanEstrategicasTitle_periodo}" required="true" requiredMessage="#{mensajes.CreatePlanEstrategicasRequiredMessage_periodo}" size="50" maxlength="60"/>
+                                    <p:tooltip for="valor" value="#{planEstrategicasController.getComponentMessages('valor', mensajes.CreatePlanEstrategicasHelpText_periodo)}"/>
+                                </h:panelGroup>
+
+
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                    <p:commandButton actionListener="#{detallesPlanEstrategicasController.guardarCambio()}" value="#{mensajes.Save}" update=":AccionOperativaListForm:TabView:datalist,:AccionOperativaListForm:TabView:subirArchivo,:AccionOperativaListForm:TabView:agregarButton" oncomplete="handleSubmit(xhr,status,args,PF('VariablesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('VariablesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+                   <!-- <p:commandButton value="Calcular" action="#{informesController.calcularVariables()}"></p:commandButton>
+                   
+                   
+                                <p:outputLabel value="Resultado" />
+                                <h:panelGroup>
+                                    <p:inputText id="resultado" value="#{informesController.selected.resultado}" title="#{mensajes.CreatePlanEstrategicasTitle_periodo}" required="true" requiredMessage="#{mensajes.CreatePlanEstrategicasRequiredMessage_periodo}"/>
+                                    <p:tooltip for="resultado" value="#{planEstrategicasController.getComponentMessages('resultado', mensajes.CreatePlanEstrategicasHelpText_periodo)}"/>
+                                </h:panelGroup>
+                   
+                  <p:outputLabel value="Valor Variable" />
+                                <h:panelGroup>
+                                    <p:selectOneMenu filter="true" filterMatchMode="contains" id="programacion"  value="#{detallesPlanEstrategicasController.selected.programacion}" required="false" requiredMessage="#{mensajes.CreatePlanEstrategicasRequiredMessage_periodo}" styleClass="ancho100" converter="programacionConverter">
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{programacionController.items}"
+                                                       var="programacionItem"
+                                                       itemValue="#{programacionItem}"
+                                                       itemLabel="#{programacionItem.valorVariable}"
+                                                       />
+
+                                    </p:selectOneMenu>
+                                    <p:tooltip for="programacion" value="#{planEstrategicasController.getComponentMessages('programacion', mensajes.CreatePlanEstrategicasHelpText_periodo)}"/>
+                                </h:panelGroup>
+                   
+                   
+                   
+                   <p:column>
+                                        <p:commandButton id="cambiarVariableButton" actionListener="#{detallesPlanEstrategicasController.prepararCambio(item)}" value="Editar" oncomplete="PF('ProgramacionEditDialog').show()" update=":VariablesEditForm,:growl"/>
+                                    </p:column>
+                    
+-->
+
+
+<!--  <h:outputText value="Valor Anterior"/>
+  <h:outputText value="#{detallesPlanEstrategicasController.selected.variable2}" title="#{mensajes.ViewInformesTitle_periodo}"/>
+
+-->
+<!-- <p:commandButton icon="ui-icon-plus" actionListener="#{programacionController.guardarEditValor()}" update=":ProgramacionEditForm" />
+
+
+
+                                    <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":VariablesEditForm" oncomplete="PF('ProgramacionEditDialog').show()"/>
+
+-->

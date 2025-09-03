@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ProgramacionEditDlg" widgetVar="ProgramacionEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditProgramacionTitle}" closeOnEscape="true">
+
+            <h:form id="ProgramacionEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{detallesPlanEstrategicasController.selected != null}">
+
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_valorVariable}" for="valorVariable" />
+                        <h:panelGroup>
+                            <p:inputText id="valorVariable" value="#{detallesPlanEstrategicasController.nuevaVariable}" title="#{mensajes.EditProgramacionTitle_valorVariable}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_valorVariable}" size="80" maxlength="80"/>
+                            <p:tooltip for="valorVariable" value="#{programacionController.getComponentMessages('valorVariable', mensajes.EditProgramacionHelpText_valorVariable)}"/>
+                        </h:panelGroup>
+
+                    
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{detallesPlanEstrategicasController.guardarEdit()}" value="#{mensajes.Save}" update=":VariablesEditForm" oncomplete="handleSubmit(xhr,status,args,PF('ProgramacionEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ProgramacionEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

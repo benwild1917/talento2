@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FormularioCreateDlg" widgetVar="FormularioCreateDlg" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateFormularioTitle}" closeOnEscape="true">
+
+            <h:form id="FormularioCreateForm">
+
+                <h:panelGroup id="display" rendered="#{formularioController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateFormularioLabel_macroproceso}" for="Macroproceso" />
+                        <h:panelGroup>
+                            <p:inputText id="macroproceso" value="#{formularioController.selected.macroproceso}" title="#{mensajes.CreateActividadTitle_macroproceso}" required="true" requiredMessage="#{mensajes.CreateFormularioRequiredMessage_macroproceso}" size="100" maxlength="200"/>
+                            <p:tooltip for="macroproceso" value="#{formularioController.getComponentMessages('macroproceso', mensajes.CreateRubrosHelpText_macroproceso)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateFormularioLabel_proceso}" for="Proceso" />
+                        <h:panelGroup>
+                            <p:inputText id="procso" value="#{formularioController.selected.proceso}" title="#{mensajes.CreateActividadTitle_proceso}" required="true" requiredMessage="#{mensajes.CreateFormularioRequiredMessage_proceso}" size="100" maxlength="200"/>
+                            <p:tooltip for="proceso" value="#{formularioController.getComponentMessages('proceso', mensajes.CreateRubrosHelpText_proceso)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateFormularioLabel_proceso}" for="Subproceso" />
+                        <h:panelGroup>
+                            <p:inputText id="subproceso" value="#{formularioController.selected.subproceso}" title="#{mensajes.CreateActividadTitle_subproceso}" required="true" requiredMessage="#{mensajes.CreateFormularioRequiredMessage_subproceso}" size="100" maxlength="200"/>
+                            <p:tooltip for="subpoceso" value="#{formularioController.getComponentMessages('subproceso', mensajes.CreateRubrosHelpText_subproceso)}"/>
+                        </h:panelGroup>
+
+
+                    </p:panelGrid>
+                 
+                  
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <p:outputLabel value="#{mensajes.CreateRubrosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{rubrosController.selected.fechaHoraAlta}" title="#{mensajes.CreateRubrosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateRubrosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{rubrosController.getComponentMessages('fechaHoraAlta', mensajes.CreateRubrosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRubrosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{rubrosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateRubrosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateRubrosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{rubrosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateRubrosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRubrosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="empresa" value="#{rubrosController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateRubrosRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{rubrosController.getComponentMessages('empresa', mensajes.CreateRubrosHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRubrosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioAlta" value="#{rubrosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateRubrosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{rubrosController.getComponentMessages('usuarioAlta', mensajes.CreateRubrosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRubrosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioUltimoEstado" value="#{rubrosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateRubrosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{rubrosController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateRubrosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+
+
+
+ <p:commandButton actionListener="#{formularioController.saveNew}" value="#{mensajes.Save}" update="display,:FormularioListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RubrosCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RubrosCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+-->

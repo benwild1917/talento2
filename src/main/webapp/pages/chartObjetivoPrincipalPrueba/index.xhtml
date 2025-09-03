@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="ChartObjetivoPrincipalPruebaForm">
+                <p:panel header="Grafico de Control">  
+                    <p:panelGrid columns="5">
+
+
+                        <p:outputLabel value="Tipo de Objetivo" for="tipoObjetivo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tipoObjetivo" value="#{chartObjetivoPrincipalController.tipoObjetivo}" required="true" requiredMessage="Debe elegir un tipo de objetivo">
+                                <f:selectItem itemLabel="Misional" itemValue="Misional"/>
+                                <f:selectItem itemLabel="Area de Apoyo" itemValue="Area de Apoyo"/>
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoObjetivo" value="Debe elegir un tipo de grafico"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Periodo" for="periodo" />
+                        <h:panelGroup>
+                            <p:selectCheckboxMenu label="Elija  Periodo" filter="false" filterMatchMode="contains" id="periodo" value="#{chartObjetivoPrincipalController.listaPeriodo}" required="true" requiredMessage="Periodo: campo requerido"  converter="periodoConverter">
+                                <f:selectItems value="#{periodoController.items}"
+                                               var="periodoItem"
+                                               itemValue="#{periodoItem}"
+                                               itemLabel="#{periodoItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="periodo" value="#{chartObjetivoPrincipalController.getComponentMessages('periodo', 'Debe elegir uno Periodo')}"/>
+                        </h:panelGroup> 
+
+                        <p:commandButton value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="dashPanel, datalist" action="#{chartObjetivoPrincipalController.initChartObjetivoPrincipal()}"></p:commandButton>
+                    </p:panelGrid>
+                    <p:panel id="modelMisional" header="Misional" >
+                        <p:panelGrid columns="12">
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                    <div align="left">
+                                        <p:panelGrid columns="2" columnClasses="column">
+                                            <p:outputLabel value="Causas resueltas:" style="padding-right: 5px; padding-left: 20px" />
+                                            <p:outputLabel value="#{chartObjetivoPrincipalController.variable2}" style="padding-right: 5px" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                    <div align="left">
+                                        <p:panelGrid columns="2" columnClasses="column">
+                                            <p:outputLabel value="Total de  causas:" style="padding-right: 5px; padding-left: 20px" />
+                                            <p:outputLabel value="#{chartObjetivoPrincipalController.valorVariable}" style="padding-right: 5px" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                    <div align="left">
+                                        <p:panelGrid columns="2" columnClasses="column">
+                                            <p:outputLabel value="Porcentaje:" style="padding-right: 5px; padding-left: 20px" />
+                                            <p:outputLabel value="#{chartObjetivoPrincipalController.porcentaje}%" style="padding-right: 5px" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </p:panelGrid>
+                    </p:panel>
+
+                    <p:panel id="modelAreaApoyo" header="Area de Apoyo" >
+                        <p:panelGrid columns="12">
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                    <div align="left">
+                                        <p:panelGrid columns="2" columnClasses="column">
+                                            <p:outputLabel value="Acciones Ejecutadas:" style="padding-right: 5px; padding-left: 20px" />
+                                            <p:outputLabel value="#{chartObjetivoPrincipalController.metasAlcanzada}" style="padding-right: 5px" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                    <div align="left">
+                                        <p:panelGrid columns="2" columnClasses="column">
+                                            <p:outputLabel value="Acciones Programadas:" style="padding-right: 5px; padding-left: 20px" />
+                                            <p:outputLabel value="#{chartObjetivoPrincipalController.valorVariable}" style="padding-right: 5px" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                    <div align="left">
+                                        <p:panelGrid columns="2" columnClasses="column">
+                                            <p:outputLabel value="Porcentaje:" style="padding-right: 5px; padding-left: 20px" />
+                                            <p:outputLabel value="#{chartObjetivoPrincipalController.porcentaje}%" style="padding-right: 5px" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </p:panelGrid>
+                    </p:panel>
+
+
+
+                   
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:panel id="chartObjetivosPrincipalesBar"  header="Datos Anuales" >
+                                <!-- Mostrar el gráfico de barras -->
+                                <p:chart type="bar" model="#{chartObjetivoPrincipalController.modelDocumentosMesaPorDiaBar}" style="width: 100%; height: 100%; min-height:  200px;" />
+
+                            </p:panel>
+                             </div>
+              
+                   
+
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+<!--    <p:outputLabel value="Objetivo" for="objetivo" />
+                        <h:panelGroup>
+                            <p:selectCheckboxMenu label="Elija  Objetivo" filter="false" filterMatchMode="contains" id="objetivo" value="#{chartObjetivoPrincipalController.listaTiposDoc}" required="true" requiredMessage="Acciones: campo requerido"  converter="tiposObjetivosConverter">
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tipoDocItem"
+                                               itemValue="#{tipoDocItem}"
+                                               itemLabel="#{tipoDocItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="objetivo" value="#{chartObjetivoPrincipalController.getComponentMessages('abjetivo', 'Debe elegir uno o mas Acciones')}"/>
+                        </h:panelGroup> -->

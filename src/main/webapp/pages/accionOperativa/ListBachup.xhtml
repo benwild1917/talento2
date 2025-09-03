@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="AccionOperativaListForm">
+
+        <p:panel header="Cargas de Datos y Evidencias">
+            <p:tabView id="TabView" effect="fade" effectDuration="slow" activeIndex="#{detallesPlanEstrategicasController.activeTab}">
+                <p:ajax event="tabChange" update=":growl,:AccionOperativaListForm:TabView:datalist,:AccionOperativaListForm:TabView:datalistArchivos" />
+                <p:tab id="TabView2" title="INFORMES">
+
+                    <p:fieldset style="width: 100%" legend="EJE PRINCIPAL">
+
+
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton id="subirArchivo"   style="visibility: visible;" icon="ui-icon-plus" value="Subir Archivo" update=":detallesPlanEstrategicasArchivoForm" oncomplete="PF('detallesPlanEstrategicasAlzarArchivoDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or detallesPlanEstrategicasController.selected.usuarioAlta != informesController.usuario or not detallesPlanEstrategicasController.desabilitarBotonCambioEstado()}"/>
+                            <p:commandButton id="dptoButton" style="visibility: visible;" value="Transferir Doc" update="PlanEditDptoForm"  actionListener="#{detallesPlanEstrategicasController.prepareTransferir()}" oncomplete="PF('PlanEditDptoDialog').show()" disabled="#{empty detallesPlanEstrategicasController.selected or detallesPlanEstrategicasController.selected.usuarioAlta != detallesPlanEstrategicasController.usuario or not detallesPlanEstrategicasController.desabilitarBotonCambioEstado()}"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:dataTable id="datalist"
+                                         value="#{detallesPlanEstrategicasController.items}"
+                                         rowStyleClass="#{(item.usuarioAlta == detallesPlanEstrategicasController.usuario)? ((item.estado.codigo == '1' or item.estado.codigo == '2' or item.estado.codigo == '4')? 'red' : 'green'): ''}"
+                                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                         rowKey="#{item.id}"
+                                         var="item"
+                                         paginator="true"
+                                         rows="10"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         selectionMode="single"
+                                         selection="#{detallesPlanEstrategicasController.selected}">
+                                <!--
+                                         To enable Lazy Loading, please copy/replace the following lines above,
+                                         and be sure to replace the word HASH with the # symbol:
+                                
+                                         value="HASH{detallesPlanEstrategicasController.lazyItems}"
+                                         lazy="true"
+                                         rowKey="HASH{item.id}"  <<< Remove this line
+                                -->
+
+
+                                <p:ajax event="rowSelect"   update="@form:TabView:subirArchivo" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                <p:ajax event="rowUnselect" update="@form:TabView:subirArchivo" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                <p:ajax event="contextMenu" update="@form:TabView:subirArchivo" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                <p:ajax event="rowDblselect" onsuccess="document.getElementById('AccionOperativaListForm:subirArchivo').click();"/>
+
+                                <p:column sortBy="#{item.planEstrategica.objetivo.tipo.descripcion}" filterMatchMode="contains" filterBy="#{item.planEstrategica.objetivo.tipo.descripcion}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Objetivo Principal"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.planEstrategica.objetivo.tipo.descripcion}"/>
+                                </p:column>
+
+<!--  <p:column sortBy="#{item.planEstrategica.objetivo.descripcion}" filterMatchMode="contains" filterBy="#{item.planEstrategica.objetivo.descripcion}">
+    <f:facet name="header">
+        <h:outputText value="Descripcion Objetivo"/>
+    </f:facet>
+    <h:outputText value="#{item.planEstrategica.objetivo.descripcion}"/>
+</p:column>-->
+
+                                <p:column sortBy="#{item.actividad.descripcion}" filterMatchMode="contains" filterBy="#{item.actividad.descripcion}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Accion Operativa"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.actividad.descripcion}"/>
+                                </p:column>
+
+                                <p:column sortBy="#{item.item.planEstrategica.periodo}" filterMatchMode="contains" filterBy="#{item.planEstrategica.periodo}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Periodo"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.planEstrategica.periodo}"/>
+                                </p:column>
+
+
+                                <p:column sortBy="#{item.planEstrategica.meta}" filterMatchMode="contains" filterBy="#{item.planEstrategica.meta}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Meta"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.planEstrategica.meta}"/>
+                                </p:column>
+                                
+                                
+                                <p:column sortBy="#{item.estado.descripcion}" filterMatchMode="contains" filterBy="#{item.estado.descripcion}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.estado.descripcion}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+
+                        <div class="ui-sm-12 ui-md-12 ui-g-12"> 
+                            <p:fieldset style="width: 100%" legend="ARCHIVOS ADJUNTOS">
+                                <p:dataTable id="datalistArchivos"
+                                             value="#{detallesPlanEstrategicasController.listaArchivos}"
+                                             tableStyle="width: auto"
+                                             paginatorPosition="bottom"
+                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                             rowKey="#{item.id}"
+                                             var="item" filterEvent="enter"
+                                             paginator="true"
+                                             rows="10"
+                                             rowsPerPageTemplate="10,20,30,40,50">   
+
+
+                                    <p:column filterMatchMode="contains" filterBy="#{item.descripcion}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Descripción"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.descripcion}"/>
+                                    </p:column>
+
+                                    <p:column filterMatchMode="startsWith" filterBy="#{detallesPlanEstrategicasController.customFormatDate3(item.fechaHoraAlta)}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha Hora Carga"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fechaHoraAlta}">
+                                            <f:convertDateTime pattern="#{detallesPlanEstrategicasController.datePattern3()}" timeZone="America/Asuncion" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Usuario"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioAlta.nombresApellidos}"/>
+                                    </p:column>
+
+
+                                   <!-- <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Departamento Responsable"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.departamento}"/>
+                                    </p:column>-->
+
+                                    <!-- <p:column>
+                                         <f:facet name="header">
+                                             <h:outputText value="Ver"/>
+                                         </f:facet>
+                                         <p:commandButton value="Ver" update=":DocumentosJudicialesViewDocForm" actionListener="#{informesController.prepareVerDoc(item)}" oncomplete="PF('DocumentosJudicialesViewDocDialog').show(); PF('DocumentosJudicialesViewDocDialog').toggleMaximize();"/>
+                                     </p:column>-->
+
+
+                                </p:dataTable>
+                            </p:fieldset>
+
+                        </div>
+                    </p:fieldset>
+                </p:tab>
+            </p:tabView>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

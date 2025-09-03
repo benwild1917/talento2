@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProveedoresCreateDlg" widgetVar="ProveedoresCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateProveedoresTitle}" closeOnEscape="true">
+
+            <h:form id="ProveedoresCreateForm">
+
+                <h:panelGroup id="display" rendered="#{proveedoresController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_nombre}" for="nombre" />
+                        <h:panelGroup>
+                            <p:inputText id="nombre" value="#{proveedoresController.selected.nombre}" title="#{mensajes.CreateProveedoresTitle_nombre}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_nombre}" size="50" maxlength="50"/>
+                            <p:tooltip for="nombre" value="#{proveedoresController.getComponentMessages('nombre', mensajes.CreateProveedoresHelpText_nombre)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_direccion}" for="direccion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="4" cols="30" id="direccion" value="#{proveedoresController.selected.direccion}" title="#{mensajes.CreateProveedoresTitle_direccion}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_direccion}"/>
+                            <p:tooltip for="direccion" value="#{proveedoresController.getComponentMessages('direccion', mensajes.CreateProveedoresHelpText_direccion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_ruc}" for="ruc" />
+                        <h:panelGroup>
+                            <p:inputText id="ruc" value="#{proveedoresController.selected.ruc}" title="#{mensajes.CreateProveedoresTitle_ruc}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_ruc}" size="50" maxlength="50">
+                                <p:ajax event="change" update=":growl" listener="#{proveedoresController.verificarRucCreate()}" />
+                            </p:inputText>
+                            <p:tooltip for="ruc" value="#{proveedoresController.getComponentMessages('ruc', mensajes.CreateProveedoresHelpText_ruc)}"/>
+                        </h:panelGroup>
+                        <ui:remove>
+                         <p:inputText id="nroFormulario" value="#{salidasArticuloController.salidaArticulo.nroFormulario}" title="#{mensajes.CreateSalidasArticuloTitle_nroFormulario}" required="false" requiredMessage="#{mensajes.CreateSalidasArticuloRequiredMessage_nroFormulario}" size="10" maxlength="10">
+                                                    <p:ajax event="blur" update=":growl" listener="#{salidasArticuloController.verificarNroFormularioCreate()}" />
+                         </p:inputText>
+                        
+                        </ui:remove>
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_telefono}" for="telefono" />
+                        <h:panelGroup>
+                            <p:inputText id="telefono" value="#{proveedoresController.selected.telefono}" title="#{mensajes.CreateProveedoresTitle_telefono}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_telefono}" size="50" maxlength="50"/>
+                            <p:tooltip for="telefono" value="#{proveedoresController.getComponentMessages('telefono', mensajes.CreateProveedoresHelpText_telefono)}"/>
+                        </h:panelGroup>
+
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{proveedoresController.saveNew}" value="#{mensajes.Save}" update="display,:ProveedoresListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ProveedoresCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ProveedoresCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+<p:outputLabel value="#{mensajes.CreateProveedoresLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{proveedoresController.selected.fechaHoraAlta}" title="#{mensajes.CreateProveedoresTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{proveedoresController.getComponentMessages('fechaHoraAlta', mensajes.CreateProveedoresHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{proveedoresController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateProveedoresTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{proveedoresController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateProveedoresHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{proveedoresController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{proveedoresController.getComponentMessages('empresa', mensajes.CreateProveedoresHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioAlta" value="#{proveedoresController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{proveedoresController.getComponentMessages('usuarioAlta', mensajes.CreateProveedoresHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateProveedoresLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioUltimoEstado" value="#{proveedoresController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateProveedoresRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{proveedoresController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateProveedoresHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

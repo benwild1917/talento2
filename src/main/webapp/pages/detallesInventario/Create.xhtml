@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DetallesInventarioCreateDlg" widgetVar="DetallesInventarioCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateDetallesInventarioTitle}" closeOnEscape="true">
+
+            <h:form id="DetallesInventarioCreateForm">
+
+                <h:panelGroup id="display" rendered="#{detallesInventarioController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_cantidad}" for="cantidad" />
+                        <h:panelGroup>
+                            <p:inputText id="cantidad" value="#{detallesInventarioController.selected.cantidad}" title="#{mensajes.CreateDetallesInventarioTitle_cantidad}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_cantidad}"/>
+                            <p:tooltip for="cantidad" value="#{detallesInventarioController.getComponentMessages('cantidad', mensajes.CreateDetallesInventarioHelpText_cantidad)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{detallesInventarioController.selected.fechaHoraAlta}" title="#{mensajes.CreateDetallesInventarioTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{detallesInventarioController.getComponentMessages('fechaHoraAlta', mensajes.CreateDetallesInventarioHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{detallesInventarioController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateDetallesInventarioTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{detallesInventarioController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateDetallesInventarioHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_inventario}" for="inventario" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="inventario" value="#{detallesInventarioController.selected.inventario}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_inventario}" converter="inventariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{inventariosController.items}"
+                                               var="inventarioItem"
+                                               itemValue="#{inventarioItem}"
+                                               itemLabel="#{inventarioItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="inventario" value="#{detallesInventarioController.getComponentMessages('inventario', mensajes.CreateDetallesInventarioHelpText_inventario)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_articulo}" for="articulo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="articulo" value="#{detallesInventarioController.selected.articulo}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_articulo}" converter="articulosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{articulosController.items}"
+                                               var="articuloItem"
+                                               itemValue="#{articuloItem}"
+                                               itemLabel="#{articuloItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="articulo" value="#{detallesInventarioController.getComponentMessages('articulo', mensajes.CreateDetallesInventarioHelpText_articulo)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioAlta" value="#{detallesInventarioController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{detallesInventarioController.getComponentMessages('usuarioAlta', mensajes.CreateDetallesInventarioHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioUltimoEstado" value="#{detallesInventarioController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{detallesInventarioController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateDetallesInventarioHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesInventarioLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="empresa" value="#{detallesInventarioController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{detallesInventarioController.getComponentMessages('empresa', mensajes.CreateDetallesInventarioHelpText_empresa)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{detallesInventarioController.saveNew}" value="#{mensajes.Save}" update="display,:DetallesInventarioListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DetallesInventarioCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DetallesInventarioCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

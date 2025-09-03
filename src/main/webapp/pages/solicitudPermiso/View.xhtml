@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SolicitudPermisoViewDlg" widgetVar="SolicitudPermisoViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewSolicitudPermisoTitle}" closeOnEscape="true">
+
+            <h:form id="SolicitudPermisoViewForm">
+
+                <h:panelGroup id="display">
+                    <p:tabView id="SolicitudPermisoTabView">
+
+                        <p:tab id="SolicitudPermisoTab1" title="#{mensajes.TabHeaderPrefix} 1">
+                            <p:panelGrid columns="2" columnClasses="column" rendered="#{empresasController.selected != null}">
+                                <h:outputText value="#{mensajes.ViewSolicitudPermisoLabel_id}"/>
+                                <h:outputText value="#{empresasController.selected.id}" title="#{mensajes.ViewSolicitudPermisoTitle_id}"/>
+
+                                <h:outputText value="#{mensajes.ViewSolicitudPermisoLabel_razonSocial}"/>
+                                <h:outputText value="#{empresasController.selected.razonSocial}" title="#{mensajes.ViewSolicitudPermisoTitle_razonSocial}"/>
+
+                                <h:outputText value="#{mensajes.ViewSolicitudPermisoLabel_ruc}"/>
+                                <h:outputText value="#{empresasController.selected.ruc}" title="#{mensajes.ViewSolicitudPermisoTitle_ruc}"/>
+
+                                <h:outputText value="#{mensajes.ViewSolicitudPermisoLabel_direccion}"/>
+                                <h:outputText value="#{empresasController.selected.direccion}" title="#{mensajes.ViewSolicitudPermisoTitle_direccion}"/>
+
+                                <h:outputText value="#{mensajes.ViewSolicitudPermisoLabel_telefono}"/>
+                                <h:outputText value="#{empresasController.selected.telefono}" title="#{mensajes.ViewSolicitudPermisoTitle_telefono}"/>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('SolicitudPermisoViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

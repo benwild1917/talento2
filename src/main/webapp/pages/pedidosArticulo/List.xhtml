@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PedidosArticuloListForm">
+
+        <p:panel header="#{mensajes.ListPedidosArticuloTitle}">
+
+            <p:commandButton id="createButton" disabled="#{empty formulariosPermisosController.pedidoArticulo}" icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{formulariosPermisosController.prepareCreate}" update=":PedidosArticuloCreateForm" oncomplete="PF('PedidosArticuloCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   rendered="false" style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":PedidosArticuloViewForm" oncomplete="PF('PedidosArticuloViewDialog').show()" disabled="#{empty formulariosPermisosController.selected}"/>
+
+            <p:commandButton id="dptoButton"                    style="visibility: visible;" value="Transferir Pedido" update=":PedidosArticuloEditDptoForm" actionListener="#{pedidosArticuloController.prepareTransferir()}" oncomplete="PF('PedidosArticuloEditDptoDialog').show()" disabled="#{empty pedidosArticuloController.selected or pedidosArticuloController.selected.responsable != pedidosArticuloController.usuario or not pedidosArticuloController.desabilitarBotonCambioEstado()}"/>
+            
+            <p:commandButton id="cambioButton"                  style="visibility: visible;" value="Autorizar" actionListener="#{formulariosPermisosController.cambiarEstado()}" update="datalist,datalistDetalle,datalistCambios,@form:deleteButton,@form:entregarButton,@form:rechazarButton,@form:cambioButton,@form:dptoButton,@form:createButton,:growl" disabled="#{empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonAutorizar() }">
+                <p:confirm header="Autorizar" message="Desea Autorizar el pedido?" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:commandButton id="rechazarButton"                  style="visibility: visible;" value="Rechazar" actionListener="#{formulariosPermisosController.rechazar()}" update="datalist,datalistDetalle,datalistCambios,@form:deleteButton,@form:entregarButton,@form:rechazarButton,@form:cambioButton,@form:dptoButton,@form:createButton,:growl" disabled="#{empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonRechazar()}">
+                <p:confirm header="Rechazar" message="Desea Rechazar el pedido?" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+
+            <p:commandButton id="entregarButton2"  rendered="false"                style="visibility: visible;" value="Entregar" actionListener="#{formulariosPermisosController.cambiarEstado()}" update="datalist,datalistDetalle,datalistCambios,@form:deleteButton,,@form:rechazarButton,@form:entregarButton,@form:cambioButton,@form:dptoButton,@form:createButton,:growl" disabled="#{empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonEntregar()}">
+                <p:confirm header="Entregar" message="Desea Entregar el pedido?" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton id="entregarButton"                    style="visibility: visible;" value="Entregar"  update=":NroFormularioEditForm" oncomplete="PF('NroFormularioEditDialog').show()"  disabled="#{empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonEntregar()}"/>
+            <p:commandButton id="anularButton"                  style="visibility: visible;" value="Anular" actionListener="#{formulariosPermisosController.anularPedidos()}" update="datalist,datalistDetalle,datalistCambios,@form:deleteButton,@form:entregarButton,@form:rechazarButton,@form:anularButton,@form:cambioButton,@form:dptoButton,@form:createButton,:growl" disabled="#{empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonAnular()}">
+                <p:confirm header="Anular" message="Desea Anular el pedido?" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:commandButton id="editButton"   rendered="false" style="visibility: hidden;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":PedidosArticuloEditForm" oncomplete="PF('PedidosArticuloEditDialog').show()" disabled="#{empty formulariosPermisosController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{formulariosPermisosController.delete}" update="datalist,datalistDetalle,datalistCambios,@form:deleteButton,@form:entregarButton,@form:rechazarButton,@form:cambioButton,@form:dptoButton,@form:createButton,:growl" disabled="#{formulariosPermisosController.desabilitarBotonBorrar()}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:panel>
+                <h:outputText value="Fecha de Carga" style="padding-right: 20px" />
+
+                <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                <p:calendar style="padding-right: 10px" id="fechaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{formulariosPermisosController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHasta" />
+                <p:calendar style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{formulariosPermisosController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                <p:inputText style="padding-right: 10px" value="#{formulariosPermisosController.nroFormulario}" />
+
+                <p:commandButton value="Buscar por Fecha de Carga o Nro Formulario" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist" action="#{formulariosPermisosController.buscarPorFechaAlta()}"></p:commandButton>
+
+            </p:panel>
+
+            <p:panelGrid columns="2" rendered="#{formulariosPermisosController.verTodosPedidosArticulo()}">
+                <p:panel>
+                    <p:outputLabel value="#{mensajes.CreateSalidasArticuloLabel_articulo}" for="articulo" style="padding-right: 5px;"/>
+
+                    <p:selectOneMenu id="articulo" filter="true" filterMatchMode="contains" value="#{formulariosPermisosController.articuloFiltro}" required="false" requiredMessage="#{mensajes.CreateSalidasArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{articulosController.items}"
+                                       var="articuloItem"
+                                       itemValue="#{articuloItem}"
+                                       itemLabel="#{articuloItem}"
+                                       />
+
+                    </p:selectOneMenu>
+                    <p:commandButton id="imprimirButton2" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Articulo" action="#{formulariosPermisosController.pdf()}" />
+                </p:panel>
+                <p:panel>
+                    <p:outputLabel value="#{mensajes.CreateSalidasArticuloTitle_departamento}" for="departamento"  style="margin-left: 10px" />
+                    <p:selectOneMenu id="departamento"  style="margin-left: 10px" value="#{formulariosPermisosController.departamentoFiltro}" requiredMessage="#{mensajes.CreateSalidasArticuloRequiredMessage_departamento}" converter="departamentosConverter">
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{departamentosController.items}"
+                                       var="departamentoItem"
+                                       itemValue="#{departamentoItem}"
+                                       itemLabel="#{departamentoItem}"
+                                       />
+
+                    </p:selectOneMenu>
+                    <p:commandButton id="imprimirButton3" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Dpto" action="#{formulariosPermisosController.pdf2()}" />
+                </p:panel>
+            </p:panelGrid>
+            <p:dataTable id="datalist"
+                         value="#{formulariosPermisosController.items}" 
+                         rowStyleClass="#{(item.responsable == formulariosPermisosController.usuario)? ((item.estado.codigo == '1' or item.estado.codigo == '2' or item.estado.codigo == '4' or item.estado.codigo == '6'or item.estado.codigo == '7')? 'red' : 'green'): ''}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="3"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{formulariosPermisosController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{formulariosPermisosController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:datalistDetalle, @form:datalistCambios, @form:rechazarButton,   @form:anularButton,   @form:entregarButton, @form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:cambioButton,@form:dptoButton" listener="#{formulariosPermisosController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:datalistDetalle, @form:datalistCambios, @form:rechazarButton,   @form:anularButton,   @form:entregarButton, @form:createButton,@form:viewButton,@form:editButton,@,@form:cambioButton,@form:dptoButton" listener="#{formulariosPermisosController.resetParents}"/>
+                <!--
+                                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListPedidosArticuloTitle_id}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                -->
+
+                <p:column sortBy="#{item.salidaArticulo.nroFormulario}" filterBy="#{item.salidaArticulo.nroFormulario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosArticuloTitle_nroFormulario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.salidaArticulo.nroFormulario}"/>
+                </p:column>
+
+
+                <!--
+                
+                  <p:column sortBy="#{item.sede.descripcion}" filterBy="#{item.sede.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Depósito"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sede.descripcion}"/>
+                </p:column>
+                
+                
+                
+                                <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListPedidosArticuloTitle_fechaHoraUltimoEstado}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                
+                -->
+                <p:column sortBy="#{item.personas}" filterBy="#{item.personas}">
+                    <f:facet name="header">
+                        <h:outputText value="Solicitante"/>
+                    </f:facet>
+                    <h:outputText value="#{item.personas}"/>
+                </p:column>
+
+
+
+                <p:column sortBy="#{item.responsable}" filterBy="#{item.responsable}">
+                    <f:facet name="header">
+                        <h:outputText value="Responsable actual"/>
+                    </f:facet>
+                    <h:outputText value="#{item.responsable}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.departamento.nombre}" filterBy="#{item.departamento.nombre}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosArticuloTitle_departamento}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.departamento.nombre}"/>
+                </p:column>
+
+                <p:column sortBy="#{formulariosPermisosController.customFormatDate(item.fechaHoraAlta)}" filterMatchMode="startsWith" filterBy="#{formulariosPermisosController.customFormatDate(item.fechaHoraAlta)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosArticuloTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="#{formulariosPermisosController.datePattern()}" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.estado.descripcion}" filterBy="#{item.estado.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Estado"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estado.descripcion}"/>
+                </p:column>
+
+                <!--
+                                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListPedidosArticuloTitle_usuarioAlta}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListPedidosArticuloTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+
+        </p:panel>
+        <p:panel header="Detalles">
+
+            <p:dataTable id="datalistDetalle"
+                         value="#{formulariosPermisosController.detalles}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{formulariosPermisosController.detalleSelected}"
+                         filteredValue="#{detallesPedidoArticuloController.filtrado}"
+                         >
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{detallesPedidoArticuloController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+                <!--
+                                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_id}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                -->
+
+
+<!--   <p:column sortBy="#{item.articulo.descripcionLarga}" rendered="#{formulariosPermisosController.verStock()}">
+    <f:facet name="header">
+        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_articulo}"/>
+    </f:facet>
+    <h:outputText value="#{item.articulo.descripcionLarga}"/>
+</p:column>-->
+
+                <p:column sortBy="#{item.articulo.rubro.sede.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Depósito"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.rubro.sede.descripcion}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.articulo}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_articulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo}"/>
+                </p:column>
+                
+
+                <p:column sortBy="#{item.articulo.stock}" rendered="#{not formulariosPermisosController.verStock()}">
+                    <f:facet name="header">
+                        <h:outputText value="Stock"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.stock}"/>
+                </p:column>
+
+             
+
+                <p:column sortBy="#{item.cantidad}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_cantidad}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantidad}">
+                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                    </h:outputText>              </p:column>
+
+
+                <p:column>
+                    <p:commandButton id="cambiarCantidadButton" disabled="#{formulariosPermisosController.desabilitarBotonCambioCantidad(item)}" actionListener="#{formulariosPermisosController.prepararCambio(item)}" value="Editar" oncomplete="PF('DetallesPedidoArticuloEditDialog').show()" update=":DetallesPedidoArticuloEditForm,:growl"/>
+                </p:column>
+
+                <!--
+                
+                                <p:column sortBy="#{item.departamento}" filterBy="#{item.departamento}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_departamento}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.departamento}"/>
+                                </p:column>
+                
+                
+                                <p:column sortBy="#{item.nroFormulario}" filterBy="#{item.nroFormulario}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_nroFormulario}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nroFormulario}"/>
+                                </p:column>
+                -->
+                <!--
+                                <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_fechaHoraAlta}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraAlta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                
+                
+                                <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_fechaHoraUltimoEstado}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                -->
+                <!--
+                                <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_persona}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.persona.nombresApellidos}"/>
+                                </p:column>
+                -->
+
+                <!--
+                                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_usuarioAlta}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                    </p:column>
+                                   <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_empresa}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.empresa.id}"/>
+                                    </p:column>
+                  <p:column sortBy="#{item.pedidoArticulo.nroFormulario}" filterBy="#{item.pedidoArticulo.nroFormulario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_pedidoArticulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pedidoArticulo.nroFormulario}"/>
+                </p:column>
+                -->
+
+            </p:dataTable>
+        </p:panel>
+        <p:panel header="Cambios">
+
+            <p:dataTable id="datalistCambios"
+                         value="#{formulariosPermisosController.detallesCambios}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         >
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{detallesPedidoArticuloController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+                <!--
+                                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesPedidoArticuloTitle_id}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                -->
+
+
+                <p:column sortBy="#{formulariosPermisosController.customFormatDate(item.fechaHoraAlta)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosArticuloTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="#{formulariosPermisosController.datePattern()}" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.articulo}">
+                    <f:facet name="header">
+                        <h:outputText value="Articulo"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.cantidadOriginal}">
+                    <f:facet name="header">
+                        <h:outputText value="Cantidad Anterior"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantidadOriginal}">
+                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                    </h:outputText>
+
+                </p:column>
+
+                <p:column sortBy="#{item.cantidadFinal}">
+                    <f:facet name="header">
+                        <h:outputText value="Cantidad Nueva"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantidadFinal}">
+                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                    </h:outputText>
+
+                </p:column>
+
+                <p:column sortBy="#{item.usuarioAlta}">
+                    <f:facet name="header">
+                        <h:outputText value="Usuario Cambio"/>
+                    </f:facet>
+                    <h:outputText value="#{item.usuarioAlta}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.observacion}">
+                    <f:facet name="header">
+                        <h:outputText value="Observacion"/>
+                    </f:facet>
+                    <h:outputText value="#{item.observacion}"/>
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
+
+
+<!--  <p:commandButton id="dptoButtonConfirmacion"                    style="visibility: visible;" value="Confirmar Pedidos" update=":PedidosArticuloEditDptoForm" actionListener="#{formulariosPermisosController.prepareTransferir()}" oncomplete="PF('PedidosArticuloEditDptoDialog').show()" disabled="#{empty formulariosPermisosController.selected or  formulariosPermisosController.desabilitarBotonEntregar()}"/-->

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ObjetosGastoListForm">
+
+        <p:panel header="#{mensajes.ListObjetosGastoTitle}">
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{objetosGastoController.prepareCreate}" update=":ObjetosGastoCreateForm" oncomplete="PF('ObjetosGastoCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   rendered="false" style="visibility: hidden;" icon="ui-icon-search" value="#{mensajes.View}" update=":objetoGastoViewForm" oncomplete="PF('ObjetosGastoViewDialog').show()" disabled="#{empty objetosGastoController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":objetosGastoEditForm" oncomplete="PF('objetosGastoEditDialog').show()" disabled="#{empty objetosGastoController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{objetosGastoController.delete}" update=":growl,datalist" disabled="#{empty objetosGastoController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            
+           <p:commandButton id="imprimirButtonExcel" rendered="false"  ajax="false"    onclick="monitorExporting(startHandler(0), endHandler)" icon="ui-icon-plus"   value="Imprimir Reporte" action="#{objetosGastoController.xlsx()}" />
+           <ui:remove>
+            <p:panel>
+                <h:outputText value="Fecha Factura" style="padding-right: 20px" />
+                <p:outputLabel value="Desde" for="fechaDesdeEntrada" style="padding-right: 5px; padding-left: 20px"/>
+                <p:calendar style="padding-right: 10px" id="fechaDesdeEntrada" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaDesdeEntrada}" title="Fecha Desde"  showOn="button"/>
+                <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHastaEntrada" />
+                <p:calendar style="padding-right: 10px" id="fechaHastaEntrada" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaHastaEntrada}" title="Fecha Hasta"  showOn="button"/>
+                <p:commandButton value="Buscar por Fecha Factura" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalle" action="#{entradasArticuloController.buscarPorFechaEntrada()}"></p:commandButton>
+            </p:panel>
+           </ui:remove>
+           <ui:remove>
+                <p:panel>
+                    <p:outputLabel value="#{mensajes.CreateEntradaArticulosLabel_articulo}" for="objetoGasto" style="padding-right: 5px;"/>
+                    <p:selectOneMenu id="objetoGasto" filter="true" filterMatchMode="contains" value="#{ObjetosGastoController.objetoGastoFiltro}" required="false" requiredMessage="#{mensajes.CreateArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{objetosGastoController.items}"
+                                       var="objetoGastoItem"
+                                       itemValue="#{objetoGastoItem}"
+                                       itemLabel="#{objetoGastoItem}"
+                                       />
+                    </p:selectOneMenu>
+                    <p:commandButton id="imprimirButtonExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte Objeto de Gasto Excel" action="#{objetosGastoController.xlsx()}" />
+                </p:panel>   
+            </ui:remove>
+            
+            <p:dataTable id="datalist"
+                         value="#{objetosGastoController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{objetosGastoController.selected}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{objetosGastoController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{objetosGastoController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ObjetosGastoListForm:editButton').click();"/>
+                
+                <ui:remove>
+                    <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListobjetoGastoTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                </ui:remove>
+
+                <p:column sortBy="#{item.descripcion}" filterBy="#{item.descripcion}" filterMatchMode="contains">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObjetosGastoTitle_descripcion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+                
+
+                <p:column sortBy="#{item.codigo}" filterBy="#{item.codigo}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObjetosGastoTitle_codigo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.codigo}"/>
+                </p:column>
+                
+                <ui:remove>
+                    <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListobjetoGastoTitle_fechaHoraAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListobjetoGastoTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListobjetoGastoTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa.id}"/>
+                    </p:column>
+                    
+                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListobjetoGastoTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListobjetoGastoTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                    </p:column>
+                </ui:remove>
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

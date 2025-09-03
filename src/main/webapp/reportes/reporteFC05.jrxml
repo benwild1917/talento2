@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.13.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error" uuid="f383af01-8e46-4598-b6f0-16396157ac06">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.util.Date"/>
+	<parameter name="hasta" class="java.lang.String"/>
+	<parameter name="estado" class="java.lang.String"/>
+	<parameter name="numeracion" class="java.lang.Integer"/>
+	<parameter name="mes" class="java.lang.String"/>
+	<parameter name="ano" class="java.lang.String"/>
+	<field name="cuenta" class="java.lang.String"/>
+	<field name="nombreCuenta" class="java.lang.String"/>
+	<field name="saldoAnterior" class="java.lang.Integer"/>
+	<field name="compra" class="java.lang.String"/>
+	<field name="alta" class="java.lang.String"/>
+	<field name="baja" class="java.lang.String"/>
+	<field name="transpaso" class="java.lang.String"/>
+	<field name="donacion" class="java.lang.String"/>
+	<field name="total" class="java.math.BigInteger"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="158" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="2" y="77" width="748" height="20" uuid="f531c1ed-a105-48b5-9466-2cec5bee2c40"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="200" y="76" width="306" height="20" uuid="c67f7c89-5241-45e4-a28f-c360bab3d6c1"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONSOLIDACION DE BIENES DE USO]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="221" y="6" width="294" height="50" uuid="774dbc55-3cb8-4b70-b373-87de57a49c8c"/>
+				<imageExpression><![CDATA["logoJEM.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="3" y="43" width="747" height="39" uuid="0550f511-1ebd-4f0b-a8e6-71121c40158c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Misión: Órgano Constitucional que juzga el desempeño de los Magistrados Judiciales, Agentes Fiscales y Defensores Públicos por la supuesta comisión de delitos o mal desempeño en el ejercicio de sus funciones, velando por la correcta administración de justicia, en tutela de los derechos de los ciudadanos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="116" width="399" height="13" uuid="10ab3fb9-6b32-42f3-943a-5c5733f368c1"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[JURADO DE ENJUICIAMIENTO DE MAGISTRADOS ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="130" width="80" height="13" uuid="cccf1459-77cf-4dcd-a4da-60b5436ac434"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[F.C. 05]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="142" width="100" height="16" uuid="f31630f5-b24c-47a0-ad9b-1a2fc5ad7a7a"/>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="480" y="120" width="50" height="10" uuid="73eedd30-1846-4825-9554-30e4774a6197"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="7" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Hoja Nº: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="530" y="120" width="50" height="10" uuid="11ca7540-cc3d-4caf-aea0-b51e49ffb85b"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numeracion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="530" y="130" width="50" height="18" uuid="99aa659d-f631-4950-989b-8b2cedce711a"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ano}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="-42" width="80" height="13" uuid="05fd2d0c-6190-4411-b575-1ce691fffb45"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Entidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="200" height="33" uuid="40b1f1f5-9deb-42bb-a57e-1603eb3dbb55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DE LA CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="14" width="60" height="19" uuid="c97e5cb3-07b5-44db-a708-cb697418a4e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMPRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="14" width="41" height="19" uuid="70f723da-2bc8-4780-988b-37e0e337acd3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ALTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="14" width="60" height="19" uuid="cf0aeb77-66d7-40f2-8f5d-0cbc65c3cb9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BAJA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="14" width="63" height="19" uuid="0703e670-8427-49b5-9278-efd57b73702c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TRANSPASO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="603" y="14" width="77" height="19" uuid="6d115fdd-bc74-4d8a-be90-b5004e43438e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DONACION]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="33" width="750" height="1" uuid="4c5afcd2-68dc-4523-a429-db316623887a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="280" y="0" width="99" height="33" uuid="a595095b-5ad8-4f1b-9263-dc65fa525585"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO                                                ANTERIOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="14" width="71" height="19" uuid="d64414a2-a9f5-4d30-8c85-0d55f164c9ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="-16" width="80" height="16" uuid="f6a7db97-78c0-475d-b536-df434c4f94c1"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Mes :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="33" uuid="515b7e07-6921-4539-89d0-511171870275"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="-28" width="50" height="18" uuid="bec0f0a1-3188-4d63-bd96-7f54c37484a5"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Año :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="1" width="372" height="13" uuid="2a6837b2-ed00-4fe2-828f-09eba28a7656"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALORES]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="78" height="30" uuid="ce070cf9-906d-4ac9-a56a-b8d4ad66d251"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="200" height="30" uuid="92f969f0-8db8-47bb-bfc4-f91ea12886d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="59" height="35" uuid="d95ae329-bb58-413a-abfd-297d6614c2a4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{compra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="439" y="0" width="41" height="35" uuid="40ae9cec-fb05-45c2-87f8-4ab8b5a53ac0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{alta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="480" y="0" width="61" height="35" uuid="0ac61c9c-d367-4411-b732-513909238f62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{baja}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="541" y="0" width="62" height="30" uuid="ac084a46-a48a-47b6-b461-f131bf44b22e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{transpaso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="603" y="0" width="77" height="30" uuid="78cb9f15-ff9d-40da-a8a4-eddc4bbb0c4b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{donacion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="100" height="35" uuid="23a4821f-9a03-4c20-8fc7-8447281bbdc9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldoAnterior}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="680" y="0" width="71" height="30" uuid="0ea83e29-1b38-4a9b-9e17-36c0790cb34a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="95">
+			<staticText>
+				<reportElement x="90" y="3" width="142" height="10" uuid="d9c480ea-1707-4628-aadf-c8f38d05cc3d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="13" width="198" height="11" uuid="26c49c0a-097e-43b1-939b-21f196dd5421">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sra. Marcela Marchand]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="56" y="22" width="198" height="20" uuid="0eb9435d-3986-4e60-97ee-91287f768697">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jefa del  Departamento de Suministro, Patrimonio, Bienes e Inventaríos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="535" y="9" width="142" height="10" uuid="fccf537f-0f45-4410-9d0a-c87f98c5fbd5">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="27" width="266" height="11" uuid="acdbf07c-de65-4812-bf1d-966a9063b4da">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Directora General  Interína]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="19" width="198" height="11" uuid="3eefb59c-5a25-40a1-a863-20ac206be936">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Esc. Gladys Espinola]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="36" width="266" height="11" uuid="de9d1458-0a1e-4084-bc27-22608b6e58a6">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección General de Administración y Finanzas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="54" width="723" height="38" uuid="1e47495b-0754-4da5-9bf2-7085098b4ad2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visión: Ser una institución confiable y reconocida por la aplicación de procesos transparentes, objetivos e imparciales en el cumplimiento de su rol constitucional, para el fortalecimiento del estado de derecho, en beneficio de la. sociedad
+14 de Mayo esq. Oliva - Ed. El Ciervo		Tel: (595 21) 442662
+                                                           www.jem.gov.py 		                                                    Asunción - Paraguay                                                                                          
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="50" width="736" height="1" uuid="882fa58c-136a-4f31-8a27-517053014f81"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

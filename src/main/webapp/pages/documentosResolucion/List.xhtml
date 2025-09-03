@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="DocumentosResolucionListForm" enctype="multipart/form-data">
+
+            <p:panel header="Documentos Resolucion">
+
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{entradaSecretariaEntradaResolucionController.prepareCreate}" update=":DocumentosResolucionCreateForm" oncomplete="PF('DocumentosResolucionCreateDialog').show()"/>
+                    <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":DocumentosResolucionEditForm" oncomplete="PF('DocumentosResolucionEditDialog').show()" disabled="#{empty marcasController.selected}"/>
+                    <p:commandButton id="deleteButton" rendered="false" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{entradaSecretariaEntradaResolucionController.delete}" update=":growl,datalist" disabled="#{empty entradaSecretariaEntradaResolucionController.selected}">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:dataTable id="datalist"
+                                 value="#{entradaSecretariaEntradaResolucionController.items}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item" filterEvent="enter"
+                                 tableStyle="width:auto"
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{entradaSecretariaEntradaResolucionController.selected}">
+
+
+                        <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton" listener="#{documentoResolucionController.resetParents}"/>
+                        <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton" listener="#{documentoResolucionController.resetParents}"/>
+                        <p:ajax event="contextMenu" update="@form:createButton @form:editButton " listener="#{documentoResolucionController.resetParents}"/>
+                        <p:ajax event="rowDblselect" onsuccess="document.getElementById('DocumentosResolucionListForm:editButton').click();"/>
+
+
+                        <p:column sortBy="#{item.entradaDocumentoResolucion.nroIdentificacion}" filterMatchMode="contains" filterBy="#{item.entradaDocumentoResolucion.nroIdentificacion}">
+                            <f:facet name="header">
+                                <h:outputText value="Nro Resolucion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.entradaDocumentoResolucion.nroIdentificacion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{entradaSecretariaEntradaResolucionController.customFormatDate(item.fechaHoraAlta)}" filterMatchMode="startsWith" filterBy="#{entradaSecretariaEntradaResolucionController.customFormatDate(item.fechaHoraAlta)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Resolucion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="#{entradaSecretariaEntradaResolucionController.datePattern()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column sortBy="#{item.entradaDocumentoResolucion.tituloResolucion}" filterMatchMode="contains" filterBy="#{item.entradaDocumentoResolucion.tituloResolucion}">
+                            <f:facet name="header">
+                                <h:outputText value="Titulo Resolucion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.entradaDocumentoResolucion.tituloResolucion}"/>
+                        </p:column>
+
+
+
+                        <ui:remove>
+                            <p:column sortBy="#{item.departamento.nombre}" filterMatchMode="contains" filterBy="#{item.departamento.nombre}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_departamento}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.departamento.nombre}"/>
+                            </p:column>
+                        </ui:remove>
+
+
+                        <p:column sortBy="#{item.descripcion}" filterMatchMode="contains" filterBy="#{item.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Descripcion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.responsable}" filterMatchMode="contains" filterBy="#{item.responsable}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_responsable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.responsable}"/>
+                        </p:column>
+
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Doc"/>
+                            </f:facet>
+                            <p:commandButton value="Ver" update=":DocumentosResolucionViewDocForm" disabled="#{entradaSecretariaEntradaResolucionController.deshabilitarVerDoc(item)}" actionListener="#{entradaSecretariaEntradaResolucionController.prepareVerDoc(item)}" oncomplete="PF('DocumentosResolucionViewDocDialog').show(); PF('DocumentosResolucionViewDocDialog').toggleMaximize();"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+</ui:composition>
+

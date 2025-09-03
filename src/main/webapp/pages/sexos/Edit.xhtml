@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SexosEditDlg" widgetVar="SexosEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditSexosTitle}" closeOnEscape="true">
+
+            <h:form id="SexosEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{sexosController.selected != null}">
+
+
+                        <h:outputLabel value="#{mensajes.EditSexosLabel_codigo}" for="codigo" />
+                        <h:panelGroup>
+                            <h:outputText id="codigo" value="#{sexosController.selected.codigo}" />
+                            <p:tooltip for="codigo" value="#{sexosController.getComponentMessages('codigo', mensajes.EditSexosHelpText_codigo)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSexosLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{sexosController.selected.descripcion}" title="#{mensajes.EditSexosTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditSexosRequiredMessage_descripcion}" size="20" maxlength="20"/>
+                            <p:tooltip for="descripcion" value="#{sexosController.getComponentMessages('descripcion', mensajes.EditSexosHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSexosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{sexosController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditSexosRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{sexosController.getComponentMessages('empresa', mensajes.EditSexosHelpText_empresa)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sexosController.save}" value="#{mensajes.Save}" update="display,:SexosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SexosEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('SexosEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

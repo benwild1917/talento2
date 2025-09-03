@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ModelosViewDlg" widgetVar="MsodelosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewModelosTitle}" closeOnEscape="true">
+
+            <h:form id="ModelosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{modelosController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_id}"/>
+                        <h:outputText value="#{modelosController.selected.id}" title="#{mensajes.ViewModelosTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_descripcion}"/>
+                        <h:outputText value="#{modelosController.selected.descripcion}" title="#{mensajes.ViewModelosTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{modelosController.selected.fechaHoraAlta}" title="#{mensajes.ViewModelosTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{modelosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewModelosTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_empresa}"/>
+                        <h:outputText value="#{modelosController.selected.empresa.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_usuarioAlta}"/>
+                        <h:outputText value="#{modelosController.selected.usuarioAlta.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewModelosLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{modelosController.selected.usuarioUltimoEstado.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ModelosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

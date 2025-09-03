@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RhCargosViewDlg" widgetVar="RhCargosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewRhCargosTitle}" closeOnEscape="true">
+
+            <h:form id="RhCargosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{rhCargosController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewRhCargosLabel_descripcion}"/>
+                        <h:outputText value="#{rhCargosController.selected.descripcion}" title="#{mensajes.ViewRhCargosTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewRhCargosLabel_usuarioAlta}"/>
+                        <h:outputText value="#{rhCargosController.selected.usuarioAlta.nombresApellidos}"/>
+                        
+                        <h:outputText value="#{mensajes.ViewRhCargosLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{rhCargosController.selected.fechaHoraAlta}" title="#{mensajes.ViewRhCargosTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewRhCargosLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{rhCargosController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewRhCargosLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{rhCargosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewRhCargosTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('RhCargosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+
+                        <h:outputText value="#{mensajes.ViewRhCargosLabel_id}"/>
+                        <h:outputText value="#{rhCargosController.selected.id}" title="#{mensajes.ViewRhCargosTitle_id}"/>
+
+-->

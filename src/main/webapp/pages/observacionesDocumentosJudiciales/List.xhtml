@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ObservacionesDocumentosJudicialesListForm">
+
+        <p:panel header="Observaciones Documento">
+
+            <p:commandButton id="volverButton"  onclick="monitorExporting(startHandler(0), endHandler)" icon="ui-icon-arrow"   value="Volver" action="#{observacionesDocumentosJudicialesController.navigateVolver()}" ajax="false"/>
+
+            <p:commandButton id="createButton" rendered="false"            icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{observacionesDocumentosJudicialesController.prepareCreate}" update=":ObservacionesDocumentosJudicialesCreateForm" oncomplete="PF('ObservacionesDocumentosJudicialesCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   rendered="false" style="visibility: hidden;" icon="ui-icon-search" value="#{mensajes.View}" update=":ObservacionesDocumentosJudicialesViewForm" oncomplete="PF('ObservacionesDocumentosJudicialesViewDialog').show()" disabled="#{empty observacionesDocumentosJudicialesController.selected}"/>
+            <p:commandButton id="editButton"   rendered="false" style="visibility: hidden;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":ObservacionesDocumentosJudicialesEditForm" oncomplete="PF('ObservacionesDocumentosJudicialesEditDialog').show()" disabled="#{empty observacionesDocumentosJudicialesController.selected}"/>
+            <p:commandButton id="deleteButton" rendered="false" style="visibility: hidden;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{observacionesDocumentosJudicialesController.delete}" update=":growl,datalist" disabled="#{empty observacionesDocumentosJudicialesController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:dataTable id="datalist"
+                         value="#{observacionesDocumentosJudicialesController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item" filterEvent="enter"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{observacionesDocumentosJudicialesController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{observacionesDocumentosJudicialesController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+                <!--
+                <p:column sortBy="#{item.id}" filterMatchMode="contains" filterBy="#{item.id}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_id}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+-->
+
+                <p:column sortBy="#{item.observacion}" filterMatchMode="contains" filterBy="#{item.observacion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_observacion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.observacionString}" escape="false" />
+                </p:column>
+
+
+                <p:column sortBy="#{item.fechaHoraAlta}" filterMatchMode="contains" filterBy="#{item.fechaHoraAlta}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+<!--
+
+                <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterMatchMode="contains" filterBy="#{item.fechaHoraUltimoEstado}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_fechaHoraUltimoEstado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.documentoJudicial.descripcionMesaEntrada}" filterMatchMode="contains" filterBy="#{item.documentoJudicial.descripcionMesaEntrada}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_documentoJudicial}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.documentoJudicial.descripcionMesaEntrada}"/>
+                </p:column>
+
+
+-->
+                <p:column sortBy="#{item.usuarioAlta.nombresApellidos}" filterMatchMode="contains" filterBy="#{item.usuarioAlta.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_usuarioAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.usuarioAlta.nombresApellidos}"/>
+                </p:column>
+
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.nombresApellidos}" filterMatchMode="contains" filterBy="#{item.usuarioUltimoEstado.nombresApellidos}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.nombresApellidos}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.empresa.id}" filterMatchMode="contains" filterBy="#{item.empresa.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListObservacionesDocumentosJudicialesTitle_empresa}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.empresa.id}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

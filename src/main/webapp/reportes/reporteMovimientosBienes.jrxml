@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="674" pageHeight="842" columnWidth="634" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="459470ca-b8e6-46f8-b320-65a209649940">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="bien" class="java.lang.String"/>
+	<field name="departamentoOrigen" class="java.lang.String"/>
+	<field name="departamentoDestino" class="java.lang.String"/>
+	<field name="responsableOrigen" class="java.lang.String"/>
+	<field name="responsableDestino" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="269" y="15" width="286" height="30" backcolor="#C0C0C0" uuid="d2a57541-f104-42e6-8c95-22e47a1e85ed"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE MOVIMIENTOS DE BIENES]]></text>
+			</staticText>
+			<image>
+				<reportElement x="15" y="5" width="242" height="50" uuid="6f1fded8-21d8-4967-8c89-d5dafec38b4e"/>
+				<imageExpression><![CDATA["/home/grecia/Documents/NetBeansProjects/gestionstartic/web/reportes/logoJEM.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="86" height="20" uuid="204806b3-e1a3-4d16-a8d7-1d43ce4c0a99"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="0" width="62" height="20" uuid="4f2be8f1-e6dd-4b0f-9287-6f00f7b1e81b"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="0" width="121" height="20" uuid="e2605f49-19b1-45e6-810d-dfa7caa4f269"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DepartamentoOrigen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="283" y="1" width="117" height="20" uuid="9d28dfd3-9695-4f0c-9f85-0298e3711eed"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DepartamentoDestino]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="2" width="115" height="20" uuid="738b43a2-6024-4007-99d9-122c0824032a"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ResponsableOrigen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="2" width="110" height="20" uuid="b543388a-063b-4614-811f-8e26e37be757"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ResponsableDestino]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="86" height="20" uuid="77c90a75-d899-4a90-9745-eb84027c6461"/>
+				<textFieldExpression><![CDATA[$F{bien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="0" width="48" height="20" uuid="be21d25d-662b-4d42-91dc-e244ccc090a6"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="0" width="74" height="20" uuid="c0ceefa5-e824-451c-a2b5-a4e0ab946f74"/>
+				<textFieldExpression><![CDATA[$F{departamentoOrigen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="0" width="100" height="20" uuid="7ab35fc9-417f-4539-b861-52a4d417aceb"/>
+				<textFieldExpression><![CDATA[$F{departamentoDestino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="413" y="0" width="100" height="20" uuid="7f18aa6d-ef46-47eb-981b-2b413d92ad77"/>
+				<textFieldExpression><![CDATA[$F{responsableOrigen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="529" y="0" width="100" height="20" uuid="4b68768b-7add-4d74-98d5-1fed849470bf"/>
+				<textFieldExpression><![CDATA[$F{responsableDestino}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

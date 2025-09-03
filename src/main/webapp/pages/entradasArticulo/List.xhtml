@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="EntradasArticuloListForm">
+        <p:panel header="#{mensajes.ListEntradasArticuloTitle}">
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{entradasArticuloController.prepareCreate}" update=":EntradasArticuloCreateForm" disabled="#{empty entradasArticuloController.entradaArticulo}" oncomplete="PF('EntradasArticuloCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   rendered="false"  icon="ui-icon-search" value="#{mensajes.View}" update=":EntradasArticuloViewForm" oncomplete="PF('EntradasArticuloViewDialog').show()" disabled="#{empty entradasArticuloController.selected}"/>   
+            <p:commandButton id="editButton"   rendered="false"  icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":EntradasArticuloEditForm" oncomplete="PF('EntradasArticuloEditDialog').show()" disabled="#{empty entradasArticuloController.selected}"/>
+            <p:commandButton id="deleteButton" rendered="true" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{entradasArticuloController.delete}" update=":growl,datalist,datalistDetalle" disabled="#{empty entradasArticuloController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:commandButton id="imprimirButton" rendered="false"  ajax="false"    onclick="monitorExporting(startHandler(0), endHandler)" icon="ui-icon-plus"   value="Imprimir Reporte" action="#{detallesEntradaArticuloController.pdf()}" />
+
+            <p:commandButton id="documentoButton2" icon="ui-icon-print" disabled="#{entradasArticuloController.deshabilitarImprimirNota()}"  ajax="false" onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" value="Imprimir Nota de Recepción" actionListener="#{entradasArticuloController.imprimirNota()}" style="margin-left: 10px"/>
+          
+
+            <p:panel>
+                <h:outputText value="Fecha Factura" style="padding-right: 20px" />
+                <p:outputLabel value="Desde" for="fechaDesdeEntrada" style="padding-right: 5px; padding-left: 20px"/>
+                <p:calendar style="padding-right: 10px" id="fechaDesdeEntrada" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaDesdeEntrada}" title="Fecha Desde"  showOn="button"/>
+                <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHastaEntrada" />
+                <p:calendar style="padding-right: 10px" id="fechaHastaEntrada" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaHastaEntrada}" title="Fecha Hasta"  showOn="button"/>
+                <p:commandButton value="Buscar por Fecha Factura" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalle" action="#{entradasArticuloController.buscarPorFechaEntrada()}"></p:commandButton>
+            </p:panel>
+            <ui:remove>
+                <p:panel>
+                    <h:outputText value="Fecha de Carga" style="padding-right: 20px" />
+
+                    <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                    <p:calendar style="padding-right: 10px" id="fechaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                    <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHasta" />
+                    <p:calendar style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                    <p:commandButton value="Buscar por Fecha de Carga" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalle" action="#{entradasArticuloController.buscarPorFechaAlta()}"></p:commandButton>
+                </p:panel>
+            </ui:remove> 
+            <p:panelGrid columns="2">
+                <p:panel>
+                    <p:outputLabel value="Deposito" style="padding-right: 5px;" />
+                        <h:panelGroup>
+                            <p:selectOneMenu  id="sede2"  style="width: 100%"  filter="true" filterMatchMode="contains" value="#{entradasArticuloController.sede}" required="false" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_sede}" converter="sedeConverter">
+                                 <p:ajax  event="change" listener="#{entradasArticuloController.resetearListas(entradasArticuloController.sede)}"   update=":EntradasArticuloListForm:articulo"/>
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{sedeController.items}"
+                                               var="sedeItem"
+                                               itemValue="#{sedeItem}"
+                                               itemLabel="#{sedeItem.descripcion}"
+                                               />
+                            </p:selectOneMenu>
+                            <p:tooltip for="sede2" value="#{entradasArticuloController.getComponentMessages('sede2', mensajes.CreateArticulosHelpText_sede)}"/>
+                        </h:panelGroup> 
+                    
+                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_articulo}" for="articulo" style="padding-right: 5px;"/>
+
+                    <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="articulo" disabled="#{empty entradasArticuloController.sede}" value="#{entradasArticuloController.listaArticuloFiltroEntrada}" converter="articulosConverter">
+                        <f:selectItems value="#{entradasArticuloController.listaArticulos}"
+                                       var="articuloItem"
+                                       itemValue="#{articuloItem}"
+                                       itemLabel="#{articuloItem.codigo} - #{articuloItem.descripcion}"
+                                       />
+                    </p:selectCheckboxMenu>
+
+                    <ui:remove>
+                        <p:selectOneMenu id="articulo" filter="true" filterMatchMode="contains" value="#{entradasArticuloController.articuloFiltro}" required="false" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                            <f:selectItems value="#{articulosController.items}"
+                                           var="articuloItem"
+                                           itemValue="#{articuloItem}"
+                                           itemLabel="#{articuloItem}"
+                                           />
+                        </p:selectOneMenu>
+                    </ui:remove>
+
+                    <p:commandButton id="imprimirButton2" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Articulo PDF" action="#{entradasArticuloController.pdf(true)}" />
+                    <p:commandButton id="imprimirButtonExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Articulo Excel" action="#{entradasArticuloController.pdf(false)}" />
+                </p:panel>
+                <p:panel>
+
+                    <p:panel>
+                        <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_proveedor}" for="proveedor" style="padding-right: 5px;"/>
+                        <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="proveedor" value="#{entradasArticuloController.listaProveedorFiltroEntrada}" converter="proveedoresConverter">
+                            <f:selectItems value="#{proveedoresController.items}"
+                                           var="proveedorItem"
+                                           itemValue="#{proveedorItem}"
+                                           itemLabel="#{proveedorItem.nombre}"
+                                           />
+                        </p:selectCheckboxMenu>
+
+                    </p:panel>
+                    <ui:remove>
+                        <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_proveedor}" for="proveedor" style="padding-right: 5px;"/>
+                        <p:selectOneMenu id="proveedor" filter="true" filterMatchMode="contains" value="#{entradasArticuloController.proveedorFiltro}" required="false" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_proveedor}" converter="proveedoresConverter">
+                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                            <f:selectItems value="#{proveedoresController.items}"
+                                           var="proveedorItem"
+                                           itemValue="#{proveedorItem}"
+                                           itemLabel="#{proveedorItem}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </ui:remove>
+
+
+                    <p:commandButton id="imprimirButton3" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Proveedor" action="#{entradasArticuloController.pdfProveedor(true)}" />
+                    <p:commandButton id="imprimirButtonProveedorExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Proveedor Excel" action="#{entradasArticuloController.pdfProveedor(false)}" />
+
+                </p:panel>
+
+                <p:panel>
+                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_objetogasto}" for="objetogasto" style="padding-right: 5px;"/>
+
+                    <p:selectOneMenu id="objetogasto" filter="true" filterMatchMode="contains" value="#{entradasArticuloController.objetosgastoFiltro}" required="false" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_objetoGasto}" converter="objetosgastoConverter">
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{objetosGastoController.items}"
+                                       var="objetogastoItem"
+                                       itemValue="#{objetogastoItem}"
+                                       itemLabel="#{objetogastoItem.codigo}"
+                                       />
+
+                    </p:selectOneMenu>
+                    <p:commandButton id="imprimirButtonObjetoGastoExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Objeto Gasto Excel" action="#{entradasArticuloController.reporteObjetoGasto(false)}" />
+                    <p:commandButton id="imprimirButtonObjetoGastoWord" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Objeto Gasto Word" action="#{entradasArticuloController.reporteObjetoGasto(true)}" />
+                </p:panel>
+                
+                <p:panel>
+                    <p:outputLabel value="Deposito" style="padding-right: 5px;"/>
+
+                    <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="sede" value="#{entradasArticuloController.listaSedeFiltroEntrada}" converter="sedeConverter">
+                        <f:selectItems value="#{sedeController.items}"
+                                       var="sedeItem"
+                                       itemValue="#{sedeItem}"
+                                       itemLabel="#{sedeItem.id} - #{sedeItem.descripcion}"
+                                       />
+                    </p:selectCheckboxMenu>
+                    <ui:remove>
+                        <p:outputLabel value="Deposito"/>
+                        <p:selectOneMenu id="sede" filter="true" filterMatchMode="contains" value="#{entradasArticuloController.sedeFiltro}" required="false" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_sede}" converter="sedeConverter">
+                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                            <f:selectItems value="#{sedeController.items}"
+                                           var="sedeItem"
+                                           itemValue="#{sedeItem}"
+                                           itemLabel="#{sedeItem}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </ui:remove>
+                    <p:commandButton id="imprimirButton4" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Deposito" action="#{entradasArticuloController.pdf2(true)}" />
+                </p:panel>
+                
+                
+            </p:panelGrid>
+            <p:dataTable id="datalist"
+                         value="#{entradasArticuloController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="5"
+                         rowsPerPageTemplate="5,10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{entradasArticuloController.selected}">
+
+                <p:ajax event="rowSelect"   update="@form:datalistDetalle,@form:totalCostoTotal,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{entradasArticuloController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:datalistDetalle,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{entradasArticuloController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:datalistDetalle,@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{entradasArticuloController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('EntradasArticuloListForm:viewButton').click();"/>
+                <ui:remove>
+                    <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.concepto}" filterBy="#{item.concepto}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_concepto}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.concepto}"/>
+                    </p:column>
+                </ui:remove>
+                <p:column sortBy="#{item.nroRemision}" filterBy="#{item.nroFactura}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListEntradasArticuloTitle_nroRemision}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroRemision}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nroFactura}" filterBy="#{item.nroFactura}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListEntradasArticuloTitle_nroFactura}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroFactura}"/>
+                </p:column>
+
+               
+
+                <p:column sortBy="#{item.nroLlamado}" filterBy="#{item.nroLlamado}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListEntradasArticuloTitle_nroLlamado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroLlamado}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.proveedor.nombre}" filterBy="#{item.proveedor.nombre}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListEntradasArticuloTitle_proveedor}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.proveedor.nombre}"/>
+                </p:column>
+
+                <p:column sortBy="#{entradasArticuloController.customFormatDate(item.fechaHoraAlta)}" filterBy="#{entradasArticuloController.customFormatDate(item.fechaHoraAlta)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListEntradasArticuloTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="#{entradasArticuloController.datePattern()}" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{entradasArticuloController.customFormatDate(item.fechaEntrada)}" filterBy="#{entradasArticuloController.customFormatDate2(item.fechaEntrada)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListEntradasArticuloTitle_fechaEntrada}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaEntrada}">
+                        <f:convertDateTime pattern="#{entradasArticuloController.datePattern2()}" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>        
+
+                <ui:remove>
+
+                    <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_fechaHoraAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListEntradasArticuloTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa.id}"/>
+                    </p:column>
+                </ui:remove>
+
+            </p:dataTable>
+
+        </p:panel>
+        <p:panel header="Detalles">
+
+            <p:dataTable id="datalistDetalle"
+                         value="#{entradasArticuloController.detalles}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         filteredValue="#{detallesEntradaArticuloController.filtrado}"
+
+                         >
+                <ui:remove>
+                    <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.entradaArticulo.concepto}" filterBy="#{item.entradaArticulo.concepto}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_entradaArticulo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.entradaArticulo.concepto}"/>
+                    </p:column>
+                </ui:remove> 
+
+                <p:column sortBy="#{item.articulo.codigo}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_codigo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.codigo}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.articulo.rubro.sede.descripcion}" >
+                    <f:facet name="header">
+                        <h:outputText value="Deposito"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.rubro.sede.descripcion}"/>
+                </p:column>
+
+
+
+                <p:column sortBy="#{item.articulo.descripcionLarga}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_articulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.descripcionLarga}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.fechaVencimiento}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_fechavencimiento}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaVencimiento}">
+                        <f:convertDateTime pattern="#{entradasArticuloController.datePattern2()}" />
+                    </h:outputText>   
+                </p:column>
+
+
+                <p:column sortBy="#{item.marca.descripcion}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_marca}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.marca.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.cantidad}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_cantidad}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantidad}">
+                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.costoUnitario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_costoUnitario}"/>
+                    </f:facet>
+                    <div align="right">
+                        <h:outputText value="#{item.costoUnitario}">
+                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </p:column>
+
+
+                <p:column sortBy="#{item.exentas}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_exentas}"/>
+                    </f:facet>
+                    <div align="right">
+                        <h:outputText value="#{item.exentas}">
+                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </p:column>
+
+
+                <p:column sortBy="#{item.iva_5}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_iva_5}"/>
+                    </f:facet>
+                    <div align="right">
+                        <h:outputText value="#{item.iva_5}">
+                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </p:column>
+
+                <p:column sortBy="#{item.iva_10}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_iva_10}"/>
+                    </f:facet>
+                    <div align="right">
+                        <h:outputText value="#{item.iva_10}">
+                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </p:column>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.costoTotal}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_costoTotal}"/>
+                        </f:facet>
+                        <div align="right">
+                            <h:outputText value="#{item.costoTotal}">
+                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                            </h:outputText>
+                        </div>
+                    </p:column>
+                </ui:remove>
+
+                <ui:remove> 
+                    <p:column sortBy="#{item.costoTotal}" >
+
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_costoTotal}"/>
+                        </f:facet>
+
+                        <h:outputText value="#{item.costoTotal}">
+                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0"/>
+                        </h:outputText>
+                    </p:column>
+                </ui:remove> 
+
+                <ui:remove>
+                    <f:facet name="footer">
+                        <h:outputText id="totalCostoTotal" value="#{entradasArticuloController.selected.total_factura}">
+                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0"/>
+                        </h:outputText>
+
+                    </f:facet>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.nroFactura}" filterBy="#{item.nroFactura}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_nroFactura}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nroFactura}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.nroLlamado}" filterBy="#{item.nroLlamado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_nroLlamado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nroLlamado}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_fechaHoraAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.totalCostoTotal}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_totalcostoTotal}"/>
+                        </f:facet>
+                        <div align="right">
+                            <h:outputText value="#{item.totalcostototal}">
+                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                            </h:outputText>
+                        </div>
+                    </p:column>                 
+                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa.id}"/>
+                    </p:column>
+                </ui:remove>
+            </p:dataTable>
+
+            <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                <div class="ui-sm-12 ui-sm-8 ui-g-8"></div>
+                <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                    <h:outputText id = "totalCostoTotal" value="#{entradasArticuloController.selected.total_factura}">
+                        <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Total Factura Gs.: " locale="es_PY" minFractionDigits="0" />
+                    </h:outputText>       
+                </div>
+            </div>
+        </p:panel>               
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
+
+
+

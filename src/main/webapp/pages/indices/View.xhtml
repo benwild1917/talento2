@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="IndicesViewDlg" widgetVar="IndicesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewIndicesTitle}" closeOnEscape="true">
+
+            <h:form id="IndicesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{indicesController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewIndicesLabel_id}"/>
+                        <h:outputText value="#{indicesController.selected.id}" title="#{mensajes.ViewIndicesTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewIndicesLabel_nombreIndice}"/>
+                        <h:outputText value="#{indicesController.selected.nombreIndice}" title="#{mensajes.ViewIndicesTitle_nombreIndice}"/>
+
+                        <h:outputText value="#{mensajes.ViewIndicesLabel_orden}"/>
+                        <h:outputText value="#{indicesController.selected.orden}" title="#{mensajes.ViewIndicesTitle_orden}"/>
+
+                        <h:outputText value="#{mensajes.ViewIndicesLabel_valorX}"/>
+                        <h:outputText value="#{indicesController.selected.valorX}" title="#{mensajes.ViewIndicesTitle_valorX}"/>
+
+                        <h:outputText value="#{mensajes.ViewIndicesLabel_valorY}"/>
+                        <h:outputText value="#{indicesController.selected.valorY}" title="#{mensajes.ViewIndicesTitle_valorY}"/>
+
+                        <h:outputText value="#{mensajes.ViewIndicesLabel_empresa}"/>
+                        <h:outputText value="#{indicesController.selected.empresa.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('IndicesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

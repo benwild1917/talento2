@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DespachosPersonaCreateDlg" widgetVar="DespachosPersonaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateDespachosPersonaTitle}" closeOnEscape="true">
+
+            <h:form id="DespachosPersonaCreateForm">
+
+                <h:panelGroup id="display" rendered="#{despachosPersonaController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" onblur="value = value.toUpperCase()" style="text-transform:uppercase;" value="#{despachosPersonaController.selected.descripcion}" title="#{mensajes.CreateDespachosPersonaTitle_descripcion}" required="false" requiredMessage="#{mensajes.CreateDespachosPersonaRequiredMessage_descripcion}" size="50" maxlength="100"/>
+                            <p:tooltip for="descripcion" value="#{despachosPersonaController.getComponentMessages('descripcion', mensajes.CreateDespachosPersonaHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                        <ui:remove>
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_departamentoPersona}" for="departamentoPersona" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="departamentoPersona" filter="true" filterMatchMode="contains" value="#{despachosPersonaController.selected.departamentoPersona}"  converter="departamentosPersonaConverter">
+                                    <p:ajax event="change" update="localidadPersona" listener="#{despachosPersonaController.actualizarListaLocalidades()}"/>
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{departamentosPersonaController.items}"
+                                                   var="departamentoPersonaItem"
+                                                   itemValue="#{departamentoPersonaItem}"
+                                                   itemLabel="#{departamentoPersonaItem.descripcion}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="departamentoPersona" value="#{despachosPersonaController.getComponentMessages('departamentoPersona', mensajes.CreateDespachosPersonaHelpText_departamentoPersona)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_localidadPersona}" for="localidadPersona" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="localidadPersona" filter="true" filterMatchMode="contains" value="#{despachosPersonaController.selected.localidadPersona}"  converter="localidadesPersonaConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{despachosPersonaController.listaLocalidadesPersona}"
+                                                   var="localidadPersonaItem"
+                                                   itemValue="#{localidadPersonaItem}"
+                                                   itemLabel="#{localidadPersonaItem.descripcion}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="localidadPersona" value="#{despachosPersonaController.getComponentMessages('localidadPersona', mensajes.CreateDespachosPersonaHelpText_localidadPersona)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_estado}" for="estado" />
+                            <h:panelGroup>
+                                <p:inputText id="estado" value="#{despachosPersonaController.selected.estado}" title="#{mensajes.CreateDespachosPersonaTitle_estado}" required="true" requiredMessage="#{mensajes.CreateDespachosPersonaRequiredMessage_estado}" size="2" maxlength="2"/>
+                                <p:tooltip for="estado" value="#{despachosPersonaController.getComponentMessages('estado', mensajes.CreateDespachosPersonaHelpText_estado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{despachosPersonaController.selected.fechaHoraAlta}" title="#{mensajes.CreateDespachosPersonaTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateDespachosPersonaRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                                <p:tooltip for="fechaHoraAlta" value="#{despachosPersonaController.getComponentMessages('fechaHoraAlta', mensajes.CreateDespachosPersonaHelpText_fechaHoraAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_usuarioAlta}" for="usuarioAlta" />
+                            <h:panelGroup>
+                                <p:inputText id="usuarioAlta" value="#{despachosPersonaController.selected.usuarioAlta}" title="#{mensajes.CreateDespachosPersonaTitle_usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateDespachosPersonaRequiredMessage_usuarioAlta}"/>
+                                <p:tooltip for="usuarioAlta" value="#{despachosPersonaController.getComponentMessages('usuarioAlta', mensajes.CreateDespachosPersonaHelpText_usuarioAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{despachosPersonaController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateDespachosPersonaTitle_fechaHoraUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="fechaHoraUltimoEstado" value="#{despachosPersonaController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateDespachosPersonaHelpText_fechaHoraUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="usuarioUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{despachosPersonaController.selected.usuarioUltimoEstado}" title="#{mensajes.CreateDespachosPersonaTitle_usuarioUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="usuarioUltimoEstado" value="#{despachosPersonaController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateDespachosPersonaHelpText_usuarioUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDespachosPersonaLabel_empresa}" for="empresa" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="empresa" value="#{despachosPersonaController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateDespachosPersonaRequiredMessage_empresa}" converter="empresasConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{empresasController.items}"
+                                                   var="empresaItem"
+                                                   itemValue="#{empresaItem}"
+                                                   itemLabel="#{empresaItem.id.toString()}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="empresa" value="#{despachosPersonaController.getComponentMessages('empresa', mensajes.CreateDespachosPersonaHelpText_empresa)}"/>
+                            </h:panelGroup>
+                        </ui:remove>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{despachosPersonaController.saveNew()}" value="#{mensajes.Save}" update="#{despachosPersonaController.updateCreate()}" oncomplete="handleSubmit(xhr,status,args,PF('DespachosPersonaCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DespachosPersonaCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

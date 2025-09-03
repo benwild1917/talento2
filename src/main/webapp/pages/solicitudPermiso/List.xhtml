@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="SolicitudPermisoListForm">
+
+        <p:panel header="FORMULARIO SOLICITUD DE PERMISOS">
+            <p:commandButton id="dptoButton" style="visibility: visible;" value="Transferir Solicitud" update=":SolicitudPermisosEditDptoForm" actionListener="#{formulariosPermisosController.prepareTransferir()}" oncomplete="PF('SolicitudPermisosEditDptoDialog').show()" disabled="#{formulariosPermisosController.selected.estado.codigo == 3 or empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonCambioEstado()}"/>
+            <p:commandButton id="aprobarButton" style="visibility: visible;" value="Aprobar" update=":SolicitudPermisosEditDptoForm, @form:datalist" actionListener="#{formulariosPermisosController.aprobar}" disabled="#{formulariosPermisosController.selected.estado.codigo != 3 or (empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonCambioEstado())}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="Confirma la aprobación?" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:commandButton id="rechazarButton" style="visibility: visible;" value="Rechazar" update=":SolicitudPermisosEditDptoRechazarForm, @form:datalist"
+                             actionListener="#{formulariosPermisosController.prepareTransferir()}" oncomplete="PF('SolicitudPermisosEditDptoRechazarDialog').show()"
+                             disabled="#{formulariosPermisosController.selected.estado.codigo == 3 or empty formulariosPermisosController.selected or formulariosPermisosController.desabilitarBotonCambioEstado()}"/>
+            
+            <p:contextMenu id="SolicitudPermisoDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('SolicitudPermisoListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('SolicitudPermisoListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('SolicitudPermisoListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('SolicitudPermisoListForm:deleteButton').click();" icon="ui-icon-trash"/>
+
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{formulariosPermisosController.items}"
+                         rowStyleClass="#{(item.funcionario == formulariosPermisosController.usuario)? ((item.estado.codigo == '1' or item.estado.codigo == '2' or item.estado.codigo == '3')? 'red' : 'green'): ''}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{formulariosPermisosController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{formulariosPermisosController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SolicitudPermisoDataTableContextMenu, @form:dptoButton, @form:aprobarButton,@form:rechazarButton" listener="#{formulariosPermisosController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SolicitudPermisoDataTableContextMenu, @form:dptoButton, @form:aprobarButton,@form:rechazarButton" listener="#{formulariosPermisosController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{formulariosPermisosController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('SolicitudPermisoListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListFormulariosPermisosTitle_id}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}" />
+                </p:column>
+
+                <p:column sortBy="#{item.fechaRegistro}" filterBy="#{item.fechaRegistro}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListFormulariosPermisosTitle_fecha_registro}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaRegistro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy " timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.funcionario}" filterMatchMode="contains" filterBy="#{item.funcionario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListFormulariosPermisosTitle_funcionario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.funcionario}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.dependencia}" filterMatchMode="contains" filterBy="#{item.dependencia}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListFormulariosPermisosTitle_dependencia}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dependencia}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.tiposFormulario.descripcion}" filterMatchMode="contains" filterBy="#{item.tiposFormulario.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListFormulariosPermisosTitle_tipo_formulario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tiposFormulario.descripcion}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.estado.descripcion}" filterMatchMode="contains" filterBy="#{item.estado.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListFormulariosPermisosTitle_estado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estado.descripcion}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{formulariosPermisosController.prepareCreate}" update=":SolicitudPermisoCreateForm" oncomplete="PF('SolicitudPermisoCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{mensajes.View}" update=":SolicitudPermisoViewForm" oncomplete="PF('SolicitudPermisoViewDialog').show()" disabled="#{empty formulariosPermisosController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":SolicitudPermisoEditForm" oncomplete="PF('SolicitudPermisoEditDialog').show()" disabled="#{empty formulariosPermisosController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{formulariosPermisosController.delete}" update=":growl,datalist" disabled="#{empty formulariosPermisosController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

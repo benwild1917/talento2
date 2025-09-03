@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RubrosViewDlg" widgetVar="RubrosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewRubrosTitle}" closeOnEscape="true">
+
+            <h:form id="RubrosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{rubrosController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_id}"/>
+                        <h:outputText value="#{rubrosController.selected.id}" title="#{mensajes.ViewRubrosTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_descripcion}"/>
+                        <h:outputText value="#{rubrosController.selected.descripcion}" title="#{mensajes.ViewRubrosTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{rubrosController.selected.fechaHoraAlta}" title="#{mensajes.ViewRubrosTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{rubrosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewRubrosTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_empresa}"/>
+                        <h:outputText value="#{rubrosController.selected.empresa.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_usuarioAlta}"/>
+                        <h:outputText value="#{rubrosController.selected.usuarioAlta.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewRubrosLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{rubrosController.selected.usuarioUltimoEstado.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('RubrosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

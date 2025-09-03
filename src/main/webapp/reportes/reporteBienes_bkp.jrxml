@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="990" pageHeight="914" columnWidth="950" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09b0a97c-e717-407e-a0d7-efb5f8aa07aa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="costoUnitario" class="java.math.BigDecimal"/>
+	<field name="nroSerie" class="java.lang.String"/>
+	<field name="nroChapa" class="java.lang.String"/>
+	<field name="nroChasis" class="java.lang.String"/>
+	<field name="nroFactura" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="modelo" class="java.lang.String"/>
+	<field name="moneda" class="java.lang.String"/>
+	<field name="rotulado" class="java.lang.String"/>
+	<field name="rubro" class="java.lang.String"/>
+	<field name="responsable" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="14" width="242" height="28" backcolor="#C0C0C0" uuid="70a028e6-de32-4111-b841-b65b966f4cd7"/>
+				<textElement>
+					<font fontName="Serif" size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE BIENES]]></text>
+			</staticText>
+			<image>
+				<reportElement x="111" y="0" width="267" height="56" uuid="eeb2daeb-60c8-4836-a09b-b1278f4f259b"/>
+				<imageExpression><![CDATA["/home/grecia/Documents/NetBeansProjects/gestionstartic/web/reportes/logoJEM.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="24">
+			<staticText>
+				<reportElement mode="Transparent" x="2" y="4" width="87" height="20" backcolor="#FFFFFF" uuid="f6a17e31-a98f-4997-b210-7a4d7c384897"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="89" y="4" width="79" height="20" backcolor="#FFFFFF" uuid="9930ac5e-3d53-428a-b24f-c86022890223"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[CostoUnitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="168" y="4" width="51" height="20" backcolor="#FFFFFF" uuid="84ac331f-5a22-49e9-b238-90182f578540"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[NroSerie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="223" y="4" width="65" height="20" backcolor="#FFFFFF" uuid="ec625885-ae47-491d-b417-428654a68470"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[NroChapa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="288" y="4" width="54" height="20" backcolor="#FFFFFF" uuid="be50f0dc-b084-4832-98bc-af70c8f60fbd"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[NoChasis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="803" y="4" width="65" height="20" backcolor="#FFFFFF" uuid="371ad4c9-a7ff-4d78-aaf9-b2acd7ec8b07"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[NroFactura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="345" y="4" width="57" height="20" backcolor="#FFFFFF" uuid="5ce25225-3e2f-4b3d-bbb8-6fed72cdddd0"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="402" y="4" width="65" height="20" backcolor="#FFFFFF" uuid="46d41c17-1454-4eb0-9ce6-2c618deb7a5e"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="467" y="4" width="91" height="20" backcolor="#FFFFFF" uuid="044442e3-19a1-46ca-a4e2-1dca50cda6ee"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="558" y="4" width="63" height="20" backcolor="#FFFFFF" uuid="81552a95-4b66-440b-9032-cf79e725ce4a"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Moneda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="621" y="4" width="74" height="20" backcolor="#FFFFFF" uuid="07657db7-0ef1-4313-a721-66a499be9c6d"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Rotulado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="695" y="4" width="108" height="20" backcolor="#FFFFFF" uuid="99ead9fb-787e-432f-a455-c982f405b981"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Rubro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="876" y="4" width="74" height="20" backcolor="#FFFFFF" uuid="4b7f591f-23f9-4238-a310-83024decd3f5"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Responsable]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24">
+			<textField>
+				<reportElement x="2" y="2" width="87" height="20" uuid="9f3fdaf1-87ea-4f91-b71f-b009c079887d"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="89" y="2" width="79" height="20" uuid="5cb7ef23-5846-4511-96da-fad06be39478"/>
+				<textFieldExpression><![CDATA[$F{costoUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="168" y="3" width="51" height="20" uuid="30165c63-28b7-4358-b715-b4a7d328dc69"/>
+				<textFieldExpression><![CDATA[$F{nroSerie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="2" width="52" height="20" uuid="e734eae8-a335-41a8-94ba-4ffd4aa66d81"/>
+				<textFieldExpression><![CDATA[$F{nroChapa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="284" y="2" width="58" height="20" uuid="126f4dd0-8db7-4599-9623-cff3313dd2e2"/>
+				<textFieldExpression><![CDATA[$F{nroChasis}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="343" y="2" width="51" height="20" uuid="8c2925b2-63d4-4ad1-8b1e-1e8628852f66"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="2" width="52" height="20" uuid="8b9c1418-b076-4d1b-85b9-4f756a6f68dc"/>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="2" width="100" height="20" uuid="43a4979c-642a-4b05-b5f5-22d05a17f99f"/>
+				<textFieldExpression><![CDATA[$F{modelo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="558" y="2" width="53" height="20" uuid="320e60cf-2b33-41ce-bc58-4bbb1368767c"/>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="619" y="2" width="48" height="20" uuid="dd539a1b-d5a3-4a31-8ee7-ae5cc6ec7f72"/>
+				<textFieldExpression><![CDATA[$F{rotulado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="688" y="2" width="118" height="20" uuid="125e2863-4fcb-4940-b44d-17f0ab75ccef"/>
+				<textFieldExpression><![CDATA[$F{rubro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="803" y="2" width="65" height="20" uuid="d2dc5a44-90ce-46a5-a249-ddd11fa4a03c"/>
+				<textFieldExpression><![CDATA[$F{nroFactura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="872" y="2" width="78" height="20" forecolor="#000000" uuid="35078e46-a629-4272-b249-90145f5095a1"/>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

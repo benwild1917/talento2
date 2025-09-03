@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CambiarEstadosCreateDlg" widgetVar="CambiarEstadosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Cambiar Estado" closeOnEscape="true">
+
+            <h:form id="CambiarEstadosCreateForm">
+
+                <h:panelGroup id="display" rendered="#{detallesPlanEstrategicasController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+           
+                        <p:outputLabel value="Estado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="estado" value="#{detallesPlanEstrategicasController.selected.estado}" required="false" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_estado}" converter="estadosInformeConverter">
+
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{estadosInformeController.items}"
+                                               var="estadoItem"
+                                               itemValue="#{estadoItem}"
+                                               itemLabel="#{estadoItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="estado" value="#{detallesPlanEstrategicasController.getComponentMessages('estado', mensajes.CreateInformesHelpText_estado)}"/>
+                        </h:panelGroup>
+                      
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{detallesPlanEstrategicasController.cambiarEstado()}" value="#{mensajes.Save}" update=":AccionOperativaListForm:TabView:datalist,:AccionOperativaListForm:TabView:datalistArchivos" oncomplete="handleSubmit(xhr,status,args,PF('CambiarEstadosCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('CambiarEstadosCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

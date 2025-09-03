@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ArticulosListForm">
+
+        <p:panel header="DEPÓSITO DE ARTICULOS">
+            <ui:remove>
+            <p:panelGrid columns="8">
+                <p:panelGrid columns="6">
+                    <p:outputLabel value="Fecha Desde" for="fechaDesde" />
+                    <p:calendar id="fechaDesde" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{articulosController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                    <p:outputLabel value="Fecha Hasta" for="fechaHasta" />
+                    <p:calendar id="fechaHasta" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{articulosController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                    <f:facet name="footer">
+                        <p:commandButton value="Buscar" ajax="false"  update="datalist, :growl" actionListener="#{articulosController.buscarArticulosPorFecha()}"></p:commandButton>
+                    </f:facet>
+                </p:panelGrid>
+                <p:outputLabel value="Depósito" />
+                <h:panelGroup>
+                    <p:selectOneMenu id="sede1" value="#{articulosController.sede}" requiredMessage="#{mensajes.CreateBajaArticulosRequiredMessage_sede}" converter="sedeConverter">
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{sedeController.items}"
+                                       var="sedeItem"
+                                       itemValue="#{sedeItem}"
+                                       itemLabel="#{sedeItem.descripcion.toString()}"
+                                       />
+                    </p:selectOneMenu>
+                    <p:tooltip for="sede" value="#{bajaArticulosController.getComponentMessages('sede', mensajes.CreateBajaArticulosHelpText_sede)}"/>
+                </h:panelGroup>
+
+
+            </p:panelGrid>
+        </ui:remove>
+
+            <p:panel>
+                <p:outputLabel value="Deposito" />
+                <h:panelGroup>
+                    <p:selectOneMenu id="sede" filter="true" filterMatchMode="contains" value="#{articulosController.sede}" required="false" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_sede}" converter="sedeConverter">
+                        <p:ajax  event="change" listener="#{articulosController.resetearListas(articulosController.sede)}"   update=":ArticulosListForm:articulo"/>
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{sedeController.items}"
+                                       var="sedeItem"
+                                       itemValue="#{sedeItem}"
+                                       itemLabel="#{sedeItem.descripcion}"
+                                       />
+                    </p:selectOneMenu>
+                    <p:tooltip for="sede" value="#{articulosController.getComponentMessages('sede', mensajes.CreateArticulosHelpText_sede)}"/>
+                </h:panelGroup> 
+
+                <p:outputLabel value="#{mensajes.CreateArticuloLabel_articulo}" for="articulo" style="padding-right: 5px;"/>
+
+                <p:selectCheckboxMenu label="#{mensajes.SelectOneMessage}" filter="true" filterMatchMode="contains" style="width: 100%" id="articulo" disabled="#{empty articulosController.sede}"   value="#{articulosController.listaArticuloFiltro}"  converter="articulosConverter">
+                    <f:selectItems value="#{articulosController.listaArticulos}"
+                                   var="articuloItem"
+                                   itemValue="#{articuloItem}"
+                                   itemLabel="#{articuloItem.codigo} - #{articuloItem.descripcion}"
+                                   />
+                </p:selectCheckboxMenu>
+
+                <p:commandButton id="imprimirButtonExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Generar Reporte" action="#{articulosController.reporteCodigoArticulo()}" />
+            </p:panel>
+
+
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{articulosController.prepareCreate}" update=":ArticulosCreateForm" oncomplete="PF('ArticulosCreateDialog').show()"/>
+            <p:commandButton id="viewButton"  rendered="false" style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":ArticulosViewForm" oncomplete="PF('ArticulosViewDialog').show()" disabled="#{empty articulosController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":ArticulosEditForm" oncomplete="PF('ArticulosEditDialog').show()" disabled="#{empty articulosController.selected}"/>
+             <p:commandButton id="editImagen"   style="visibility: visible;" icon="ui-icon-pencil" value="Cargar Imagen" update=":ArticulosEditImagenForm" oncomplete="PF('ArticulosEditImagenDlg').show()" disabled="#{empty articulosController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{articulosController.delete}" update=":growl,datalist" disabled="#{empty articulosController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+
+            </p:commandButton>
+            <p:commandButton id="bajaArticulosButton"  rendered="true" style="visibility: visible;" icon="ui-icon-plus" value="Enviar a Depósito de:" actionListener="#{bajaArticulosController.prepareBajaArticulos((articulosController.selected))}" update=":ArticulosListForm:datalist,:BajaArticulosForm" oncomplete="PF('BajaArticulosDlg').show()"  disabled="#{empty articulosController.selected}"/>
+
+            <ui:remove>
+                <p:panel>
+                    <h:outputText value="Fecha de Carga" style="padding-right: 20px" />
+                    <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                    <p:calendar style="padding-right: 10px" id="fechaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{ArticulosController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                    <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHasta" />
+                    <p:calendar style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{ArticulosController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                    <p:commandButton value="Buscar por Fecha de Carga" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalle" action="#{ArticulosController.buscarPorFechaAlta()}"></p:commandButton>
+                </p:panel>
+            </ui:remove>
+
+            <p:dataTable id="datalist"
+                         widgetVar="wDatalist"
+                         value="#{articulosController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         filteredValue="#{articulosController.filtrados}"
+                         rowKey="#{item.codigo}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{articulosController.selected}">
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editImagen,@form:viewButton,@form:editButton,@form:deleteButton,@form:bajaArticulosButton" listener="#{articulosController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editImagen,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{articulosController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{articulosController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ArticulosListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.codigo}" filterBy="#{item.codigo}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_codigo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.codigo}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.descripcion}" filterBy="#{item.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_descripcion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.unidad}" filterBy="#{item.unidad}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_unidad}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.unidad}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_stock}"/>
+                    </f:facet>
+                    <div align="right">
+                        <h:outputText value="#{articulosController.obtenerNeto(item)}">
+                            <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_stockCritico}"/>
+                    </f:facet>
+                    <div align="right">
+                        <h:outputText id="stockCritico" value="#{item.stockCritico}">
+                            <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </p:column>
+
+                <p:column sortBy="#{item.rubro.sede.descripcion}" filterBy="#{item.rubro.sede.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Deposito"/>
+                    </f:facet>
+                    <h:outputText value="#{item.rubro.sede.descripcion}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.marca.descripcion}" filterBy="#{item.marca.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Marca"/>
+                    </f:facet>
+                    <h:outputText value="#{item.marca.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.modelo.descripcion}" filterBy="#{item.modelo.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Modelo"/>
+                    </f:facet>
+                    <h:outputText value="#{item.modelo.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.rubro.descripcion}" filterBy="#{item.rubro.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_rubro}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.rubro.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.objetoGasto.codigo} - #{item.objetoGasto.descripcion}" filterBy="#{item.objetoGasto.codigo} - #{item.objetoGasto.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListArticulosTitle_Objetogasto}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.objetoGasto.codigo} - #{item.objetoGasto.descripcion}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Ver"/>
+                    </f:facet>
+                    <p:commandButton id="someId4" ajax="false" onclick="this.form.target = '_blank'" icon="ui-icon-search"   value="Ver Imagen" action="#{articulosController.view()}"/>
+                </p:column>
+                <ui:remove>
+                    <p:column sortBy="#{item.codigo}" filterBy="#{item.codigo}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListArticulosTitle_codigo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.codigo}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListArticulosTitle_fechaHoraAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListArticulosTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.empresa}" filterBy="#{item.empresa}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListArticulosTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListArticulosTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListArticulosTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                    </p:column>
+                </ui:remove>
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

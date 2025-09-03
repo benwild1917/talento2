@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RhCargosCreateDlg" widgetVar="RhCargosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateRhCargosTitle}" closeOnEscape="true">
+
+            <h:form id="RhCargosCreateForm">
+
+                <h:panelGroup id="display" rendered="#{rhCargosController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateRhCargosLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{rhCargosController.selected.descripcion}" title="#{mensajes.CreateRhCargosTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateRhCargosRequiredMessage_descripcion}" size="100" maxlength="200"/>
+                            <p:tooltip for="descripcion" value="#{rhCargosController.getComponentMessages('descripcion', mensajes.CreateRhCargosHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rhCargosController.saveNew}" value="#{mensajes.Save}" update="display,:RhCargosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RhCargosCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RhCargosCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+
+
+                        <p:outputLabel value="#{mensajes.CreateRhCargosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCargosController.selected.fechaHoraAlta}" title="#{mensajes.CreateRhCargosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateRhCargosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{rhCargosController.getComponentMessages('fechaHoraAlta', mensajes.CreateRhCargosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRhCargosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCargosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateRhCargosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateRhCargosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{rhCargosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateRhCargosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRhCargosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{rhCargosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateRhCargosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{rhCargosController.getComponentMessages('usuarioAlta', mensajes.CreateRhCargosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRhCargosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{rhCargosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateRhCargosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{rhCargosController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateRhCargosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

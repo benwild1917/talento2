@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ProgramacionListForm">
+
+        <p:panel header="#{mensajes.ListProgramacionTitle}">
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{programacionController.prepareCreate}" update=":ProgramacionCreateForm" oncomplete="PF('ProgramacionCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":ProgramacionViewForm" oncomplete="PF('ProgramacionViewDialog').show()" disabled="#{empty programacionController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":ProgramacionEditForm" oncomplete="PF('ProgramacionEditDialog').show()" disabled="#{empty programacionController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{programacionController.delete}" update=":growl,datalist" disabled="#{empty programacionController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:contextMenu id="ProgramacionDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('ProgramacionListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('ProgramacionListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('ProgramacionListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('ProgramacionListForm:deleteButton').click();" icon="ui-icon-trash"/>
+
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{programacionController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{programacionController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{programacionController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:ProgramacionDataTableContextMenu" listener="#{programacionController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:ProgramacionDataTableContextMenu" listener="#{programacionController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{programacionController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ProgramacionListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.accion.tiposObjetivos.descripcion}" filterMatchMode="contains" filterBy="#{item.accion.tiposObjetivos.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListProgramacionTitle_tiposObjetivos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.accion.tiposObjetivos.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.accion.descripcion}" filterMatchMode="contains" filterBy="#{item.accion.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListProgramacionTitle_accion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.accion.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.año}" filterMatchMode="contains" filterBy="#{item.año}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListProgramacionTitle_año}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.año}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.meta}" filterMatchMode="contains" filterBy="#{item.meta}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListProgramacionTitle_meta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.meta}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.programaPresupuestario}" filterMatchMode="contains" filterBy="#{item.programaPresupuestario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListProgramacionTitle_programaPresupuestario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.programaPresupuestario}">
+                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+
+
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

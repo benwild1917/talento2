@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ArticulosEditImagenDlg" widgetVar="ArticulosEditImagenDlg" modal="true" resizable="false"  appendTo="@(body)" header="Editar Imagen" closeOnEscape="true">
+
+            <h:form id="ArticulosEditImagenForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{articulosController.selected != null}">
+
+
+                       <p:panelGrid columns="3">
+                            <ui:fragment rendered="#{not empty articulosController.selected.imagen}" >
+                                <img src="data:image/png;base64,#{articulosController.selected.imagen}" style="height: 100px; width: 100px"/>
+                            </ui:fragment>
+                            <p:fileUpload value="#{articulosController.file1}" mode="simple" previewWidth="100"  auto="false" cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser gif, jpg o png" invalidSizeMessage="El archivo debe tener hasta 100Kb" sizeLimit="102400" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" disabled="false" />
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{articulosController.save}" value="#{mensajes.Save}" update="display,:ArticulosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ArticulosEditImagenDlg'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ArticulosEditImagenDlg').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+
+                        <h:outputLabel value="#{mensajes.EditArticulosLabel_codigo}" for="codigo" />
+                        <h:panelGroup>
+                            <h:outputText id="codigo" value="#{articulosController.selected.codigo}" />
+                            <p:tooltip for="codigo" value="#{articulosController.getComponentMessages('codigo', mensajes.EditArticulosHelpText_codigo)}"/>
+                        </h:panelGroup>
+                  <p:outputLabel value="#{mensajes.EditArticulosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{articulosController.selected.fechaHoraAlta}" title="#{mensajes.EditArticulosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{articulosController.getComponentMessages('fechaHoraAlta', mensajes.EditArticulosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{articulosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditArticulosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{articulosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditArticulosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:inputText id="empresa" value="#{articulosController.selected.empresa}" title="#{mensajes.EditArticulosTitle_empresa}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_empresa}"/>
+                            <p:tooltip for="empresa" value="#{articulosController.getComponentMessages('empresa', mensajes.EditArticulosHelpText_empresa)}"/>
+                        </h:panelGroup>
+                          <p:outputLabel value="#{mensajes.EditArticulosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioAlta" value="#{articulosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{articulosController.getComponentMessages('usuarioAlta', mensajes.EditArticulosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioUltimoEstado" value="#{articulosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{articulosController.getComponentMessages('usuarioUltimoEstado', mensajes.EditArticulosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

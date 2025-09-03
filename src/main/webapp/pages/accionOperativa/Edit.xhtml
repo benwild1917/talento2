@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PlanEstrategicasEditDlg" widgetVar="PlanEstrategicasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="Editar Metas" closeOnEscape="true">
+
+            <h:form id="PlanEstrategicasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{planEstrategicasController.selected != null}">
+
+
+
+                        <p:outputLabel value="Objetivo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="tiposObjetivos" value="#{planEstrategicasController.selected.tiposObjetivos}" required="true" requiredMessage="#{mensajes.EditPlanEstrategicasRequiredMessage_tiposObjetivos}" converter="tiposObjetivosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tiposObjetivosItem"
+                                               itemValue="#{tiposObjetivosItem}"
+                                               itemLabel="#{tiposObjetivosItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tiposObjetivos" value="#{planEstrategicasController.getComponentMessages('tiposObjetivos', mensajes.EditPlanEstrategicasHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Accion" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="accion" value="#{planEstrategicasController.selected.accion}" required="false" requiredMessage="#{mensajes.EditPlanEstrategicasRequiredMessage_accion}" converter="accionesConverter">
+
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{accionesController.items}"
+                                               var="accionItem"
+                                               itemValue="#{accionItem}"
+                                               itemLabel="#{accionItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="accion" value="#{planEstrategicasController.getComponentMessages('accion', mensajes.EditInformesHelpText_accion)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.EditPlanEstrategicasLabel_periodo}" for="periodo" />
+                        <h:panelGroup>
+                            <p:inputText id="periodo" value="#{planEstrategicasController.selected.periodo}" title="#{mensajes.EditPlanEstrategicasTitle_periodo}" required="true" requiredMessage="#{mensajes.EditPlanEstrategicasRequiredMessage_periodo}" size="50" maxlength="60"/>
+                            <p:tooltip for="periodo" value="#{planEstrategicasController.getComponentMessages('periodo', mensajes.EditPlanEstrategicasHelpText_periodo)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPlanEstrategicasLabel_meta}" for="meta" />
+                        <h:panelGroup>
+                            <p:inputText id="meta" value="#{planEstrategicasController.selected.meta}" title="#{mensajes.EditPlanEstrategicasTitle_meta}" required="true" requiredMessage="#{mensajes.EditPlanEstrategicasRequiredMessage_meta}" size="50" maxlength="60"/>
+                            <p:tooltip for="meta" value="#{planEstrategicasController.getComponentMessages('meta', mensajes.EditPlanEstrategicasHelpText_meta)}"/>
+                        </h:panelGroup>
+                        
+                        <p:outputLabel value="#{mensajes.EditPlanEstrategicasLabel_indicador}" for="indicador" />
+                        <h:panelGroup>
+                            <p:inputText id="indicador" value="#{planEstrategicasController.selected.indicador}" title="#{mensajes.EditPlanEstrategicasTitle_indicador}" required="true" requiredMessage="#{mensajes.EditPlanEstrategicasRequiredMessage_indicador}" size="80" maxlength="80"/>
+                            <p:tooltip for="indicador" value="#{planEstrategicasController.getComponentMessages('indicador', mensajes.EditPlanEstrategicasHelpText_indicador)}"/>
+                        </h:panelGroup>
+                        
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{planEstrategicasController.save}" value="#{mensajes.Save}" update="display,:PlanEstrategicasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PlanEstrategicasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PlanEstrategicasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

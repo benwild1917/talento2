@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ArticulosViewDlg" widgetVar="ArticulosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewArticulosTitle}" closeOnEscape="true">
+
+            <h:form id="ArticulosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{articulosController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_codigo}"/>
+                        <h:outputText value="#{articulosController.selected.codigo}" title="#{mensajes.ViewArticulosTitle_codigo}"/>
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_descripcion}"/>
+                        <h:outputText value="#{articulosController.selected.descripcion}" title="#{mensajes.ViewArticulosTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_stock}"/>
+                        <h:outputText value="#{articulosController.selected.stock}" title="#{mensajes.ViewArticulosTitle_stock}"/>
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_stockCritico}"/>
+                        <h:outputText value="#{articulosController.selected.stockCritico}" title="#{mensajes.ViewArticulosTitle_stockCritico}"/>
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_marca}"/>
+                        <h:outputText value="#{articulosController.selected.marca}" title="#{mensajes.ViewArticulosTitle_marca}"/>
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_modelo}"/>
+                        <h:outputText value="#{articulosController.selected.modelo}" title="#{mensajes.ViewArticulosTitle_modelo}"/>
+
+                        <h:outputText value="#{mensajes.ViewArticulosLabel_rubro}"/>
+                        <h:outputText value="#{articulosController.selected.rubro.descripcion}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ArticulosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

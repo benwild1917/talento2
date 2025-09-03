@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+            <p:dialog id="EntradasArticuloCreateDlg" positionType="absolute" widgetVar="EntradasArticuloCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateEntradasArticuloTitle}" closeOnEscape="true">
+
+                <h:form id="EntradasArticuloCreateForm">
+
+                    <h:panelGroup id="display" rendered="#{entradasArticuloController.entradaArticulo != null}">
+                        <p:fieldset legend="Cabecera">
+                            <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_nroFactura}" for="nroFactura" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:inputText id="nroFactura" value="#{entradasArticuloController.entradaArticulo.nroFactura}" title="#{mensajes.CreateEntradasArticuloTitle_nroFactura}" required="true" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_nroFactura}" size="15" maxlength="15">
+
+                                        <p:ajax event="blur" update=":growl" listener="#{entradasArticuloController.verificarNroFacturaCreate()}" />
+
+                                        <ui:remove>
+                                            <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                        </ui:remove>
+                                    </p:inputText>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_fechaEntrada}" style="height: 100px; width: 100%" for="fechaEntrada" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:calendar size="7" style="height: 100px; width: 100%" id="fechaEntrada" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.entradaArticulo.fechaEntrada}" title="Fecha Entrada"  showOn="button">
+                                        <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                    </p:calendar>
+                                </div> 
+                                
+                                
+                                  <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_nroLlamado}" for="nroLlamado" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:inputText id="nroLlamado" value="#{entradasArticuloController.entradaArticulo.nroLlamado}" title="#{mensajes.CreateEntradasArticuloTitle_nroLlamado}" required="true" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_nroLlamado}" size="15" maxlength="15">
+                                        <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                    </p:inputText>
+                                </div>
+                                       <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="Deposito" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-2 ui-g-1">
+                                    <p:selectOneMenu id="sede" value="#{entradasArticuloController.sede}" required="true" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_sede}" converter="sedeConverter">
+
+                                    <p:ajax  event="change" listener="#{entradasArticuloController.resetearListas(entradasArticuloController.sede)}"  update="@form:articulo,@form:cantidad,@form:costoUnitario"/>
+
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{sedeController.items}"
+                                                       var="sedeItem"
+                                                       itemValue="#{sedeItem}"
+                                                       itemLabel="#{sedeItem.descripcion}"
+                                                       />
+
+                                    </p:selectOneMenu>
+                                </div>
+                                
+                                       </div>
+
+                            </div>
+                            <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_fechaLlamado}" for="fechaLlamado"/>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:calendar size="7" id="fechaLlamado" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.entradaArticulo.fechaLlamado}" title="Fecha Llamado"  showOn="button">
+                                        <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                    </p:calendar>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_proveedor}" for="proveedor" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:selectOneMenu id="proveedor" value="#{entradasArticuloController.entradaArticulo.proveedor}" required="true" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_proveedor}" converter="proveedoresConverter">
+
+                                        <p:ajax event="change" update="@form:articulo,@form:cantidad,@form:costoUnitario,:growl" listener="#{entradasArticuloController.verificarNroFacturaCreate()}" />
+
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{proveedoresController.items}"
+                                                       var="proveedorItem"
+                                                       itemValue="#{proveedorItem}"
+                                                       itemLabel="#{proveedorItem.nombre}"
+                                                       />
+
+                                    </p:selectOneMenu>
+                                </div>
+                                     
+                            </div>
+                            
+                            <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_fechaRemision}" for="fechaRemision"/>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:calendar size="7" id="fechaRemision" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.entradaArticulo.fechaRemision}" title="Fecha Remisión"  showOn="button">
+                                        <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                    </p:calendar>
+                                </div>  
+                            
+                                <div class="ui-sm-12 ui-sm-1 ui-g-1">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_nroRemision}" for="nroRemision" />
+                                    
+                                </div>
+                                <div class="ui-sm-12 ui-sm-3 ui-g-3">
+                                    <p:inputText id="nroRemision" value="#{entradasArticuloController.entradaArticulo.nroRemision}" title="#{mensajes.CreateEntradasArticuloTitle_nroRemision}" required="true" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_nroRemision}" size="15" maxlength="15">
+                                        <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                    </p:inputText>
+                                 
+                                </div>
+                           
+                        </p:fieldset>
+                        <p:fieldset legend="Detalles">
+                            <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                
+                                <div class="ui-sm-12 ui-sm-2 ui-g-2">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_articulo}" for="articulo" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-10 ui-g-10">
+                                    <p:selectOneMenu id="articulo" onblur="endHandler();" onfocus="endHandler();" widgetVar="wvArticulo" filter="true" filterMatchMode="contains" value="#{entradasArticuloController.articulo}" disabled="#{empty entradasArticuloController.entradaArticulo.proveedor or entradasArticuloController.entradaArticulo.nroLlamado or empty entradasArticuloController.entradaArticulo.nroFactura or entradasArticuloController.entradaArticulo.sede}" required="false" requiredMessage="#{mensajes.CreateEntradasArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                                        <p:ajax event="change"   update="@form:cantidad,@form:costoUnitario,@form:fechaVencimiento,@form:codigo_DNCP,@form:marcas,@form:modelos,@form:Objetogasto,@form:codigo_suministro" listener="#{entradasArticuloController.cargarDatosAdicionales()}" />
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{entradasArticuloController.listaArticulos}"
+                                                       var="articuloItem"
+                                                       itemValue="#{articuloItem}"
+                                                       itemLabel="#{articuloItem.codigo} - #{articuloItem.descripcionLarga}"
+                                                       />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_cantidad}" for="cantidad" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                    <p:inputNumber id="cantidad" disabled="#{empty entradasArticuloController.entradaArticulo.proveedor or entradasArticuloController.entradaArticulo.nroLlamado or empty entradasArticuloController.entradaArticulo.nroFactura}" decimalSeparator="" decimalPlaces="0" thousandSeparator="" value="#{entradasArticuloController.cantidad}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_cantidad}">
+                                    </p:inputNumber>    
+                                </div>
+                                <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_costoUnitario}" for="costoUnitario" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                        <p:inputNumber id="costoUnitario" disabled="#{empty entradasArticuloController.entradaArticulo.proveedor or entradasArticuloController.entradaArticulo.nroLlamado or empty entradasArticuloController.entradaArticulo.nroFactura}" symbol=" Gs. " symbolPosition="p" decimalSeparator="," decimalPlaces="0" thousandSeparator="." value="#{entradasArticuloController.costoUnitario}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_costoUnitario}"/>
+                                    </div>
+
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">  
+                                        <p:outputLabel value="Tipo IVA" for="tipos_iva" />
+                                    </div>   
+                                    <div class="ui-sm-12 ui-sm-8 ui-g-8">           
+                                        <h:panelGroup>
+                                            <p:selectOneMenu id="tipos_iva" filter="true" filterMatchMode="contains" value="#{entradasArticuloController.tiposIva}" required="true" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_tipos_iva}" converter="TiposIvaConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/> 
+                                                <f:selectItems value="#{tiposIvaController.items}"  
+                                                               var="tipo_ivaItem"
+                                                               itemValue="#{tipos_ivaItem}"
+                                                               itemLabel="#{tipo_ivaItem.descripcion}"
+                                                               />
+                                            </p:selectOneMenu>
+                                            <p:tooltip for="tipos_iva" value="#{articulosController.getComponentMessages('tipo_iva', mensajes.CreateArticulosHelpText_unidad)}"/>
+                                        </h:panelGroup>     
+
+                                    </div>
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_fechaVencimiento}" for="fechaVencimiento" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                        <p:calendar size="7" id="fechaVencimiento" pattern="dd/MM/yyyy" navigator="true" value="#{entradasArticuloController.fechaVencimiento}" title="Fecha Vencimiento"  showOn="button">
+                                            <p:ajax event="change"   update="@form:articulo,@form:cantidad,@form:costoUnitario" />
+                                        </p:calendar>
+                                    </div>   
+                                    <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                        <div class="ui-sm-12 ui-sm-2 ui-g-2">
+                                            <p:outputLabel value="#{mensajes.CreateArticulosLabel_codigo_DNCP}" for="codigo_DNCP" />
+                                        </div>
+                                        <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                            <p:inputText id="codigo_DNCP" value="#{entradasArticuloController.codigoDNCP}" title="#{mensajes.CreateArticulosTitle_codigo_DNCP}" required="false" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_codigo_DNCP}" maxlength="60"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                    <p:outputLabel value="Marca" for="marcas" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                    <p:selectOneMenu id="marcas" value="#{entradasArticuloController.marca}" disabled="true" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_marca}" converter="marcasConverter">
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{marcasController.items}"
+                                                       var="marcaItem"
+                                                       itemValue="#{marcaItem}"
+                                                       itemLabel="#{marcaItem.descripcion}"
+                                                       />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                    <p:outputLabel value="Modelo" for="modelos" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                    <p:selectOneMenu id="modelos" value="#{entradasArticuloController.modelo}"  disabled="true" requiredMessage="Ingrese modelo" converter="modelosConverter">
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{modelosController.items}"
+                                                       var="modelosItem"
+                                                       itemValue="#{modelosItem}"
+                                                       itemLabel="#{modelosItem.descripcion}"
+                                                       />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                    <p:outputLabel value="Objeto Gasto" for="Objetogasto" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                    <!-- Este articulosController.selected.Objetogasto tiene que ser igual al que está en Articulos, incluyendo mayusculas y minusculas -->
+                                    <!-- Este required="true" vamos a dejarle en false para que sea opcional nomas -->
+                                    <!-- Este CreateArticulosRequiredMessage_Objetogasto vamos a crear en Mensajes.properties. Ese y los demas -->
+                                    <p:selectOneMenu id="Objetogasto"  value="#{entradasArticuloController.objetoGasto}"  disabled="true" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_Objetogasto}" converter="objetosgastoConverter"> <!-- Este converter tiene que ser igual al que está en ObjetosGastoConverter, con las mayusculas y minusculas -->
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <!-- Este tambien tenes que cambiar a objetosGastoController --> 
+                                        <f:selectItems value="#{objetosGastoController.items}"
+                                                       var="ObjetogastoItem"
+                                                       itemValue="#{ObjetogastoItem}"
+                                                       itemLabel="#{ObjetogastoItem.codigo}"
+                                                       />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                    <p:outputLabel value="#{mensajes.CreateArticulosLabel_codigo_suministro}" for="codigo_suministro" />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                    <p:inputText id="codigo_suministro" disabled="true" value="#{entradasArticuloController.articulo.codigo}" title="#{mensajes.CreateArticulosTitle_codigo_suministro}" required="false" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_codigo_suministro}" maxlength="60"/>
+                                </div>
+
+                            </div>
+
+                            <div class="ui-sm-12 ui-sm-12 ui-g-12">
+
+                                <div class="ui-sm-12 ui-sm-1 ui-g-2">
+                                    <p:commandButton actionListener="#{entradasArticuloController.agregar()}" value="Agregar" update=":EntradasArticuloCreateForm:datalist,:growl,@form:totalIva_5,@form:totalIva_10,@form:totalIva,@form:totalCostoTotal"  />
+                                </div>
+                                <div class="ui-sm-12 ui-sm-1 ui-g-2">
+                                    <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{entradasArticuloController.borrarDetalle()}" update=":EntradasArticuloCreateForm:datalist,:growl,@form:totalIva_5,@form:totalIva_10,@form:totalIva,@form:totalCostoTotal"  />
+                                </div>
+                            </div>
+
+                            <p:contextMenu id="DetallesEntradaArticuloDataTableContextMenu" for="datalist">  
+                                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('EntradasArticuloCreateForm:deleteButton').click();" icon="ui-icon-trash"/>
+                            </p:contextMenu>
+                            <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                <p:dataTable id="datalist"
+                                             value="#{entradasArticuloController.detalles}"
+                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                             rowKey="#{item.id}"
+                                             var="item"
+                                             paginator="true"
+                                             rows="10"
+                                             rowsPerPageTemplate="10,20,30,40,50"
+                                             selectionMode="single"
+                                             selection="#{entradasArticuloController.detalleSelected}">
+
+
+                                    <p:ajax event="rowSelect"   update="@form:deleteButton,@form:DetallesEntradaArticuloDataTableContextMenu" />
+                                    <p:ajax event="rowUnselect" update="@form:deleteButton,@form:DetallesEntradaArticuloDataTableContextMenu" />
+                                    <p:ajax event="contextMenu" update="@form:deleteButton" />
+                                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('DetallesEntradaArticuloListForm:viewButton').click();"/>
+
+                                    <p:column sortBy="#{item.articulo.descripcionLarga}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_articulo}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.articulo.descripcionLarga}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.articulo.marca.descripcion}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_marca}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.marca.descripcion}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.cantidad}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_cantidad}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.cantidad}">
+                                            <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.costoUnitario}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_costoUnitario}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.costoUnitario}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.exentas}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_exentas}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.exentas}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+
+                                    </p:column>
+
+                                    
+                                    
+                                    <p:column sortBy="#{item.iva_5}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_iva_5}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.iva_5}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+
+                                    </p:column>
+
+
+                                    <p:column sortBy="#{item.iva_10}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_iva_10}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.iva_10}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>          
+                                    </p:column>
+                                    <ui:remove>
+                                        <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                            <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                                <h:outputText id="totalIva_5" value="#{entradasArticuloController.totalIva_5}">
+                                                    <f:convertNumber type="currency" groupingUsed="true" currencySymbol="(5%)" locale="es_PY" minFractionDigits="0" />
+                                                </h:outputText>
+                                            </div>
+                                            <div class="ui-sm-12 ui-sm-2 ui-g-2">
+
+                                                <h:outputText id="totalIva_10" value="#{entradasArticuloController.totalIva_10}">
+                                                    <f:convertNumber type="currency" groupingUsed="true" currencySymbol="(10%)" locale="es_PY" minFractionDigits="0" />
+                                                </h:outputText>
+                                            </div>
+
+
+                                            <h:outputText id="totalIva" value="#{entradasArticuloController.totalIva}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Total IVA:" locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+
+
+                                        </div>
+                                        <p:column sortBy="#{item.exentas}" >
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_exentas}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.exentas}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                    </ui:remove>
+                                    <ui:remove>
+                                        <p:column sortBy="#{item.costoTotal}" >
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_costoTotal}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.costoTotal}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                        </p:column>  
+                                        <ui:remove>
+                                    <p:column>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{entradasArticuloController.totalCostoTotal}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                        </f:facet>
+                                    </p:column>
+                                         </ui:remove>
+                             </ui:remove>
+                                    <ui:remove>
+                                        <p:column sortBy="#{item.iva_5}" >
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_iva_5}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.iva_5}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                            <f:facet name="footer">
+                                                <h:outputText value="#{entradasArticuloController.totalIva_5}">
+                                                    <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                                </h:outputText>
+                                            </f:facet>
+
+
+
+                                        </p:column>
+
+                                        <p:column sortBy="#{item.iva_10}" >
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_iva_10}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.iva_10}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Gs. " locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                    </ui:remove>    
+
+                                    <ui:remove>
+                                        <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_id}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.id}"/>
+                                        </p:column>
+
+                                        <p:column sortBy="#{item.nroFactura}" filterBy="#{item.nroFactura}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_nroFactura}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nroFactura}"/>
+                                        </p:column>
+
+
+                                        <p:column sortBy="#{item.nroLlamado}" filterBy="#{item.nroLlamado}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_nroLlamado}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nroLlamado}"/>
+                                        </p:column>
+
+                                        <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_fechaHoraAlta}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.fechaHoraAlta}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_fechaHoraUltimoEstado}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column sortBy="#{item.proveedor.nombre}" filterBy="#{item.proveedor.nombre}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_proveedor}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.proveedor.nombre}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.entradaArticulo.id}" filterBy="#{item.entradaArticulo.id}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_entradaArticulo}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.entradaArticulo.id}"/>
+                                        </p:column>
+
+                                        <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_usuarioAlta}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.usuarioAlta.id}"/>
+                                        </p:column>
+
+                                        <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_usuarioUltimoEstado}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{mensajes.ListDetallesEntradaArticuloTitle_empresa}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.empresa.id}"/>
+                                        </p:column>
+                                    </ui:remove>
+                                </p:dataTable>
+                                
+                                
+                                <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                    <div class="ui-sm-12 ui-sm-8 ui-g-8"></div>
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                            <h:outputText id= "totalCostoTotal" value="#{entradasArticuloController.totalCostoTotal}">
+                                                <f:convertNumber type="currency" groupingUsed="true" currencySymbol="Total General Gs. " locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                        </div>
+                                   </div>
+                                
+                                <div class="ui-sm-12 ui-sm-12 ui-g-12">
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <h:outputText id="totalIva_5" value="#{entradasArticuloController.totalIva_5}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="5%: " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+                                    </div>
+
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <h:outputText id="totalIva_10" value="#{entradasArticuloController.totalIva_10}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="10%: " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+                                    </div>
+
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <h:outputText id="totalIva" value="#{entradasArticuloController.totalIva}">
+                                            <f:convertNumber type="currency" groupingUsed="true" currencySymbol="TOTAL IVA: " locale="es_PY" minFractionDigits="0" />
+                                        </h:outputText>
+                                    </div>
+                                </div>
+
+                                <ui:remove>
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_costoUnitario}" for="totalIva_10" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                        <p:inputNumber id="totalIva_10" disabled="#{empty entradasArticuloController.totalIva_10}" symbol=" Gs. " symbolPosition="p" decimalSeparator="," decimalPlaces="0" thousandSeparator="." value="#{entradasArticuloController.costoUnitario}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_costoUnitario}"/>
+                                    </div> 
+                                </ui:remove>
+                                <ui:remove>
+                                    <div class="ui-sm-12 ui-sm-4 ui-g-4">
+                                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_costoUnitario}" for="costoUnitario" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-sm-8 ui-g-8">
+                                        <p:inputNumber id="costoUnitario" disabled="#{empty entradasArticuloController.entradaArticulo.proveedor or entradasArticuloController.entradaArticulo.nroLlamado or empty entradasArticuloController.entradaArticulo.nroFactura}" symbol=" Gs. " symbolPosition="p" decimalSeparator="," decimalPlaces="0" thousandSeparator="." value="#{entradasArticuloController.costoUnitario}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_costoUnitario}"/>
+                                    </div>
+
+                                </ui:remove>
+                            </div>
+                        </p:fieldset>
+
+                        <p:commandButton actionListener="#{entradasArticuloController.saveNew}" value="#{mensajes.Save}" update="display,:EntradasArticuloListForm:datalist,:EntradasArticuloListForm:datalistDetalle,:growl,:menuForm:nuevos" oncomplete="handleSubmit(xhr,status,args,PF('EntradasArticuloCreateDialog'));">
+                            <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('EntradasArticuloCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

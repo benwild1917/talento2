@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <script>
+        //<![CDATA[
+        function exportChart() {
+            //export image
+            $('#SalidasArticuloListForm\\:output').empty().append(PF('grafico2').exportAsImage());
+
+            // $('#SalidasArticuloListForm\\:output').empty().append(grafico2.exportAsImage());
+            // $('output').empty().append(grafico2.exportAsImage());
+
+            //show the dialog
+            // dlg.show();
+            // PF('SalidasArticuloListForm\\:dlg').show();
+            PF('dlg').show();
+        }
+        //]]>
+
+        //<![CDATA[
+        function exportChartObjeto() {
+            $('#SalidasArticuloListForm\\:output1').empty().append(PF('grafico3').exportAsImage());
+            PF('dlgObjeto').show();
+        }
+        //]]>
+        //<![CDATA[
+        function exportChartObjetoBarra() {
+            $('#SalidasArticuloListForm\\:outputBarra').empty().append(PF('grafico4').exportAsImage());
+            PF('dlgObjetoBarra').show();
+        }
+        //]]>
+    </script>
+    <div class="ui-g">
+        <h:form id="SalidasArticuloListForm" >
+            <p:commandButton id="createButton" disabled="#{empty salidasArticuloController.salidaArticulo}" icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{salidasArticuloController.prepareCreate}" update=":SalidasArticuloCreateForm" oncomplete="PF('SalidasArticuloCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   rendered="false" style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":SalidasArticuloViewForm" oncomplete="PF('SalidasArticuloViewDialog').show()" disabled="#{empty salidasArticuloController.selected}"/>
+            <p:commandButton id="editButton"   rendered="true" style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":SalidasArticuloEditForm" oncomplete="PF('SalidasArticuloEditDialog').show()" actionListener="#{salidasArticuloController.prepareEdit()}" disabled="#{empty salidasArticuloController.selected}"/>
+            <p:commandButton id="deleteButton" rendered="true" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{salidasArticuloController.delete}" update=":growl,datalist,datalistDetalle" disabled="#{empty salidasArticuloController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton id="imprimirButton" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Nro Formulario" action="#{salidasArticuloController.pdfNroFormuario(true)}" />
+            <p:commandButton id="imprimirButtonbkp"  ajax="false" rendered="false" style="visibility: visible;" icon="ui-icon-plus" value="Subir Reporte"  update=":ReporteFormularioForm" oncomplete="PF('ReporteFormularioDlg').show()" action="#{archivosReporteController.prepareArchivosReporte((salidasArticuloController.selected))}" disabled="#{empty salidasArticuloController.selected}"/>
+
+
+
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:fieldset style="width: 100%">
+                        <h:outputText value="Fecha Salida" style="padding-right: 20px" />
+
+                        <p:outputLabel value="Desde" for="fechaDesdeSalida" style="padding-right: 5px; padding-left: 20px"/>
+                        <p:calendar style="padding-right: 10px" id="fechaDesdeSalida" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{salidasArticuloController.fechaDesdeSalida}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHastaSalida" />
+                        <p:calendar style="padding-right: 10px" id="fechaHastaSalida" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{salidasArticuloController.fechaHastaSalida}" title="Fecha Hasta"  showOn="button"/>
+                        <p:inputText style="padding-right: 10px" value="#{salidasArticuloController.nroFormulario}" />
+
+                        <p:commandButton value="Buscar por Fecha Salida o Nro Formulario" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalle" action="#{salidasArticuloController.buscarPorFechaSalida()}"></p:commandButton>
+                    </p:fieldset>
+
+
+                </div>
+                <ui:remove>
+                    <p:panelGrid columns="6">
+                        <h:outputText value="Fecha de Carga" style="padding-right: 20px" />
+
+                        <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                        <p:calendar style="padding-right: 10px" id="fechaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{salidasArticuloController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHasta" />
+                        <p:calendar style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{salidasArticuloController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                        <p:commandButton value="Buscar por Fecha de Carga" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalle" action="#{salidasArticuloController.buscarPorFechaAlta()}"></p:commandButton>
+                    </p:panelGrid>
+                </ui:remove>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <div class="ui-sm-12 ui-md-6 ui-g-6">
+                        <p:fieldset style="width: 100%">
+                            <h:outputText value="Ordenar por" style="padding-right: 20px" />
+                            <p:selectOneRadio id="ordenarPor" value="#{salidasArticuloController.ordenarPor}">
+                                <f:selectItem itemLabel="Nro Formulario" itemValue="1" />
+                                <f:selectItem itemLabel="Fecha Alta" itemValue="2" />
+                            </p:selectOneRadio>
+                        </p:fieldset>
+                    </div>
+                    <div class="ui-sm-12 ui-md-6 ui-g-6">
+                        <p:fieldset style="width: 100%">
+                            <h:outputText value="Tipo de Orden" style="padding-right: 20px" />
+                            <p:selectOneRadio id="tipoOrden" value="#{salidasArticuloController.tipoOrden}">
+                                <f:selectItem itemLabel="Descendente" itemValue="1" />
+                                <f:selectItem itemLabel="Ascendente" itemValue="2" />
+                            </p:selectOneRadio>
+                        </p:fieldset>
+                    </div>
+                </div>
+            </div>
+             <div class="ui-sm-12 ui-md-12 ui-g-12">
+                  <div class="ui-sm-12 ui-md-6 ui-g-6">
+                <p:fieldset style="width: 100%">
+                    <p:outputLabel value="Depósito"  style="margin-left: 5px" />
+
+                    <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="sede" value="#{salidasArticuloController.listadepositoFiltroSalida}" converter="sedeConverter">
+                        <f:selectItems value="#{sedeController.items}"
+                                       var="sedeItem"
+                                       itemValue="#{sedeItem}"
+                                       itemLabel="#{sedeItem.descripcion}"
+                                       />
+                    </p:selectCheckboxMenu>
+
+                    <p:commandButton id="imprimirButton4" style="margin-left: 10px" rendered="true"  ajax="false" onclick="this.form.target = '_blank'" value="Reporte por Depósito" action="#{salidasArticuloController.pdfDeposito(true)}"/>
+                    <p:commandButton id="imprimirButtonExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Deposito Excel" action="#{salidasArticuloController.pdfDeposito(false)}" />
+
+                </p:fieldset>
+            </div>
+                 <ui:remove>
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                <p:fieldset style="width: 100%">
+
+                        <p:outputLabel value="#{mensajes.CreateSalidasArticuloLabel_articulo}" for="articulo" style="padding-right: 5px;"/>    
+
+                        <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="articulo" value="#{salidasArticuloController.listaArticuloFiltroSalida}" converter="articulosConverter">
+                            <f:selectItems value="#{articulosController.items}"
+                                           var="articuloItem"
+                                           itemValue="#{articuloItem}"
+                                           itemLabel="#{articuloItem.codigo} - #{articuloItem.descripcion}"
+                                           />
+                        </p:selectCheckboxMenu>
+                        <ui:remove>
+                            <p:selectOneMenu id="articulo" filter="true" filterMatchMode="contains" value="#{salidasArticuloController.articuloFiltro}" required="false" requiredMessage="#{mensajes.CreateSalidasArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{articulosController.items}"
+                                               var="articuloItem"
+                                               itemValue="#{articuloItem}"
+                                               itemLabel="#{articuloItem}"
+                                               />
+                            </p:selectOneMenu>
+                        </ui:remove>
+                        <p:commandButton id="imprimirButton2" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Articulo" action="#{salidasArticuloController.pdf(true)}" />
+                        <p:commandButton id="imprimirButtonExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Articulo Excel" action="#{salidasArticuloController.pdf(false)}" />
+                    </p:fieldset>
+                </div>
+           </ui:remove>
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+
+                    <p:fieldset style="width: 100%">
+                        <p:outputLabel value="#{mensajes.CreateSalidaArticuloLabel_objetosgasto}" for="objetosgasto" style="padding-right: 5px;"/>
+                        <p:selectCheckboxMenu filter="true" filterMatchMode="contains" style="width: 100%" id="objetosgasto" value="#{salidasArticuloController.listaObjetosGastoFiltroSalida}" converter="objetosgastoConverter">
+                            <f:selectItems value="#{objetosGastoController.items}"
+                                           var="objetosgastoItem"
+                                           itemValue="#{objetosgastoItem}"
+                                           itemLabel="#{objetosgastoItem.codigo}"
+                                           />
+                        </p:selectCheckboxMenu>
+                        <p:commandButton id="imprimirButtonObjetoGastoExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte Salida por Objeto Gasto Excel" action="#{salidasArticuloController.reporteSalidaObjetoGastoExcel()}" />
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-sm-12 ui-md-12 ui-g-12"> 
+                    <div class="ui-sm-12 ui-md-6 ui-g-6">
+                        <p:fieldset style="width: 100%">
+                            <p:outputLabel value="#{mensajes.CreateSalidasArticuloTitle_departamento}" for="departamento"  style="margin-left: 5px" />
+
+                            <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="departamento" value="#{salidasArticuloController.listadepartamentoFiltroSalida}" converter="departamentosConverter">
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre}"
+                                               />
+                            </p:selectCheckboxMenu>
+
+                            <p:commandButton id="imprimirButton3" style="margin-left: 10px" rendered="true"  ajax="false" onclick="this.form.target = '_blank'" value="Reporte por Dependencia" action="#{salidasArticuloController.pdfDepartamento(true)}"/>
+                            <p:commandButton id="imprimirButtonDepartamentoExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Dependencia Excel" action="#{salidasArticuloController.pdfDepartamento(false)}"/>
+                        </p:fieldset>
+                    </div>
+
+                    <div class="ui-sm-12 ui-md-6 ui-g-6">
+                        <p:fieldset style="width: 100%">
+                            <p:outputLabel value="#{mensajes.CreateSalidasArticuloTitle_departamento}" for="departamento"  style="margin-left: 5px" />
+                            <p:selectOneMenu id="departamento2"  filter="true" filterMatchMode="contains"   style="margin-left: 10px" value="#{salidasArticuloController.departamentoFiltro}" requiredMessage="#{mensajes.CreateSalidasArticuloRequiredMessage_departamento}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem}"
+                                               />
+                            </p:selectOneMenu>
+
+                            <!-- GRAVE: Error: El ID (no se puede repetir) del componente SalidasArticuloListForm:imprimirButtonGraficos ya se ha encontrado en la vista -->
+                            <!-- cambie de nombre a imprimirButtonGraficos2 -->  
+
+                        </p:fieldset>
+
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:commandButton id="imprimirButtonGraficos2" style="margin-left: 10px" rendered="true" value="Gráfico" update="grafico2, growl" actionListener="#{salidasArticuloController.graficoDepartamento()}"/>
+
+                        </div>
+
+                        <p:dialog widgetVar="dlg" showEffect="fade" modal="true" header="Grafico" resizable="false">
+                            <p:outputPanel id="output" layout="block" style="width:500px;height:600px"/>
+                        </p:dialog>
+                    </div>
+
+                    <ui:remove>  
+
+                        <div class="ui-sm-12 ui-md-6 ui-g-6"> 
+                            <p:chart id="grafico" type= "pie" model="#{salidasArticuloController.pieModel}" style= "width:100%;height: 500px" rendered ="#{salidasArticuloController.pieModel!=null}"/>               
+                            <p:commandButton id="imprimirButtonGraficos" style="margin-left: 30px" rendered="true"  ajax="false" value="Gráfico Salidas Seleccionadas" action="#{salidasArticuloController.graficar()}" update="grafico" />  
+                        </div>  
+                    </ui:remove>
+                </div>
+            </div>
+      
+
+            <div class="ui-sm-12 ui-md-6 ui-g-6">
+                <p:fieldset style="width: 100%">
+                    <p:outputLabel value="#{mensajes.CreateSalidasArticuloTitle_objetosgasto}" for="objetosgasto"  style="margin-left: 5px" /> 
+                    <p:selectOneMenu id="objetosgasto2" filter="true" filterMatchMode="contains" value="#{salidasArticuloController.objetosGastoFiltro}" required="false" requiredMessage="#{mensajes.CreateSalidasArticuloRequiredMessage_objetosGasto}" converter="objetosgastoConverter">
+                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                        <f:selectItems value="#{objetosGastoController.items}"
+                                       var="objetosgastoItem"
+                                       itemValue="#{objetosgastoItem}"
+                                       itemLabel="#{objetosgastoItem.codigo}"
+                                       />
+                    </p:selectOneMenu>    
+                </p:fieldset>
+
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                    <p:commandButton id="imprimirButtonGraficos3" style="margin-left: 10px" rendered="true" value="Gráfico" update="grafico3, growl" actionListener="#{salidasArticuloController.graficoObjetoGasto()}"/>
+                </div>
+                <p:dialog widgetVar="dlgObjeto" showEffect="fade" modal="true" header="Grafico" resizable="false">
+                    <p:outputPanel id="output1" layout="block" style="width:500px;height:600px"/>
+                </p:dialog>
+            </div>
+
+
+            <ui:remove>
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                    <p:commandButton id="imprimirButtonGraficos4" style="margin-left: 10px" rendered="true" value="Gráfico Barra" update="grafico4"  oncomplete="exportChartObjetoBarra();" actionListener="#{salidasArticuloController.graficoObejetoGastoBarra()}"/>
+                </div>
+
+                <p:dialog widgetVar="dlgObjetoBarra" showEffect="fade" modal="true" header="Grafico" resizable="false">
+                    <p:outputPanel id="outputBarra" layout="block" style="width:500px;height:600px"/>
+                </p:dialog>
+            </ui:remove>  
+
+           
+            <div class="ui-sm-12 ui-md-6 ui-g-6">
+
+                <p:panel>
+                    <p:outputLabel value="#{mensajes.CreateEntradasArticuloLabel_proveedor}" for="proveedor" style="padding-right: 5px;"/>
+                    <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="proveedor" value="#{salidasArticuloController.listaProveedorFiltroSalida}" converter="proveedoresConverter">
+                        <f:selectItems value="#{proveedoresController.items}"
+                                       var="proveedorItem"
+                                       itemValue="#{proveedorItem}"
+                                       itemLabel="#{proveedorItem.nombre}"
+                                       />
+                    </p:selectCheckboxMenu>
+
+                </p:panel>
+
+                <p:commandButton id="imprimirButton5" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Proveedor" action="#{salidasArticuloController.pdfProveedor(true)}" />
+                <p:commandButton id="imprimirButtonProveedorExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte por Proveedor Excel" action="#{salidasArticuloController.pdfProveedor(false)}" />
+
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:dataTable id="datalist"
+                             value="#{salidasArticuloController.items}"
+                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                             rowKey="#{item.id}"
+                             var="item"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             rows="3"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{salidasArticuloController.selected}">
+
+
+                    <p:ajax event="rowSelect"   update="@form:datalistDetalle, @form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:imprimirButtonbkp" listener="#{salidasArticuloController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:datalistDetalle,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{salidasArticuloController.resetParents}"/>
+                    <p:ajax event="contextMenu" update="@form:datalistDetalle,@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{salidasArticuloController.resetParents}"/>
+                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('SalidasArticuloListForm:viewButton').click();"/>
+
+                    <p:column sortBy="#{item.nroFormulario}" filterBy="#{item.nroFormulario}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListSalidasArticuloTitle_nroFormulario}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nroFormulario}"/>
+                    </p:column>
+                    <ui:remove>
+                        <p:column sortBy="#{item.sede.descripcion}" filterBy="#{item.sede.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Deposito"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sede.descripcion}"/>
+                        </p:column>
+
+
+                        <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListSalidasArticuloTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.nroLlamado}" filterBy="#{item.nroLlamado}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListSalidasArticuloTitle_nroLlamado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroLlamado}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListSalidasArticuloTitle_fechaHoraUltimoEstado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                    </ui:remove>
+                    <p:column sortBy="#{item.personas}" filterBy="#{item.personas}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListSalidasArticuloTitle_persona}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.personas}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.departamento.nombre}" filterBy="#{item.departamento.nombre}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListSalidasArticuloTitle_departamento}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.departamento.nombre}"/>
+                    </p:column>
+                    
+                    
+                     <p:column sortBy="#{item.responsableRetiro}" filterBy="#{item.responsableRetiro}">
+                        <f:facet name="header">
+                            <h:outputText value="Responsable Retiro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.responsableRetiro}"/>
+                    </p:column>
+                    
+                    
+
+
+                    <p:column sortBy="#{item.usuarioAlta.nombresApellidos}" filterBy="#{item.usuarioAlta.nombresApellidos}">
+                        <f:facet name="header">
+                            <h:outputText value="Responsable Entrega"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta.nombresApellidos}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{salidasArticuloController.customFormatDate(item.fechaHoraAlta)}" filterMatchMode="startsWith" filterBy="#{salidasArticuloController.customFormatDate(item.fechaHoraAlta)}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListSalidasArticuloTitle_fechaHoraAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="#{salidasArticuloController.datePattern()}" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{salidasArticuloController.customFormatDate2(item.fechaSalida)}" filterBy="#{salidasArticuloController.customFormatDate2(item.fechaSalida)}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListSalidasArticuloTitle_fechaSalida}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaSalida}">
+                            <f:convertDateTime pattern="#{salidasArticuloController.datePattern2()}" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Entregado"/>
+                        </f:facet>                                    
+                        <h:selectBooleanCheckbox value="#{item.firmarMultiple}" >
+                            <p:ajax event="change" listener="#{salidasArticuloController.actualizarFirmarMultiple(item)}" update="datalist,:growl" />
+                        </h:selectBooleanCheckbox>
+                    </p:column>
+
+
+
+                    <ui:remove>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+
+                            <p:commandButton id="verDocButton"   style="visibility: visible;" icon="ui-icon-search" value="Ver" update="SalidasArticuloViewDocDlg, @form:datalist, :growl" actionListener="#{salidasArticuloController.prepareVerDoc(item)}" oncomplete="PF('SalidasArticuloViewDocDlg').show(); PF('SalidasArticuloViewDocDlg').toggleMaximize();"/>
+                        </p:column>            
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" value="Ver" action="#{salidasArticuloController.verDoc(item.archivosReporte)}" disabled="#{empty item.archivosReporte.archivo}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListSalidasArticuloTitle_usuarioAlta}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.usuarioAlta.id}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListSalidasArticuloTitle_usuarioUltimoEstado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                        </p:column>
+                    </ui:remove>
+
+                </p:dataTable>
+
+            </div>
+
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:dataTable id="datalistDetalle"
+                             value="#{salidasArticuloController.detalles}"
+                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                             rowKey="#{item.id}"
+                             var="item"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             rows="3"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             filteredValue="#{detallesSalidaArticuloController.filtrado}"
+                             >
+                    <p:column sortBy="#{item.item}" >
+                        <f:facet name="header">
+                            <h:outputText value="Item"/>
+                        </f:facet>
+                        <h:outputText value="#{item.item}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.articulo.codigo}" >
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_codigo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.articulo.codigo}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.articulo.descripcionLarga}" >
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_articulo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.articulo.descripcionLarga}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.articulo.marca.descripcion}" >
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_marca}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.articulo.marca.descripcion}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.cantidad}" >
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_cantidad}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cantidad}">
+                            <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                        </h:outputText>
+
+                    </p:column>
+
+                    <p:column sortBy="#{item.sede.descripcion}" >
+                        <f:facet name="header">
+                            <h:outputText value="Deposito"/>
+                        </f:facet>
+                        <h:outputText value="#{item.sede.descripcion}">
+
+                        </h:outputText>
+
+                    </p:column>
+
+                    <ui:remove>
+                        <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.departamento}" filterBy="#{item.departamento}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_departamento}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departamento}"/>
+                        </p:column>
+
+
+                        <p:column sortBy="#{item.nroFormulario}" filterBy="#{item.nroFormulario}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_nroFormulario}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroFormulario}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_fechaHoraAlta}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_fechaHoraUltimoEstado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_persona}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.persona.nombresApellidos}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_usuarioAlta}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.usuarioAlta.id}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_usuarioUltimoEstado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_empresa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.empresa.id}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.salidaArticulo.nroFormulario}" filterBy="#{item.salidaArticulo.nroFormulario}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_salidaArticulo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.salidaArticulo.nroFormulario}"/>
+                        </p:column>
+                    </ui:remove>
+
+                </p:dataTable>
+            </div>
+
+
+            <p:chart id="grafico2" widgetVar="grafico2" type= "pie" model="#{salidasArticuloController.pieModel2}" style= "#{salidasArticuloController.estiloPieDepartamento}" /> 
+
+            <p:chart id="grafico3" widgetVar="grafico3" type= "pie" model="#{salidasArticuloController.pieModelO}" style= "#{salidasArticuloController.estiloPieObjetoGasto} "/> 
+            <ui:remove>
+                <p:chart id="grafico4" widgetVar="grafico4" type= "bar" model="#{salidasArticuloController.barModelO}" style= "visibility: hidden;width:300px;height: 600px" /> 
+
+            </ui:remove>
+
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>
+
+

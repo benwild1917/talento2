@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PedidosArticuloViewDlg" widgetVar="PedidosArticuloViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewPedidosArticuloTitle}" closeOnEscape="true">
+
+            <h:form id="PedidosArticuloViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{pedidosArticuloController.selected != null}">
+
+                        
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_nroFormulario}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.nroFormulario}" title="#{mensajes.ViewPedidosArticuloTitle_nroFormulario}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.fechaHoraAlta}" title="#{mensajes.ViewPedidosArticuloTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewPedidosArticuloTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_persona}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.persona.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_departamento}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.departamento.nombre}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_usuarioAlta}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosArticuloLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{pedidosArticuloController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('PedidosArticuloViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

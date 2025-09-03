@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SolicitudPermisosEditDptoRechazarDlg" widgetVar="SolicitudPermisosEditDptoRechazarDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditSolicitudPermisosRechazarTitle}" closeOnEscape="true">
+
+            <h:form id="SolicitudPermisosEditDptoRechazarForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{formulariosPermisosController.selected != null}">
+
+                        <p:outputLabel value="Observacion" for="observacion" />
+                        <h:panelGroup>
+                            <p:inputTextarea id="observacion" value="#{formulariosPermisosController.selected.observacion}" />
+                            <p:tooltip for="observacion" value="#{formulariosPermisosController.getComponentMessages('obseracion', 'Ingrese Observación')}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{formulariosPermisosController.saveDptoRechazar()}" value="Rechazar" update="display,:SolicitudPermisoListForm:datalist,:SolicitudPermisoListForm:deleteButton,:SolicitudPermisoListForm:dptoButton,:SolicitudPermisoListForm:createButton,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SolicitudPermisosEditDptoRechazarDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('SolicitudPermisosEditDptoRechazarDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+                        <h:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{formulariosPermisosController.selected.id}" />
+                            <p:tooltip for="id" value="#{formulariosPermisosController.getComponentMessages('id', mensajes.EditSolicitudPermisosHelpText_id)}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_entradaDocumento}" for="entradaDocumento" />
+                        <h:panelGroup>
+                            <p:inputText id="entradaDocumento" value="#{formulariosPermisosController.selected.entradaDocumento}" title="#{mensajes.EditSolicitudPermisosTitle_entradaDocumento}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_entradaDocumento}"/>
+                            <p:tooltip for="entradaDocumento" value="#{formulariosPermisosController.getComponentMessages('entradaDocumento', mensajes.EditSolicitudPermisosHelpText_entradaDocumento)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_descripcionMesaEntrada}" for="descripcionMesaEntrada" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="4" cols="30" id="descripcionMesaEntrada" value="#{formulariosPermisosController.selected.descripcionMesaEntrada}" title="#{mensajes.EditSolicitudPermisosTitle_descripcionMesaEntrada}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_descripcionMesaEntrada}"/>
+                            <p:tooltip for="descripcionMesaEntrada" value="#{formulariosPermisosController.getComponentMessages('descripcionMesaEntrada', mensajes.EditSolicitudPermisosHelpText_descripcionMesaEntrada)}"/>
+                        </h:panelGroup>
+
+-->
+<!--
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_departamento}" for="departamento" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="departamento" value="#{formulariosPermisosController.selected.departamento}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_departamento}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{formulariosPermisosController.getComponentMessages('departamento', mensajes.EditSolicitudPermisosHelpText_departamento)}"/>
+                        </h:panelGroup>
+-->
+
+<!--
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{formulariosPermisosController.selected.fechaHoraAlta}" title="#{mensajes.EditSolicitudPermisosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{formulariosPermisosController.getComponentMessages('fechaHoraAlta', mensajes.EditSolicitudPermisosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{formulariosPermisosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditSolicitudPermisosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{formulariosPermisosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditSolicitudPermisosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="empresa" value="#{formulariosPermisosController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{formulariosPermisosController.getComponentMessages('empresa', mensajes.EditSolicitudPermisosHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{formulariosPermisosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{formulariosPermisosController.getComponentMessages('usuarioAlta', mensajes.EditSolicitudPermisosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditSolicitudPermisosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{formulariosPermisosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditSolicitudPermisosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{formulariosPermisosController.getComponentMessages('usuarioUltimoEstado', mensajes.EditSolicitudPermisosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

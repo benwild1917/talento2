@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="ResumenListForm">
+
+            <p:panel header="EJE PRINCIPAL">
+
+
+                <p:tab id="TabView2" title="INFORMES">
+
+
+
+
+                    <p:dataTable id="datalist"
+                                 value="#{planEstrategicasController.items}"
+                                 tableStyle="width: auto"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item" filterEvent="enter"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{planEstrategicasController.selected}">
+
+
+
+                                    <!-- <p:ajax event="rowSelect"   update="@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,@form:TabView:viewButton,@form:TabView:deleteButton,:AccionOperativaListForm:TabView:datalistArchivos" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="rowUnselect" update="@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,@form:TabView:viewButton,@form:TabView:deleteButton,:AccionOperativaListForm:TabView:datalistArchivos" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="contextMenu" update="@form:TabView:agregarButton,@form:TabView:editObsButton,@form:TabView:dptoButton, @form:TabView:subirArchivo,  @form:TabView:viewButton  @form:TabView:deleteButton" listener="#{detallesPlanEstrategicasController.resetParents}"/>
+                                    <p:ajax event="rowDblselect" onsuccess="document.getElementById(':TabView:viewButton').click();"/>
+                        -->
+                        <p:column sortBy="#{item.programacion.tiposObjetivos.descripcion}" filterMatchMode="contains" filterBy="#{item.planEstrategica.programacion.tiposObjetivos.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Objetivo Principal"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.tiposObjetivos.descripcion}"/>
+                        </p:column>
+
+                       <!--  <p:column                   sortBy="#{item.planEstrategica.objetivo.descripcion}" filterMatchMode="contains" filterBy="#{item.planEstrategica.objetivo.descripcion}">
+                            <f:facet name="header">
+                       <h:outputText value="Descripcion Objetivo"/>
+                        </f:facet>
+                           <h:outputText value="#{item.planEstrategica.objetivo.descripcion}"/>
+                              </p:column>-->
+
+                        <p:column sortBy="#{item.programacion.accion.descripcion}" filterMatchMode="contains" filterBy="#{item.planEstrategica.programacion.accion.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Accion Operativa"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.accion.descripcion}"/>
+                        </p:column>
+
+                            <p:column sortBy="#{item.programacion.año}" filterMatchMode="contains" filterBy="#{item.programacion.año}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Periodo"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.programacion.año}"/>
+                                </p:column>
+
+
+                        <p:column sortBy="#{item.programacion.meta}" filterMatchMode="contains" filterBy="#{item.programacion.meta}">
+                            <f:facet name="header">
+                                <h:outputText value="Meta"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.meta}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.programacion.formula}" filterMatchMode="contains" filterBy="#{item.programacion.formula}">
+                            <f:facet name="header">
+                                <h:outputText value="Formula"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programacion.formula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.variable2}" filterMatchMode="contains" filterBy="#{item.variable2}">
+                            <f:facet name="header">
+                                <h:outputText value="Valor"/>
+                            </f:facet>
+                            <h:outputText value="#{item.variable2}"/>
+                              
+                        </p:column>
+
+                        <p:column sortBy="#{item.resultado}" filterMatchMode="contains" filterBy="#{item.resultado}">
+                            <f:facet name="header">
+                                <h:outputText value="Resultado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.resultado}"/> 
+                        </p:column>
+
+                        <!--<p:column sortBy="#{item.resultado}" filterMatchMode="contains" filterBy="#{item.resultado}">
+                            <f:facet name="header">
+                                <h:outputText value="Resultado"/>
+
+                            </f:facet>
+                            <h:outputText value="#{item.resultado}"/>
+                        </p:column>-->
+
+                       <!-- <p:column sortBy="#{item.resultadoPresupuesto}" filterMatchMode="contains" filterBy="#{item.resultadoPresupuesto}">
+                            <f:facet name="header">
+                                <h:outputText value="Resultado Presupuestario"/>
+
+                            </f:facet>
+                            <h:outputText value="#{item.resultadoPresupuesto}"/>
+                        </p:column>-->
+
+                      <!--  <p:column sortBy="#{item.resultadoPresupuesto}" filterMatchMode="contains" filterBy="#{item.resultadoPresupuesto}">
+                            <f:facet name="header">
+                                <h:outputText value="Resultado Presupuestario"/>
+                            </f:facet>
+                            <h:outputText value="#{item.resultadoPresupuesto}">
+                                <f:convertNumber pattern="#########.##" />
+                            </h:outputText>
+                        </p:column>-->
+
+                       <!-- <p:column headerText="Estado">
+                            <h:outputText id="track"
+                                          value="#{item.estadoActividad.descripcion}"
+                                          style="color:#{detallesPlanEstrategicasController.calculaColor(item.estadoActividad)};" />
+                        </p:column>-->
+                    </p:dataTable>
+
+
+                </p:tab>
+
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

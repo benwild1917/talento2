@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="#{mensajes.PedidosArticuloTitle}"/>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:include src="/pages//pedidosArticulo/List.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/View.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/Edit.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/EditDpto.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/EditVerificarPedido.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/EditCantidad.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/EditNroFormulario.xhtml"/>
+        <ui:include src="/pages//pedidosArticulo/Create.xhtml"/>
+        <ui:include src="/pages//usuarios/View.xhtml"/>
+        <ui:include src="/pages//departamentos/View.xhtml"/>
+
+    </ui:define>
+
+</ui:composition>

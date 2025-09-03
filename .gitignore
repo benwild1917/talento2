@@ -1,0 +1,4 @@
+target/
+/target/
+glassfish-resources.xml
+/target_/

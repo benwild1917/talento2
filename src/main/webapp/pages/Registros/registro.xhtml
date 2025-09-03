@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Registro de Dependencias</title>
+</h:head>
+<h:body>
+    <h:form id="formRegistro">
+
+        <p:panel header="Registrar Dependencias">
+            <p:outputLabel for="nombre" value="Nombre del Registro: " />
+            <p:inputText id="nombre" value="#{registroBean.registro.nombre}" />
+
+            <p:separator />
+
+            <p:outputLabel for="dependencias" value="Seleccionar Dependencia: " />
+            <p:selectOneMenu id="dependencias" value="#{registroBean.dependenciaSeleccionada}">
+                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                <f:selectItems value="#{registroBean.dependenciasDisponibles}"
+                               var="dep" itemLabel="#{dep.nombre}" itemValue="#{dep}" />
+            </p:selectOneMenu>
+
+            <p:commandButton value="Agregar" actionListener="#{registroBean.agregarDependencia()}" update="tablaDependencias" />
+
+            <p:dataTable id="tablaDependencias" value="#{registroBean.registro.dependencias}" var="d" style="margin-top:10px">
+                <p:column headerText="ID">
+                    #{d.id}
+                </p:column>
+                <p:column headerText="Nombre">
+                    #{d.nombre}
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton value="Guardar Registro" actionListener="#{registroBean.guardarRegistro}" ajax="false" style="margin-top:10px" />
+        </p:panel>
+
+    </h:form>
+</h:body>
+</html>

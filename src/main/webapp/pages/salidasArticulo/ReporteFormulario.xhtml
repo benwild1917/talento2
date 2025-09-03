@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ReporteFormularioDlg" widgetVar="ReporteFormularioDlg" modal="true" resizable="false"  appendTo="@(body)" header="Subir Reporte" closeOnEscape="true">
+
+            <h:form id="ReporteFormularioForm" enctype="multipart/form-data">>
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{salidasArticuloController.selected != null}">
+                         <p:outputLabel value="#{mensajes.CreateArchivosReporteLabel_salidaArticulo}" for="salidaArticulo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="salidaArticulo" value="#{archivosReporteController.selected.salidaArticulo}" requiredMessage="#{mensajes.CreateArchivosReporteRequiredMessage_salidaArticulo}" converter="salidasArticuloConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{salidasArticuloController.items}"
+                                               var="salidasArticuloItem"
+                                               itemValue="#{salidasArticuloItem}"
+                                               itemLabel="#{salidasArticuloItem.nroFormulario.toString()}"
+                                               />
+                            </p:selectOneMenu>
+                            <p:tooltip for="salidaArticulo" value="#{archivosReporteController.getComponentMessages('salidaArticulo', mensajes.CreatearchivosReporteHelpText_salidaArticulo)}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="Archivo" />
+                        <p:panelGrid columns="2">
+                            <p:fileUpload id="archivo" value="#{archivosReporteController.file}" mode="simple" skinSimple="true" previewWidth="100" cancelLabel="Cancelar" uploadLabel="Alzar" label="Subir" invalidFileMessage="El archivo debe ser un pdf" invalidSizeMessage="El archivo debe tener hasta 100Kb" sizeLimit="102400" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{archivosReporteController.saveNewArchivo()}" value="#{mensajes.Save}" update="display,:SalidasArticuloListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ReporteFormularioDlg'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ReporteFormularioDlg').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

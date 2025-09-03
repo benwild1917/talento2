@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ArticulosEditDlg" widgetVar="ArticulosEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditArticulosTitle}" closeOnEscape="true">
+
+            <h:form id="ArticulosEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{articulosController.selected != null}">
+
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{articulosController.selected.descripcion}" title="#{mensajes.EditArticulosTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_descripcion}" size="50" maxlength="60"/>
+                            <p:tooltip for="descripcion" value="#{articulosController.getComponentMessages('descripcion', mensajes.EditArticulosHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.CreateArticulosLabel_unidad}" for="unidad" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="unidad" value="#{articulosController.selected.unidad}" required="true" requiredMessage="#{mensajes.CreateArticulosRequiredMessage_unidad}" converter="unidadesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{unidadesController.items}"
+                                               var="unidadItem"
+                                               itemValue="#{unidadItem}"
+                                               itemLabel="#{unidadItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="unidad" value="#{articulosController.getComponentMessages('unidad', mensajes.CreateArticulosHelpText_unidad)}"/>
+                        </h:panelGroup>
+                        
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_stock}" for="stock" />
+                        <h:panelGroup>
+                            <p:inputNumber id="stock" required="true" decimalSeparator="," decimalPlaces="0" thousandSeparator="." value="#{articulosController.selected.stock}" title="#{mensajes.EditArticulosTitle_stock}" requiredMessage="#{mensajes.EditArticulosRequiredMessage_stock}"/>
+                            <p:tooltip for="stock" value="#{articulosController.getComponentMessages('stock', mensajes.EditArticulosHelpText_stock)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_stockCritico}" for="stockCritico" />
+                        <h:panelGroup>
+                            <p:inputNumber id="stockCritico" required="true" decimalSeparator="," decimalPlaces="0" thousandSeparator="." value="#{articulosController.selected.stockCritico}" title="#{mensajes.EditArticulosTitle_stockCritico}" requiredMessage="#{mensajes.EditArticulosRequiredMessage_stockCritico}"/>
+                            <p:tooltip for="stockCritico" value="#{articulosController.getComponentMessages('stockCritico', mensajes.EditArticulosHelpText_stockCritico)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_marca}" for="marca" />
+                        <h:panelGroup>
+                            <p:inputText id="marca" value="#{articulosController.selected.marca}" title="#{mensajes.EditArticulosTitle_marca}" size="50" maxlength="60"/>
+                            <p:tooltip for="marca" value="#{articulosController.getComponentMessages('marca', mensajes.EditArticulosHelpText_marca)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_modelo}" for="modelo" />
+                        <h:panelGroup>
+                            <p:inputText id="modelo" value="#{articulosController.selected.modelo}" title="#{mensajes.EditArticulosTitle_modelo}" size="50" maxlength="60"/>
+                            <p:tooltip for="modelo" value="#{articulosController.getComponentMessages('modelo', mensajes.EditArticulosHelpText_modelo)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_rubro}" for="rubro" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="rubro" value="#{articulosController.selected.rubro}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_rubro}" converter="rubrosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{rubrosController.items}"
+                                               var="rubroItem"
+                                               itemValue="#{rubroItem}"
+                                               itemLabel="#{rubroItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="rubro" value="#{articulosController.getComponentMessages('rubro', mensajes.EditArticulosHelpText_rubro)}"/>
+                        </h:panelGroup>
+
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{articulosController.save}" value="#{mensajes.Save}" update="display,:ArticulosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ArticulosEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ArticulosEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+
+                        <h:outputLabel value="#{mensajes.EditArticulosLabel_codigo}" for="codigo" />
+                        <h:panelGroup>
+                            <h:outputText id="codigo" value="#{articulosController.selected.codigo}" />
+                            <p:tooltip for="codigo" value="#{articulosController.getComponentMessages('codigo', mensajes.EditArticulosHelpText_codigo)}"/>
+                        </h:panelGroup>
+                  <p:outputLabel value="#{mensajes.EditArticulosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{articulosController.selected.fechaHoraAlta}" title="#{mensajes.EditArticulosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{articulosController.getComponentMessages('fechaHoraAlta', mensajes.EditArticulosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{articulosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditArticulosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{articulosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditArticulosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:inputText id="empresa" value="#{articulosController.selected.empresa}" title="#{mensajes.EditArticulosTitle_empresa}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_empresa}"/>
+                            <p:tooltip for="empresa" value="#{articulosController.getComponentMessages('empresa', mensajes.EditArticulosHelpText_empresa)}"/>
+                        </h:panelGroup>
+                          <p:outputLabel value="#{mensajes.EditArticulosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioAlta" value="#{articulosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{articulosController.getComponentMessages('usuarioAlta', mensajes.EditArticulosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditArticulosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="usuarioUltimoEstado" value="#{articulosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditArticulosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{articulosController.getComponentMessages('usuarioUltimoEstado', mensajes.EditArticulosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

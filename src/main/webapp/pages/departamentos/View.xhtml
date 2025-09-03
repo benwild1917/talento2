@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DepartamentosViewDlg" widgetVar="DepartamentosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDepartamentosTitle}" closeOnEscape="true">
+
+            <h:form id="DepartamentosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{departamentosController.selected != null}">
+
+
+                        <h:outputText value="#{mensajes.ViewDepartamentosLabel_nombre}"/>
+                        <h:outputText value="#{departamentosController.selected.nombre}" title="#{mensajes.ViewDepartamentosTitle_nombre}"/>
+
+                        <h:outputText value="#{mensajes.ViewDepartamentosLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{departamentosController.selected.fechaHoraAlta}" title="#{mensajes.ViewDepartamentosTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDepartamentosLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{departamentosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewDepartamentosTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+
+                        <h:outputText value="#{mensajes.ViewDepartamentosLabel_usuarioAlta}"/>
+                        <h:outputText value="#{departamentosController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDepartamentosLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{departamentosController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DepartamentosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

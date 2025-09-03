@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ObservacionesDocumentosJudicialesEditDlg" widgetVar="ObservacionesDocumentosJudicialesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditObservacionesDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <h:form id="ObservacionesDocumentosJudicialesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{observacionesDocumentosJudicialesController.selected != null}">
+
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_observacion}" for="observacion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="6" cols="100" id="observacion" value="#{observacionesDocumentosJudicialesController.selected.observacion}" title="#{mensajes.EditObservacionesDocumentosJudicialesTitle_observacion}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_observacion}"/>
+                            <p:tooltip for="observacion" value="#{observacionesDocumentosJudicialesController.getComponentMessages('observacion', mensajes.EditObservacionesDocumentosJudicialesHelpText_observacion)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{observacionesDocumentosJudicialesController.save}" value="#{mensajes.Save}" update="display,:ObservacionesDocumentosJudicialesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ObservacionesDocumentosJudicialesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ObservacionesDocumentosJudicialesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{observacionesDocumentosJudicialesController.selected.id}" />
+                            <p:tooltip for="id" value="#{observacionesDocumentosJudicialesController.getComponentMessages('id', mensajes.EditObservacionesDocumentosJudicialesHelpText_id)}"/>
+                        </h:panelGroup>
+-->
+
+<!--
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{observacionesDocumentosJudicialesController.selected.fechaHoraAlta}" title="#{mensajes.EditObservacionesDocumentosJudicialesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{observacionesDocumentosJudicialesController.getComponentMessages('fechaHoraAlta', mensajes.EditObservacionesDocumentosJudicialesHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{observacionesDocumentosJudicialesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditObservacionesDocumentosJudicialesTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{observacionesDocumentosJudicialesController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditObservacionesDocumentosJudicialesHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_documentoJudicial}" for="documentoJudicial" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="documentoJudicial" value="#{observacionesDocumentosJudicialesController.selected.documentoJudicial}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_documentoJudicial}" converter="documentosJudicialesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{documentosJudicialesController.items}"
+                                               var="documentoJudicialItem"
+                                               itemValue="#{documentoJudicialItem}"
+                                               itemLabel="#{documentoJudicialItem.descripcionMesaEntrada.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="documentoJudicial" value="#{observacionesDocumentosJudicialesController.getComponentMessages('documentoJudicial', mensajes.EditObservacionesDocumentosJudicialesHelpText_documentoJudicial)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{observacionesDocumentosJudicialesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{observacionesDocumentosJudicialesController.getComponentMessages('usuarioAlta', mensajes.EditObservacionesDocumentosJudicialesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{observacionesDocumentosJudicialesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{observacionesDocumentosJudicialesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditObservacionesDocumentosJudicialesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditObservacionesDocumentosJudicialesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="empresa" value="#{observacionesDocumentosJudicialesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditObservacionesDocumentosJudicialesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{observacionesDocumentosJudicialesController.getComponentMessages('empresa', mensajes.EditObservacionesDocumentosJudicialesHelpText_empresa)}"/>
+                        </h:panelGroup>
+-->

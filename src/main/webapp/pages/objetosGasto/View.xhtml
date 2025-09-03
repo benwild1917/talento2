@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ObjetosGastoViewDlg" widgetVar="ObjetosGastoViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewobjetoGastoTitle}" closeOnEscape="true">
+
+            <h:form id="ObjetosGastoViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{objetosGastoController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_id}"/>
+                        <h:outputText value="#{objetosGastoController.selected.id}" title="#{mensajes.ViewobjetoGastoTitle_id}"/>
+                        
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_codigo}"/>
+                        <h:outputText value="#{objetosGastoController.selected.codigo}" title="#{mensajes.ViewobjetoGastoTitle_codigo}"/>
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_descripcion}"/>
+                        <h:outputText value="#{objetosGastoController.selected.descripcion}" title="#{mensajes.ViewobjetoGastoTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{objetosGastoController.selected.fechaHoraAlta}" title="#{mensajes.ViewobjetoGastoTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{objetosGastoController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewobjetoGastoTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_empresa}"/>
+                        <h:outputText value="#{objetosGastoController.selected.empresa.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_usuarioAlta}"/>
+                        <h:outputText value="#{objetoGastoController.selected.usuarioAlta.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewobjetoGastoLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{objetosGastoController.selected.usuarioUltimoEstado.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ObjetosGastoViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="InventariosViewDlg" widgetVar="InventariosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewInventariosTitle}" closeOnEscape="true">
+
+            <h:form id="InventariosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{inventariosController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_id}"/>
+                        <h:outputText value="#{inventariosController.selected.id}" title="#{mensajes.ViewInventariosTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_fecha}"/>
+                        <h:outputText value="#{inventariosController.selected.fecha}" title="#{mensajes.ViewInventariosTitle_fecha}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{inventariosController.selected.fechaHoraAlta}" title="#{mensajes.ViewInventariosTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{inventariosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewInventariosTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_empresa}"/>
+                        <h:outputText value="#{inventariosController.selected.empresa.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_usuarioAlta}"/>
+                        <h:outputText value="#{inventariosController.selected.usuarioAlta.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{inventariosController.selected.usuarioUltimoEstado.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewInventariosLabel_estado}"/>
+                        <h:outputText value="#{inventariosController.selected.estado.descripcion}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('InventariosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

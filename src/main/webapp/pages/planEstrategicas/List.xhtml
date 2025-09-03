@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PlanEstrategicasListForm">
+
+        <p:panel header="Plan Estratégico Institucional">
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{planEstrategicasController.prepareCreate}" update=":PlanEstrategicasCreateForm" oncomplete="PF('PlanEstrategicasCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":PlanEstrategicasViewForm" oncomplete="PF('PlanEstrategicasViewDialog').show()" disabled="#{empty planEstrategicasController.selected}"/>        
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{planEstrategicasController.delete}" update=":growl,datalist" disabled="#{empty planEstrategicasController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+               
+            </p:commandButton>
+
+            <p:contextMenu id="PlanEstrategicasDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('PlanEstrategicasListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('PlanEstrategicasListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('PlanEstrategicasListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('PlanEstrategicasListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                
+            </p:contextMenu>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":PlanEstrategicasEditForm" oncomplete="PF('PlanEstrategicasEditDialog').show()" disabled="#{empty planEstrategicasController.selected}"/>
+            <p:dataTable id="datalist"
+                         value="#{planEstrategicasController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{planEstrategicasController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{planEstrategicasController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:datalistDetalle,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PlanEstrategicasDataTableContextMenu" listener="#{planEstrategicasController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:datalistDetalle,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PlanEstrategicasDataTableContextMenu" listener="#{planEstrategicasController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:datalistDetalle @form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{planEstrategicasController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('PlanEstrategicasListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.tiposObjetivos.objetivo}" filterMatchMode="contains" filterBy="#{item.tiposObjetivos.objetivo}">
+                    <f:facet name="header">
+                        <h:outputText value="Objetivo Principal"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tiposObjetivos.objetivo}"/>
+                </p:column>
+
+
+
+                <p:column sortBy="#{item.programacion.accion.descripcion}" filterMatchMode="contains" filterBy="#{item.programacion.accion.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Accion Estrategicas"/>
+                    </f:facet>
+                    <h:outputText value="#{item.programacion.accion.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.programacion.año}" filterMatchMode="contains" filterBy="#{item.programacion.año}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPlanEstrategicasTitle_periodo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.programacion.año}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.programacion.meta}" filterMatchMode="contains" filterBy="#{item.programacion.meta}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPlanEstrategicasTitle_meta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.programacion.meta}"/>
+                </p:column>
+               
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+        <p:panel header="Detalles">
+        <p:dataTable id="datalistDetalle"
+                         value="#{planEstrategicasController.detalles}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         filteredValue="#{detallesPlanEstrategicasController.filtrado}"
+
+                         >
+            
+            <p:column sortBy="#{item.actividad.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Accion Operativa"/>
+                    </f:facet>
+                    <h:outputText value="#{item.actividad.descripcion}"/>
+                </p:column>
+             
+            </p:dataTable>
+     </p:panel>
+    </h:form>
+
+</ui:composition>

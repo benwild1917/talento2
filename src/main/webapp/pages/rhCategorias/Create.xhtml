@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RhCategoriasCreateDlg" widgetVar="RhCategoriasCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateRhCategoriasTitle}" closeOnEscape="true">
+
+            <h:form id="RhCategoriasCreateForm">
+
+                <h:panelGroup id="display" rendered="#{rhCategoriasController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateRhCategoriasLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{rhCategoriasController.selected.descripcion}" title="#{mensajes.CreateRhCategoriasTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateRhCategoriasRequiredMessage_descripcion}" size="100" maxlength="200"/>
+                            <p:tooltip for="descripcion" value="#{rhCategoriasController.getComponentMessages('descripcion', mensajes.CreateRhCategoriasHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rhCategoriasController.saveNew}" value="#{mensajes.Save}" update="display,:RhCategoriasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RhCategoriasCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RhCategoriasCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+
+
+                        <p:outputLabel value="#{mensajes.CreateRhCategoriasLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCategoriasController.selected.fechaHoraAlta}" title="#{mensajes.CreateRhCategoriasTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateRhCategoriasRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{rhCategoriasController.getComponentMessages('fechaHoraAlta', mensajes.CreateRhCategoriasHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRhCategoriasLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCategoriasController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateRhCategoriasTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateRhCategoriasRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{rhCategoriasController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateRhCategoriasHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRhCategoriasLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{rhCategoriasController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateRhCategoriasRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{rhCategoriasController.getComponentMessages('usuarioAlta', mensajes.CreateRhCategoriasHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateRhCategoriasLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{rhCategoriasController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateRhCategoriasRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{rhCategoriasController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateRhCategoriasHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+-->

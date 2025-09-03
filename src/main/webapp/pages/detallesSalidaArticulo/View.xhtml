@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DetallesSalidaArticuloViewDlg" widgetVar="DetallesSalidaArticuloViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDetallesSalidaArticuloTitle}" closeOnEscape="true">
+
+            <h:form id="DetallesSalidaArticuloViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{detallesSalidaArticuloController.selected != null}">
+
+                        
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_cantidad}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.cantidad}" title="#{mensajes.ViewDetallesSalidaArticuloTitle_cantidad}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_departamento}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.departamento}" title="#{mensajes.ViewDetallesSalidaArticuloTitle_departamento}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_nroFormulario}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.nroFormulario}" title="#{mensajes.ViewDetallesSalidaArticuloTitle_nroFormulario}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.fechaHoraAlta}" title="#{mensajes.ViewDetallesSalidaArticuloTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewDetallesSalidaArticuloTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_persona}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.persona.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_usuarioAlta}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_articulo}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.articulo.descripcion}"/>
+                        <h:outputText value="#{mensajes.ViewDetallesSalidaArticuloLabel_salidaArticulo}"/>
+                        <h:outputText value="#{detallesSalidaArticuloController.selected.salidaArticulo.nroFormulario}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DetallesSalidaArticuloViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

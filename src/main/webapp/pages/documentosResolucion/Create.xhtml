@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosResolucionCreateDlg" widgetVar="DocumentosResolucionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateDocumentosTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosResolucionCreateForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display" rendered="#{entradaSecretariaEntradaResolucionController.entradaDocumentoResolucion != null}">
+
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Nro Identificación" />
+                        <h:panelGroup>
+                            <h:outputText id="nroIdentificacion" value="#{entradaSecretariaEntradaResolucionController.entradaDocumentoResolucion.nroIdentificacion}" title="#{mensajes.CreateEntradasDocumentosJudicialesTitle_nroResolucion}" />
+                            <p:tooltip for="nroIdentificacion" value="#{entradaSecretariaEntradaResolucionController.getComponentMessages('nroIdentificacion', mensajes.CreateEntradasDocumentosJudicialesHelpText_nroResolucion)}"/>
+                        </h:panelGroup>
+                        
+                                              
+                          <p:outputLabel value="#{mensajes.CreateDocumentosResolucionLabel_nroResolucion}" for="nroResolucion" />
+                        <h:panelGroup>
+                            <p:inputText id="nroResolucion" value="#{entradaSecretariaEntradaResolucionController.entradaDocumentoResolucion.nroResolucion}" title="#{mensajes.CreateDocumentosResolucionTitle_nroResolucion}" size="20" maxlength="40"/>
+                            <p:tooltip for="nroResolucion" value="#{entradaSecretariaEntradaResolucionController.getComponentMessages('nroResolucion', mensajes.CreateDocumentosResolucionHelpText_nroResolucion)}"/>
+                        </h:panelGroup>
+                        
+                         
+                         <p:outputLabel value="#{mensajes.CreateEntradasDocumentosJudicialesLabel_tituloResolucion}" for="tituloResolucion" />
+                        <h:panelGroup>
+                            <p:inputText id="tituloResolucion" value="#{entradaSecretariaEntradaResolucionController.entradaDocumentoResolucion.tituloResolucion}" title="#{mensajes.CreateEntradasDocumentosJudicialesTitle_tituloResolucion}" size="70" maxlength="60"/>
+                            <p:tooltip for="tituloResolucion" value="#{entradaSecretariaEntradaResolucionController.getComponentMessages('tituloResolucion', mensajes.CreateEntradasDocumentosJudicialesHelpText_tituloResolucion)}"/>
+                        </h:panelGroup>
+
+                       
+                        <p:outputLabel value="#{mensajes.CreateDocumentosResolucionLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputTextarea required="true" rows="4" cols="70" id="descripcion" value="#{entradaSecretariaEntradaResolucionController.descripcion}" disabled="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_descripcion}" title="#{mensajes.CreateDocumentosJudicialesTitle_descripcion}"/>
+                            <p:tooltip for="descripcion" value="#{entradaSecretariaEntradaResolucionController.getComponentMessages('descripcion', mensajes.CreateDocumentosJudicialesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                        <h:outputText value="Adjuntar Documento"/>
+                        <p:panelGrid columns="2">
+                            <p:fileUpload value="#{entradaSecretariaEntradaResolucionController.file}" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                        </p:panelGrid>
+                    </p:panelGrid>
+
+                    <p:commandButton value="#{mensajes.Save}" icon="ui-icon-arrow-u" ajax="false" update=":DocumentosResolucionListForm:datalist" actionListener="#{entradaSecretariaEntradaResolucionController.saveNew()}" disabled="false" oncomplete="handleSubmit(xhr,status,args,PF('DocumentosResolucionCreateDialog'));" />
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DocumentosResolucionCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--<p:outputLabel value="#{mensajes.CreateResolucionLabel_fechaResolucion}" for="fecha_resolucion" />
+                            <h:panelGroup>
+                                <p:calendar id="fecha_resolucion" pattern="dd/MM/yyyy" timeZone="America/Asuncion" value="#{entradaSecretariaEntradaResolucionController.selected.fechaResolucion}" title="#{mensajes.CreateResolucionTitle_fecha_resolucion}" required="false" requiredMessage="#{mensajes.CreateResolucionRequiredMessage_fecha_resolucion}" showOn="button"/>
+                                <p:tooltip for="fecha_resolucion" value="#{entradaSecretariaEntradaResolucionController.getComponentMessages('fecha_resolucion', mensajes.CreateResolucionHelpText_fecha_resolucion)}"/>
+                            </h:panelGroup>
+                        -->

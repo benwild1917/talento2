@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="RhCargosEditDlg" widgetVar="RhCargosEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditRhCargosTitle}" closeOnEscape="true">
+
+            <h:form id="RhCargosEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{rhCargosController.selected != null}">
+
+                        <p:outputLabel value="#{mensajes.EditRhCargosLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{rhCargosController.selected.descripcion}" title="#{mensajes.EditRhCargosTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditRhCargosRequiredMessage_descripcion}" size="100" maxlength="200"/>
+                            <p:tooltip for="descripcion" value="#{rhCargosController.getComponentMessages('descripcion', mensajes.EditRhCargosHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rhCargosController.save}" value="#{mensajes.Save}" update="display,:RhCargosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RhCargosEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RhCargosEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+
+
+                        <p:outputLabel value="#{mensajes.EditRhCargosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCargosController.selected.fechaHoraAlta}" title="#{mensajes.EditRhCargosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditRhCargosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{rhCargosController.getComponentMessages('fechaHoraAlta', mensajes.EditRhCargosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRhCargosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rhCargosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditRhCargosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditRhCargosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{rhCargosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditRhCargosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRhCargosLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{rhCargosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditRhCargosRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{rhCargosController.getComponentMessages('usuarioAlta', mensajes.EditRhCargosHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRhCargosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{rhCargosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditRhCargosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{rhCargosController.getComponentMessages('usuarioUltimoEstado', mensajes.EditRhCargosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel value="#{mensajes.EditRhCargosLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{rhCargosController.selected.id}" />
+                            <p:tooltip for="id" value="#{rhCargosController.getComponentMessages('id', mensajes.EditRhCargosHelpText_id)}"/>
+                        </h:panelGroup>
+
+-->

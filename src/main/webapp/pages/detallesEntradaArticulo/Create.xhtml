@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DetallesEntradaArticuloCreateDlg" widgetVar="DetallesEntradaArticuloCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateDetallesEntradaArticuloTitle}" closeOnEscape="true">
+
+            <h:form id="DetallesEntradaArticuloCreateForm">
+
+                <h:panelGroup id="display" rendered="#{detallesEntradaArticuloController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_articulo}" for="articulo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="articulo" value="#{detallesEntradaArticuloController.selected.articulo}" required="true" requiredMessage="#{mensajes.CreateDetallesEntradaArticuloRequiredMessage_articulo}" converter="articulosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{articulosController.items}"
+                                               var="articuloItem"
+                                               itemValue="#{articuloItem}"
+                                               itemLabel="#{articuloItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="articulo" value="#{detallesEntradaArticuloController.getComponentMessages('articulo', mensajes.CreateDetallesEntradaArticuloHelpText_articulo)}"/>
+                        </h:panelGroup>
+
+                        
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_cantidad}" for="cantidad" />
+                        <h:panelGroup>
+                            <p:inputText id="cantidad" value="#{detallesEntradaArticuloController.selected.cantidad}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_cantidad}" required="true" requiredMessage="#{mensajes.CreateDetallesEntradaArticuloRequiredMessage_cantidad}"/>
+                            <p:tooltip for="cantidad" value="#{detallesEntradaArticuloController.getComponentMessages('cantidad', mensajes.CreateDetallesEntradaArticuloHelpText_cantidad)}"/>
+                        </h:panelGroup>
+                        
+                     
+                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_nroFactura}" for="nroFactura" />
+                        <h:panelGroup>
+                            <p:inputText id="nroFactura" value="#{detallesEntradaArticuloController.selected.nroFactura}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_nroFactura}" required="true" requiredMessage="#{mensajes.CreateDetallesEntradaArticuloRequiredMessage_nroFactura}" size="40" maxlength="40"/>
+                            <p:tooltip for="nroFactura" value="#{detallesEntradaArticuloController.getComponentMessages('nroFactura', mensajes.CreateDetallesEntradaArticuloHelpText_nroFactura)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_nroLlamado}" for="nroLlamado" />
+                        <h:panelGroup>
+                            <p:inputText id="nroLlamado" value="#{detallesEntradaArticuloController.selected.nroLlamado}" title="#{mensajes.CreateDetallesEntradaArticuloTitle_nroLlamado}" required="true" requiredMessage="#{mensajes.CreateDetallesEntradaArticuloRequiredMessage_nroLlamado}" size="40" maxlength="40"/>
+                            <p:tooltip for="nroLlamado" value="#{detallesEntradaArticuloController.getComponentMessages('nroLlamado', mensajes.CreateDetallesEntradaArticuloHelpText_nroLlamado)}"/>
+                        </h:panelGroup>
+
+                        
+                        <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_proveedor}" for="proveedor" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="proveedor" value="#{detallesEntradaArticuloController.selected.proveedor}" required="true" requiredMessage="#{mensajes.CreateDetallesEntradaArticuloRequiredMessage_proveedor}" converter="proveedoresConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{proveedoresController.items}"
+                                               var="proveedorItem"
+                                               itemValue="#{proveedorItem}"
+                                               itemLabel="#{proveedorItem.nombre.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="proveedor" value="#{detallesEntradaArticuloController.getComponentMessages('proveedor', mensajes.CreateDetallesEntradaArticuloHelpText_proveedor)}"/>
+                        </h:panelGroup>
+                         <p:outputLabel value="#{mensajes.CreateDetallesEntradaArticuloLabel_entradaArticulo}" for="entradaArticulo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="entradaArticulo" value="#{detallesEntradaArticuloController.selected.entradaArticulo}" required="true" requiredMessage="#{mensajes.CreateDetallesEntradaArticuloRequiredMessage_entradaArticulo}" converter="entradasArticuloConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{entradasArticuloController.items}"
+                                               var="entradaArticuloItem"
+                                               itemValue="#{entradaArticuloItem}"
+                                               itemLabel="#{entradaArticuloItem.concepto.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="entradaArticulo" value="#{detallesEntradaArticuloController.getComponentMessages('entradaArticulo', mensajes.CreateDetallesEntradaArticuloHelpText_entradaArticulo)}"/>
+                        </h:panelGroup>
+
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{detallesEntradaArticuloController.saveNew}" value="#{mensajes.Save}" update="display,:DetallesEntradaArticuloListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DetallesEntradaArticuloCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DetallesEntradaArticuloCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="IndicesCreateDlg" widgetVar="IndicesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateIndicesTitle}" closeOnEscape="true">
+
+            <h:form id="IndicesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{indicesController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateIndicesLabel_nombreIndice}" for="nombreIndice" />
+                        <h:panelGroup>
+                            <p:inputText id="nombreIndice" value="#{indicesController.selected.nombreIndice}" title="#{mensajes.CreateIndicesTitle_nombreIndice}" required="true" requiredMessage="#{mensajes.CreateIndicesRequiredMessage_nombreIndice}" size="100" maxlength="200"/>
+                            <p:tooltip for="nombreIndice" value="#{indicesController.getComponentMessages('nombreIndice', mensajes.CreateIndicesHelpText_nombreIndice)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateIndicesLabel_orden}" for="orden" />
+                        <h:panelGroup>
+                            <p:inputText id="orden" value="#{indicesController.selected.orden}" title="#{mensajes.CreateIndicesTitle_orden}" required="true" requiredMessage="#{mensajes.CreateIndicesRequiredMessage_orden}"/>
+                            <p:tooltip for="orden" value="#{indicesController.getComponentMessages('orden', mensajes.CreateIndicesHelpText_orden)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateIndicesLabel_valorX}" for="valorX" />
+                        <h:panelGroup>
+                            <p:inputText id="valorX" value="#{indicesController.selected.valorX}" title="#{mensajes.CreateIndicesTitle_valorX}" required="true" requiredMessage="#{mensajes.CreateIndicesRequiredMessage_valorX}" size="100" maxlength="200"/>
+                            <p:tooltip for="valorX" value="#{indicesController.getComponentMessages('valorX', mensajes.CreateIndicesHelpText_valorX)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateIndicesLabel_valorY}" for="valorY" />
+                        <h:panelGroup>
+                            <p:inputText id="valorY" value="#{indicesController.selected.valorY}" title="#{mensajes.CreateIndicesTitle_valorY}" required="true" requiredMessage="#{mensajes.CreateIndicesRequiredMessage_valorY}" size="100" maxlength="200"/>
+                            <p:tooltip for="valorY" value="#{indicesController.getComponentMessages('valorY', mensajes.CreateIndicesHelpText_valorY)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateIndicesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{indicesController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateIndicesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{indicesController.getComponentMessages('empresa', mensajes.CreateIndicesHelpText_empresa)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{indicesController.saveNew}" value="#{mensajes.Save}" update="display,:IndicesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('IndicesCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('IndicesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

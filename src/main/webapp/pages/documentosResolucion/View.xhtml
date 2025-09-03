@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosResolucionViewDlg" widgetVar="DocumentosResolucionViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDocumentosResolucionTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosResolucionViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{documentosResolucionController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_entradaDocumentoResolucion}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.entradaDocumentoResolucion}" title="#{mensajes.ViewDocumentosResolucionTitle_entradaDocumentoResolucion}"/>
+                        
+                         <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_fechaResolucion}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.fechaResolucion}" title="#{mensajes.ViewDocumentosResolucionTitle_fechaResolucion}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_descripcion}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.descripcion}" title="#{mensajes.ViewDocumentosResolucionTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_nroResolucion}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.nroResolucion}" title="#{mensajes.ViewDocumentosResolucionTitle_nroResolucion}"/>
+
+                       
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_tituloResolucion}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.tituloResolucion}" title="#{mensajes.ViewDocumentosResolucionTitle_tituloResolucion}"/>
+
+
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_usuarioAlta}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DocumentosResolucionViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_id}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.id}" title="#{mensajes.ViewDocumentosResolucionTitle_id}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_departamento}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.departamento.nombre}"/>
+-->
+
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosResolucionLabel_empresa}"/>
+                        <h:outputText value="#{documentosResolucionController.selected.empresa.id}"/>
+-->

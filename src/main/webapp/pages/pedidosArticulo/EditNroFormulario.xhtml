@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="NroFormularioEditDlg" widgetVar="NroFormularioEditDialog" modal="true" resizable="false"  appendTo="@(body)"  closeOnEscape="true">
+
+            <h:form id="NroFormularioEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{pedidosArticuloController.selected != null}">
+
+                        <div class="ui-sm-12 ui-md-2 ui-g-2">
+                            <p:outputLabel value="#{mensajes.CreateSalidasArticuloLabel_nroFormulario}" for="nroFormulario" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-4 ui-g-4">
+                            <h:outputText id="nroFormulario" value="#{salidasArticuloController.selected.nroFormulario}">
+                                <f:convertNumber pattern="0000" />                
+                            </h:outputText>
+                        </div>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pedidosArticuloController.cambiarEstado()}" value="#{mensajes.Save}" update="display,:PedidosArticuloListForm:datalist,:PedidosArticuloListForm:datalistDetalle,:PedidosArticuloListForm:datalistCambios,:PedidosArticuloListForm:deleteButton,:PedidosArticuloListForm:entregarButton,:PedidosArticuloListForm:cambioButton,:PedidosArticuloListForm:dptoButton,:PedidosArticuloListForm:createButton,:growl" oncomplete="handleSubmit(xhr,status,args,PF('NroFormularioEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('NroFormularioEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="ChartDocumentosMesaPorDiaForm">
+                <p:panel header="Grafico de Documentos Ingresados Por dia">
+                    <p:panelGrid columns="5">
+                        <p:outputLabel value="Fecha de Presentacion" style="padding-right: 20px;" />
+                        <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px" />
+                        <p:calendar style="padding-right: 10px" id="fechaDesde" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{chartDocumentosMesaPorDiaController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                        <p:calendar style="padding-right: 10px" id="fechaHasta" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{chartDocumentosMesaPorDiaController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                        <p:outputLabel value="Tipos Documento" for="tipoDocumento" />
+                        <h:panelGroup>
+                            <p:selectCheckboxMenu label="Elija los Tipos de Documento" filter="true" filterMatchMode="contains" id="tipoDocumento" value="#{chartDocumentosMesaPorDiaController.listaTiposDoc}" required="true" requiredMessage="Tipo Documento Judicial: campo requerido"  converter="tiposDocumentosJudicialesConverter">
+                                <f:selectItems value="#{tiposDocumentosJudicialesController.items}"
+                                               var="tipoDocItem"
+                                               itemValue="#{tipoDocItem}"
+                                               itemLabel="#{tipoDocItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="tipoDocumento" value="#{chartDocumentosMesaPorDiaController.getComponentMessages('tipoDocumento', 'Debe elegir uno o mas tipos de documento')}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="Tipo de Grafico" for="tipoGrafico" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tipoGrafico" value="#{chartDocumentosMesaPorDiaController.tipoGrafico}" required="true" requiredMessage="Debe elegir un tipo de grafico">
+                                <f:selectItem itemLabel="Barras" itemValue="Barras"/>
+                                <f:selectItem itemLabel="Lineas" itemValue="Lineas"/>
+                                <f:selectItem itemLabel="Torta" itemValue="Torta"/>
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoGrafico" value="Debe elegir un tipo de grafico"/>
+                        </h:panelGroup>
+                        <p:commandButton value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="dashPanel, datalist" action="#{chartDocumentosMesaPorDiaController.initChartDocumentosMesaPorDia()}"></p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1">
+                        <p:dashboard id="dashPanel" model="#{chartDocumentosMesaPorDiaController.dashboardModel}" >
+
+                            <p:panel id="chartDocumentosMesaPorDiaBar"  header="Cantidad de Documentos Por Dia Del Mes" >
+                                <p:chart type="bar" model="#{chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaBar}" responsive="true" rendered="#{not empty chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaBar}" style="height:300px;width:1000px"/>
+                            </p:panel>
+                            <p:panel id="chartDocumentosMesaPorDiaLineal" header="Documentos Por Dia Del Mes" >
+                                <p:chart type="line" model="#{chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaLinear}" responsive="true" rendered="#{not empty chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaLinear}" style="height:300px;width:1000px"/>
+                            </p:panel>
+                            <p:panel id="chartDocumentosMesaPorDiaPie" header="Documentos Por Dia Del Mes" >
+                                <p:chart type="pie" model="#{chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaPie}" responsive="true" rendered="#{not empty chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaPie}" style="height:350px;width:500px"/>
+                            </p:panel>   
+                        </p:dashboard>
+                        <p:dataTable id="datalist"
+                                     value="#{chartDocumentosMesaPorDiaController.lista}"
+                                     lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                     rowKey="#{item.codigo}"
+                                     var="item"
+                                     paginator="false"
+                                     rows="0"
+                                     disabledSelection="true"
+                                     rendered="#{not empty chartDocumentosMesaPorDiaController.lista}">
+                            <!--
+                                     To enable Lazy Loading, please copy/replace the following lines above,
+                                     and be sure to replace the word HASH with the # symbol:
+                            
+                                     value="HASH{presidentesComiteController.lazyItems}"
+                                     lazy="true"
+                                     rowKey="HASH{item.id}"  <<< Remove this line
+                            -->
+                            <p:column sortBy="#{item.descripcionTipoDocumentoJudicial}" filterMatchMode="contains" filterBy="#{item.descripcionTipoDocumentoJudicial}">
+                                <f:facet name="header">
+                                    <h:outputText value="Comite"/>
+                                </f:facet>
+                                <h:outputText value="#{item.descripcionTipoDocumentoJudicial}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{item.fechaPresentacion}" filterMatchMode="contains" filterBy="#{item.fechaPresentacion}">
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.cantidad}" filterMatchMode="contains" filterBy="#{item.cantidad}">
+                                <f:facet name="header">
+                                    <h:outputText value="Cantidad"/>
+                                </f:facet>
+                                <div align="right">
+                                    <h:outputText value="#{item.cantidad}">
+                                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

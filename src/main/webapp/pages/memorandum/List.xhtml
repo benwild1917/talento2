@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g">
+        <h:form id="memorandumListForm">
+
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:fieldset style="width: 100%">
+                        <h:outputText value="Fecha Presentacion" style="padding-right: 20px" />
+
+                        <p:outputLabel value="Desde" for="fechaDesdeSalida" style="padding-right: 5px; padding-left: 20px"/>
+                        <p:calendar style="padding-right: 10px" id="fechaDesdeSalida" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{salidasArticuloController.fechaDesdeSalida}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHastaSalida" />
+                        <p:calendar style="padding-right: 10px" id="fechaHastaSalida" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" navigator="true" value="#{salidasArticuloController.fechaHastaSalida}" title="Fecha Hasta"  showOn="button"/>
+                    </p:fieldset>
+                </div>
+            </div>
+            <ui:remove>
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+
+                    <p:fieldset style="width: 100%">
+
+                        <p:outputLabel value="Tipo documento" for="memorandum" style="padding-right: 5px;"/>    
+
+                        <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="memorandum" value="#{memorandumController.listatipoDocumentoFiltro}" converter="tiposDocumentosAdministrativosConverter">
+                            <f:selectItems value="#{tiposDocumentosAdministrativosController.items}"
+                                           var="memorandumItem"
+                                           itemValue="#{memorandumItem}"
+                                           itemLabel="#{memorandumItem.descripcion}"
+                                           />
+                        </p:selectCheckboxMenu>
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+                    <p:fieldset style="width: 100%">
+                        <p:outputLabel value="Dependencia origen" for="origen"  style="margin-left: 5px" />
+
+                        <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="origen" value="#{memorandumController.listaorigenFiltro}" converter="departamentosConverter">
+                            <f:selectItems value="#{departamentosController.items}"
+                                           var="departamentoItem"
+                                           itemValue="#{departamentoItem}"
+                                           itemLabel="#{departamentoItem.nombre}"
+                                           />
+                        </p:selectCheckboxMenu>
+                    </p:fieldset>
+                </div> 
+            </div> 
+
+
+
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <div class="ui-sm-12 ui-md-6 ui-g-6">
+
+                    <div class="ui-sm-12 ui-md-6 ui-g-6">
+                        <p:fieldset style="width: 100%">
+                            <p:outputLabel value="Dependencia destino" for="destino"  style="margin-left: 5px" />
+
+                            <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" style="width: 100%" id="destino" value="#{memorandumController.listaDestinoFiltro}" converter="departamentosConverter">
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre}"
+                                               />
+                            </p:selectCheckboxMenu>
+                        </p:fieldset>
+                    </div>
+
+
+                </div>
+            </div>
+                
+           </ui:remove>
+            <p:commandButton id="imprimirButtonExcel" style="margin-left: 10px" rendered="true"  ajax="false"    onclick="this.form.target = '_blank'" value="Reporte Memorandum" action="#{memorandumController.reporte}" />
+
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+</ui:composition>

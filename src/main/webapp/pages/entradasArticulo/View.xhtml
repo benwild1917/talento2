@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="EntradasArticuloViewDlg" widgetVar="EntradasArticuloViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewEntradasArticuloTitle}" closeOnEscape="true">
+
+            <h:form id="EntradasArticuloViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{entradasArticuloController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_concepto}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.concepto}" title="#{mensajes.ViewEntradasArticuloTitle_concepto}"/>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_nroFactura}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.nroFactura}" title="#{mensajes.ViewEntradasArticuloTitle_nroFactura}"/>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_nroLlamado}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.nroLlamado}" title="#{mensajes.ViewEntradasArticuloTitle_nroLlamado}"/>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.fechaHoraAlta}" title="#{mensajes.ViewEntradasArticuloTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewEntradasArticuloTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_proveedor}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.proveedor.nombre}"/>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_usuarioAlta}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewEntradasArticuloLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{entradasArticuloController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('EntradasArticuloViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="85bbc741-64b1-40a0-876c-e88e978f3aaa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="insumo" class="java.lang.String"/>
+	<field name="nroFactura" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="responsable" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="99" y="60" width="297" height="31" backcolor="#C0C0C0" uuid="716789ad-e143-4a77-a0a6-2c9d76c9eb57"/>
+				<textElement>
+					<font fontName="SansSerif" size="14"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE MOVIMIENTOS DE INSUMOS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="131" y="2" width="338" height="50" uuid="d9b01bc9-99a4-4de6-adda-8a84f46db249"/>
+				<imageExpression><![CDATA["/home/grecia/Documents/NetBeansProjects/gestionstartic/web/reportes/logoJEM.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="145" y="0" width="76" height="20" uuid="23043678-dce0-4bd2-9095-58be575f6829"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="135" height="20" uuid="0fb8f313-40af-4df5-8cf4-5690fdaaef32"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Insumo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="0" width="100" height="20" uuid="c0aecbe1-68ca-4944-9b17-bdc50ef39f61"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[NroFactura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="3" width="100" height="20" uuid="35613fea-df10-4c5c-8e93-adf28e2c05dd"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="3" width="100" height="20" uuid="58444a79-0704-4f43-95fb-38dd252e867f"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Responsable]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="167" y="0" width="45" height="20" uuid="34c40bf0-9ec7-41d0-a1e6-a4a708975629"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="0" width="139" height="20" uuid="ea0640b6-4adf-430b-a110-aec7df1befc4"/>
+				<textFieldExpression><![CDATA[$F{insumo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="235" y="0" width="100" height="20" uuid="c4527578-0add-4a4c-aa60-4d92193e83ae"/>
+				<textFieldExpression><![CDATA[$F{nroFactura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="346" y="0" width="100" height="20" uuid="476f07be-af12-477f-8ad2-00434a3f6344"/>
+				<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="f3f9b4e7-3046-4cc5-b41b-f6705b12b534"/>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

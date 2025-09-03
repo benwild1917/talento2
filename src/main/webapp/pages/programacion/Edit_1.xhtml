@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ProgramacionEditDlg" widgetVar="ProgramacionEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditProgramacionTitle}" closeOnEscape="true">
+
+            <h:form id="ProgramacionEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{programacionController.selected != null}">
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_tiposObjetivos}" for="tiposObjetivos" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="tiposObjetivos" value="#{programacionController.selected.tiposObjetivos}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_tiposObjetivos}" converter="tiposObjetivosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tiposObjetivosItem"
+                                               itemValue="#{tiposObjetivosItem}"
+                                               itemLabel="#{tiposObjetivosItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tiposObjetivos" value="#{programacionController.getComponentMessages('tiposObjetivos', mensajes.EditProgramacionHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_accion}" for="accion" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="accion" value="#{programacionController.selected.accion}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_accion}" converter="accionesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{accionesController.items}"
+                                               var="accionItem"
+                                               itemValue="#{accionItem}"
+                                               itemLabel="#{accionItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="accion" value="#{programacionController.getComponentMessages('accion', mensajes.EditProgramacionHelpText_accion)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_meta}" for="meta" />
+                        <h:panelGroup>
+                            <p:inputText id="meta" value="#{programacionController.selected.meta}" title="#{mensajes.EditProgramacionTitle_meta}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_meta}" size="80" maxlength="80"/>
+                            <p:tooltip for="meta" value="#{programacionController.getComponentMessages('meta', mensajes.EditProgramacionHelpText_meta)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_formula}" for="formula" />
+                        <h:panelGroup>
+                            <p:inputText id="formula" value="#{programacionController.selected.formula}" title="#{mensajes.EditProgramacionTitle_formula}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_formula}" size="80" maxlength="80"/>
+                            <p:tooltip for="formula" value="#{programacionController.getComponentMessages('formula', mensajes.EditProgramacionHelpText_formula)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_año}" for="año" />
+                        <h:panelGroup>
+                            <p:inputText id="año" value="#{programacionController.selected.año}" title="#{mensajes.EditProgramacionTitle_año}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_año}" size="90" maxlength="90"/>
+                            <p:tooltip for="año" value="#{programacionController.getComponentMessages('año', mensajes.EditProgramacionHelpText_año)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_valorVariable}" for="valorVariable" />
+                        <h:panelGroup>
+                            <p:inputText id="valorVariable" value="#{programacionController.selected.valorVariable}" title="#{mensajes.EditProgramacionTitle_valorVariable}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_valorVariable}" size="80" maxlength="80"/>
+                            <p:tooltip for="valorVariable" value="#{programacionController.getComponentMessages('valorVariable', mensajes.EditProgramacionHelpText_valorVariable)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditProgramacionLabel_programaPresupuestario}" for="programaPresupuestario" />
+                        <h:panelGroup>
+                            <p:inputText id="programaPresupuestario" value="#{programacionController.selected.programaPresupuestario}" title="#{mensajes.EditProgramacionTitle_programaPresupuestario}" required="true" requiredMessage="#{mensajes.EditProgramacionRequiredMessage_programaPresupuestario}" size="80" maxlength="80">
+                                <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                            </p:inputText>
+                            <p:tooltip for="programaPresupuestario" value="#{programacionController.getComponentMessages('programaPresupuestario', mensajes.EditProgramacionHelpText_programaPresupuestario)}"/>
+                        </h:panelGroup>
+
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{programacionController.save}" value="#{mensajes.Save}" update="display,:ProgramacionListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ProgramacionEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ProgramacionEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

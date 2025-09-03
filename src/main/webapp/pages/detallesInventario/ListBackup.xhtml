@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    
+
+    <h:form id="DetallesInventarioListForm">
+
+        <p:panel header="Articulos ">
+
+
+            <p:panelGrid columns="10">
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="Nuevo Inventario" actionListener="#{detallesInventarioController.nuevoInventario}" update=":DetallesInventarioListForm,@form:fecha,@form:fechaHoraAlta,@form:estado" />
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="Borrar Inventario" actionListener="#{detallesInventarioController.delete}" update=":growl,datalist" disabled="#{empty detallesInventarioController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+                <h:outputText value="Fecha Fin"/>
+                <h:outputText id="fecha" value="#{detallesInventarioController.inventario.fecha}" title="#{mensajes.ViewInventariosTitle_fecha}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                </h:outputText>
+
+                <h:outputText value="Fecha Inicio"/>
+                <h:outputText id="fechaHoraAlta" value="#{detallesInventarioController.inventario.fechaHoraAlta}" title="#{mensajes.ViewInventariosTitle_fechaHoraAlta}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                </h:outputText>
+
+                <h:outputText value="#{mensajes.ViewInventariosLabel_estado}"/>
+                <h:outputText id="estado" value="#{detallesInventarioController.inventario.estado.descripcion}"/>
+            </p:panelGrid>
+
+            <p:dataTable id="datalist"
+                         value="#{detallesInventarioController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         editable="true" 
+                         editMode="cell">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{detallesInventarioController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+               <!-- <p:ajax event="rowSelect"   update="@form:createButton,@form:deleteButton" listener="#{detallesInventarioController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:deleteButton" listener="#{detallesInventarioController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:deleteButton" listener="#{detallesInventarioController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('DetallesInventarioListForm:viewButton').click();"/>
+               -->
+                <!--
+                                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesInventarioTitle_id}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                
+                
+                                <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesInventarioTitle_fechaHoraUltimoEstado}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                
+                
+                                <p:column sortBy="#{item.inventario.id}" filterBy="#{item.inventario.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesInventarioTitle_inventario}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.inventario.id}"/>
+                                </p:column>
+                
+                
+                -->
+
+                <p:column sortBy="#{item.articulo.descripcion}" filterBy="#{item.articulo.descripcion}">   
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesInventarioTitle_articulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.descripcion}"/>
+                </p:column>
+
+                <p:column headerText="#{mensajes.ListDetallesInventarioTitle_cantidad}">           
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{item.cantidad}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{item.cantidad}" style="width:100%" required="true" decimalSeparator="," decimalPlaces="0" thousandSeparator="." requiredMessage="#{mensajes.CreateDetallesInventarioRequiredMessage_cantidad}" title="#{mensajes.CreateDetallesInventarioTitle_cantidad}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+                <!--
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesInventarioTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesInventarioTitle_usuarioAlta}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesInventarioTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesInventarioTitle_empresa}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.empresa.id}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="DepartamentosListForm">
+
+            <p:panel header="#{mensajes.ListDepartamentosTitle}">
+
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:fieldset style="width: 100%" legend="Incluir">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:selectCheckboxMenu label="Estados" filter="true" filterMatchMode="contains" id="roles" value="#{departamentosController.listaEstadosAIncluir}" converter="estadosConverter">
+                                <f:selectItems value="#{departamentosController.listaEstados}"
+                                               var="estadoItem"
+                                               itemValue="#{estadoItem}"
+                                               itemLabel="#{estadoItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:commandButton style="padding-right: 10px; width: 100%" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, :growl" action="#{departamentosController.buscar()}"></p:commandButton>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{departamentosController.prepareCreate()}" update=":DepartamentosCreateForm" oncomplete="PF('DepartamentosCreateDialog').show()"/>
+                    <p:commandButton id="viewButton"   rendered="false" style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":DepartamentosViewForm" oncomplete="PF('DepartamentosViewDialog').show()" disabled="#{empty departamentosController.selected}"/>
+                    <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" actionListener="#{departamentosController.prepareEdit()}" update=":DepartamentosEditForm" oncomplete="PF('DepartamentosEditDialog').show()" disabled="#{empty departamentosController.selected}"/>
+                    <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{departamentosController.delete}" update=":growl,datalist" disabled="#{empty departamentosController.selected}">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:dataTable id="datalist"
+                                 value="#{departamentosController.items}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{departamentosController.selected}">
+
+
+                        <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{departamentosController.resetParents}"/>
+                        <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{departamentosController.resetParents}"/>
+                        <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{departamentosController.resetParents}"/>
+                        <p:ajax event="rowDblselect" onsuccess="document.getElementById('DepartamentosListForm:viewButton').click();"/>
+
+
+                        <p:column sortBy="#{item.nombre}" filterMatchMode="contains" filterBy="#{item.nombre}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDepartamentosTitle_nombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.departamentoPadre.nombre}" filterMatchMode="contains" filterBy="#{item.departamentoPadre.nombre}">
+                            <f:facet name="header">
+                                <h:outputText value="Dependencia a la cual pertenece"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departamentoPadre.nombre}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.estado.descripcion}" filterMatchMode="contains" filterBy="#{item.estado.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Estado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado.descripcion}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="DetallesSalidaArticuloListForm">
+
+        <p:panel header="#{mensajes.ListDetallesSalidaArticuloTitle}">
+            <p:contextMenu id="DetallesSalidaArticuloDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('DetallesSalidaArticuloListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('DetallesSalidaArticuloListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('DetallesSalidaArticuloListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('DetallesSalidaArticuloListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{mensajes.DetallesSalidaArticuloMenuItem_persona}" icon="ui-icon-search"  actionListener="#{detallesSalidaArticuloController.preparePersona}" update=":UsuariosViewForm" oncomplete="PF('UsuariosViewDialog').show()" disabled="#{empty detallesSalidaArticuloController.selected.persona}"/>  
+                <p:menuitem value="#{mensajes.DetallesSalidaArticuloMenuItem_usuarioAlta}" icon="ui-icon-search"  actionListener="#{detallesSalidaArticuloController.prepareUsuarioAlta}" update=":UsuariosViewForm" oncomplete="PF('UsuariosViewDialog').show()" disabled="#{empty detallesSalidaArticuloController.selected.usuarioAlta}"/>  
+                <p:menuitem value="#{mensajes.DetallesSalidaArticuloMenuItem_usuarioUltimoEstado}" icon="ui-icon-search"  actionListener="#{detallesSalidaArticuloController.prepareUsuarioUltimoEstado}" update=":UsuariosViewForm" oncomplete="PF('UsuariosViewDialog').show()" disabled="#{empty detallesSalidaArticuloController.selected.usuarioUltimoEstado}"/>  
+                <p:menuitem value="#{mensajes.DetallesSalidaArticuloMenuItem_articulo}" icon="ui-icon-search"  actionListener="#{detallesSalidaArticuloController.prepareArticulo}" update=":ArticulosViewForm" oncomplete="PF('ArticulosViewDialog').show()" disabled="#{empty detallesSalidaArticuloController.selected.articulo}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{detallesSalidaArticuloController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{detallesSalidaArticuloController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{detallesSalidaArticuloController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DetallesSalidaArticuloDataTableContextMenu" listener="#{detallesSalidaArticuloController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DetallesSalidaArticuloDataTableContextMenu" listener="#{detallesSalidaArticuloController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{detallesSalidaArticuloController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('DetallesSalidaArticuloListForm:viewButton').click();"/>
+                <!--
+                                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_id}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                -->
+                <p:column sortBy="#{item.articulo.descripcion}" filterBy="#{item.articulo.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_articulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.articulo.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.cantidad}" filterBy="#{item.cantidad}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_cantidad}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cantidad}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.departamento}" filterBy="#{item.departamento}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_departamento}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.departamento}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.nroFormulario}" filterBy="#{item.nroFormulario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_nroFormulario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroFormulario}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.codigoSuministro}" filterBy="#{item.codigoSuministro}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_codigoSuministro}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.codigoSuministro}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.codigoDNCP}" filterBy="#{item.codigoDNCP}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_codigoDNCP}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.codigoDNCP}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.objetoGasto}" filterBy="#{item.objetoGasto}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_objetoGasto}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.objetoGasto}"/>
+                </p:column>
+                
+                <p:column sortBy="#{item.fechaVencimiento}" filterBy="#{item.fechaVencimiento}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_fechaVencimiento}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaVencimiento}">
+                </p:column>
+               
+                <!--
+                                <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_fechaHoraAlta}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraAlta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                
+                
+                                <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_fechaHoraUltimoEstado}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+                -->
+
+                <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_persona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.persona.nombresApellidos}"/>
+                </p:column>
+                
+                <!--
+                                    <p:column sortBy="#{item.usuarioAlta.id}" filterBy="#{item.usuarioAlta.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_usuarioAlta}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterBy="#{item.usuarioUltimoEstado.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                    </p:column>
+                                   <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_empresa}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.empresa.id}"/>
+                                    </p:column>
+                  <p:column sortBy="#{item.salidaArticulo.nroFormulario}" filterBy="#{item.salidaArticulo.nroFormulario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListDetallesSalidaArticuloTitle_salidaArticulo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.salidaArticulo.nroFormulario}"/>
+                </p:column>
+                -->
+
+
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{detallesSalidaArticuloController.prepareCreate}" update=":DetallesSalidaArticuloCreateForm" oncomplete="PF('DetallesSalidaArticuloCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":DetallesSalidaArticuloViewForm" oncomplete="PF('DetallesSalidaArticuloViewDialog').show()" disabled="#{empty detallesSalidaArticuloController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":DetallesSalidaArticuloEditForm" oncomplete="PF('DetallesSalidaArticuloEditDialog').show()" disabled="#{empty detallesSalidaArticuloController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{detallesSalidaArticuloController.delete}" update=":growl,datalist" disabled="#{empty detallesSalidaArticuloController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="ChartObjetivoPrincipalForm">
+                <p:panel header="Grafico de Control">
+                    <p:panelGrid columns="5">
+                        <p:outputLabel value="Fecha" style="padding-right: 20px;" />
+                        <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px" />
+                        <p:calendar style="padding-right: 10px" id="fechaDesde" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{chartObjetivoPrincipalController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                        <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                        <p:calendar style="padding-right: 10px" id="fechaHasta" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{chartObjetivoPrincipalController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                        <p:outputLabel value="Objetivo" for="objetivo" />
+                        <h:panelGroup>
+                            <p:selectCheckboxMenu label="Elija  Objetivo" filter="true" filterMatchMode="contains" id="objetivo" value="#{chartObjetivoPrincipalController.listaTiposDoc}" required="true" requiredMessage="Acciones: campo requerido"  converter="tiposObjetivosConverter">
+                                <f:selectItems value="#{tiposObjetivosController.items}"
+                                               var="tipoDocItem"
+                                               itemValue="#{tipoDocItem}"
+                                               itemLabel="#{tipoDocItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="objetivo" value="#{chartObjetivoPrincipalController.getComponentMessages('abjetivo', 'Debe elegir uno o mas Acciones')}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="Tipo de Grafico" for="tipoGrafico" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tipoGrafico" value="#{chartObjetivoPrincipalController.tipoGrafico}" required="true" requiredMessage="Debe elegir un tipo de grafico">
+                                <f:selectItem itemLabel="Barras" itemValue="Barras"/>
+                                <f:selectItem itemLabel="Lineas" itemValue="Lineas"/>
+                                <f:selectItem itemLabel="Torta" itemValue="Torta"/>
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoGrafico" value="Debe elegir un tipo de grafico"/>
+                        </h:panelGroup>
+                        <p:commandButton value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="dashPanel, datalist" action="#{chartObjetivoPrincipalController.initChartDocumentosMesaPorDia()}"></p:commandButton>
+                    </p:panelGrid>
+                  
+                        <p:panelGrid columns="1">
+                            
+                                <p:dashboard id="dashPanel" model="#{chartObjetivoPrincipalController.dashboardModel}" >
+
+                                    <p:panel id="chartObjetivoPrincipalBar"  header="Cantidad de Documentos Por Dia Del Mes" >
+                                        <p:chart type="bar" model="#{chartObjetivoPrincipalController.modelDocumentosMesaPorDiaBar}" responsive="true" rendered="#{not empty chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaBar}" style="height:300px;width:1000px"/>
+                                    </p:panel>
+                                    <p:panel id="chartObjetivoPrincipalLineal" header="Documentos Por Dia Del Mes" >
+                                        <p:chart type="line" model="#{chartObjetivoPrincipalController.modelDocumentosMesaPorDiaLinear}" responsive="true" rendered="#{not empty chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaLinear}" style="height:300px;width:1000px"/>
+                                    </p:panel>
+                                    <p:panel id="chartObjetivoPrincipalPie" header="Documentos Por Dia Del Mes" >
+                                        <p:chart type="pie" model="#{chartObjetivoPrincipalController.modelDocumentosMesaPorDiaPie}" responsive="true" rendered="#{not empty chartDocumentosMesaPorDiaController.modelDocumentosMesaPorDiaPie}" style="height:350px;width:500px"/>
+                                    </p:panel>   
+                                </p:dashboard>
+                            <ui:remove>
+                                <p:dataTable id="datalist"
+                                             value="#{chartObjetivoPrincipalController.lista}"
+                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                             rowKey="#{item.codigo}"
+                                             var="item" filterEvent="enter"
+                                             paginator="false"
+                                             rows="0"
+                                             disabledSelection="true"
+                                             rendered="#{not empty chartObjetivoPrincipalController.lista}">
+                                    <!--
+                                             To enable Lazy Loading, please copy/replace the following lines above,
+                                             and be sure to replace the word HASH with the # symbol:
+                                    
+                                             value="HASH{presidentesComiteController.lazyItems}"
+                                             lazy="true"
+                                             rowKey="HASH{item.id}"  <<< Remove this line
+                                    -->
+                                    <p:column sortBy="#{item.tipoObjetivo}" filterMatchMode="contains" filterBy="#{item.tipoObjetivo}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Objetivo Principal"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.tipoObjetivo}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.fechaHoraAlta}" filterMatchMode="contains" filterBy="#{item.fechaHoraAlta}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fechaHoraAlta}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.acciones}" filterMatchMode="contains" filterBy="#{item.acciones}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Acción Estratégicas"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.acciones}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{item.variable2}" filterMatchMode="contains" filterBy="#{item.variable2}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Accion Operativa"/>
+                                        </f:facet>
+                                        <div align="right">
+                                            <h:outputText value="#{item.variable2}">
+                                                <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                                            </h:outputText>
+                                        </div>
+                                    </p:column>
+
+
+
+
+                                </p:dataTable>
+                            </ui:remove>
+                        </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+<!--<p:column sortBy="#{item.resultado}" filterMatchMode="contains" filterBy="#{item.resultado}">
+                                <f:facet name="header">
+                                    <h:outputText value="Resultado"/>
+                                </f:facet>
+                                <div align="right">
+                                    <h:outputText value="#{item.resultado}">
+                                        <f:convertNumber type="number" groupingUsed="true" locale="es_PY" minFractionDigits="0" />
+                                    </h:outputText>
+                                </div>
+                            </p:column>-->
+<!--<p:outputLabel value="Acciones" for="accion" />
+                        <h:panelGroup>
+                            <p:selectCheckboxMenu label="Elija  Accion" filter="true" filterMatchMode="contains" id="accion" value="#{chartObjetivoPrincipalController.listaAcciones}" required="true" requiredMessage="Acciones: campo requerido"  converter="accionesConverter">
+                                <f:selectItems value="#{accionesController.items}"
+                                               var="accionItem"
+                                               itemValue="#{accionItem}"
+                                               itemLabel="#{accionItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="accion" value="#{chartObjetivoPrincipalController.getComponentMessages('accion', 'Debe elegir uno o mas Acciones')}"/>
+                        </h:panelGroup> 
+-->

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="UnidadesEditDlg" widgetVar="UnidadesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditUnidadesTitle}" closeOnEscape="true">
+
+            <h:form id="UnidadesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{unidadesController.selected != null}">
+
+
+                        <h:outputLabel value="#{mensajes.EditUnidadesLabel_codigo}" for="codigo" />
+                        <h:outputText id="codigo" value="#{unidadesController.selected.codigo}" />
+
+                        <p:outputLabel value="#{mensajes.EditUnidadesLabel_descripcion}" for="descripcion" />
+                        <p:inputText id="descripcion" value="#{unidadesController.selected.descripcion}" title="#{mensajes.EditUnidadesTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditUnidadesRequiredMessage_descripcion}" size="50" maxlength="60"/>
+
+
+                        <p:outputLabel value="#{mensajes.EditUnidadesLabel_simbolo}" for="simbolo" />
+                        <p:inputText id="simbolo" value="#{unidadesController.selected.simbolo}" title="#{mensajes.EditUnidadesTitle_simbolo}" required="true" requiredMessage="#{mensajes.EditUnidadesRequiredMessage_descripcion}" size="10" maxlength="10"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{unidadesController.save}" value="#{mensajes.Save}" update="display,:UnidadesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('UnidadesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('UnidadesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <p:outputLabel value="#{mensajes.EditUnidadesLabel_empresa}" for="empresa" />
+                        <p:selectOneMenu id="empresa" value="#{unidadesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditUnidadesRequiredMessage_empresa}" converter="empresasConverter">
+                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                            <f:selectItems value="#{empresasController.items}"
+                                           var="empresaItem"
+                                           itemValue="#{empresaItem}"
+                                           itemLabel="#{empresaItem.id.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+-->

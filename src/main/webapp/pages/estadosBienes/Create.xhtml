@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="EstadosBienesCreateDlg" widgetVar="EstadosBienesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateEstadosBienesTitle}" closeOnEscape="true">
+
+            <h:form id="EstadosBienesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{estadosBienesController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateEstadosBienesLabel_codigo}" for="codigo" />
+                        <h:panelGroup>
+                            <p:inputText id="codigo" value="#{estadosBienesController.selected.codigo}" title="#{mensajes.CreateEstadosBienesTitle_codigo}" required="true" requiredMessage="#{mensajes.CreateEstadosBienesRequiredMessage_codigo}" size="2" maxlength="2"/>
+                            <p:tooltip for="codigo" value="#{estadosBienesController.getComponentMessages('codigo', mensajes.CreateEstadosBienesHelpText_codigo)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateEstadosBienesLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{estadosBienesController.selected.descripcion}" title="#{mensajes.CreateEstadosBienesTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateEstadosBienesRequiredMessage_descripcion}" size="100" maxlength="200"/>
+                            <p:tooltip for="descripcion" value="#{estadosBienesController.getComponentMessages('descripcion', mensajes.CreateEstadosBienesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{estadosBienesController.saveNew}" value="#{mensajes.Save}" update="display,:EstadosBienesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('EstadosBienesCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('EstadosBienesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

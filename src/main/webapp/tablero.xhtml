@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <p:dashboard id="board" model="#{indicesController.dashboardModel}" >
+
+                <p:panel id="smsdia" header="Salida Articulos por Dia" >
+                    <p:chart type="line" model="#{indicesController.modelSmsDia}" responsive="true" style="height:200px;width:700px"/>
+                </p:panel>
+                <p:panel id="smshoy" header="Insumos por Departamento" >
+                    <p:chart type="pie" model="#{indicesController.modelSmsHoy}" responsive="true" style="height:200px;width:400px" />
+                </p:panel>
+                <p:panel id="activo1" header="Movimiento de insumos por dia" >
+                    <p:chart type="bar" model="#{indicesController.modelInsumo}" responsive="true" style="height:200px;width:700px"/>
+                </p:panel>
+                <p:panel id="activo2" header="Bienes por Categoria" >
+                    <p:chart type="pie" model="#{indicesController.modelCategoria}" responsive="true" style="height:200px;width:400px" />
+                </p:panel> 
+            </p:dashboard>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

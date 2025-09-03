@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ActividadesEditDlg" widgetVar="ActividadesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditActividadesTitle}" closeOnEscape="true">
+
+            <h:form id="ActividadesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{actividadesController.selected != null}">
+
+                        
+
+                        <p:outputLabel value="Acción Estratégica" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="accion" value="#{actividadesController.selected.accion}" required="true" requiredMessage="#{mensajes.EditActividadesRequiredMessage_accion}" converter="accionesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{accionesController.items}"
+                                               var="accionItem"
+                                               itemValue="#{accionItem}"
+                                               itemLabel="#{accionItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="accion" value="#{actividadesController.getComponentMessages('accion', mensajes.EditActividadesHelpText_accion)}"/>
+                        </h:panelGroup>
+                        
+                            <p:outputLabel value="Tipo Documento" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="tipoDocumento" value="#{actividadesController.selected.tiposDocumento}" required="false" requiredMessage="#{mensajes.CreateActividadesRequiredMessage_accion}" converter="tiposDocumentosJudicialesConverter">
+
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposDocumentosJudicialesController.items}"
+                                               var="tipoDocumentoItem"
+                                               itemValue="#{tipoDocumentoItem}"
+                                               itemLabel="#{tipoDocumentoItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoDocumento" value="#{actividadesController.getComponentMessages('tipoDocumento', mensajes.CreateInformesHelpText_accion)}"/>
+                        </h:panelGroup>
+                            
+                            <p:outputLabel value="Departamento Responsable" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="departamento" value="#{actividadesController.selected.departamento}" required="true" requiredMessage="#{mensajes.EditAccionesRequiredMessage_tiposObjetivos}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{accionesController.getComponentMessages('departamento', mensajes.EditAccionesHelpText_tiposObjetivos)}"/>
+                        </h:panelGroup>
+
+                       
+                        
+                         <p:outputLabel value="Descripcion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="5" cols="80" id="descripcion" value="#{actividadesController.selected.descripcion}" title="#{mensajes.EditActividadesTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditActividadesRequiredMessage_descripcion}"/>
+                            <p:tooltip for="descripcion" value="#{planEstrategicas.getComponentMessages('descripcion', mensajes.EditActividadesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+
+                        
+                      
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{actividadesController.save}" value="#{mensajes.Save}" update="display,:ActividadesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ActividadesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ActividadesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

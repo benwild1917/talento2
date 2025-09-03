@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="AccionesListForm">
+
+        <p:panel header="Acciones Estratégicas">
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{accionesController.prepareCreate}" update=":AccionesCreateForm" oncomplete="PF('AccionesCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":AccionesViewForm" oncomplete="PF('AccionesViewDialog').show()" disabled="#{empty accionesController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":AccionesEditForm" oncomplete="PF('AccionesEditDialog').show()" disabled="#{empty accionesController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: visible;" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{accionesController.delete}" update=":growl,datalist" disabled="#{empty accionesController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:contextMenu id="AccionesDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('AccionesListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('AccionesListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('AccionesListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('AccionesListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{accionesController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{accionesController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{accionesController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:AccionesDataTableContextMenu" listener="#{accionesController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:AccionesDataTableContextMenu" listener="#{accionesController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{accionesController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('AccionesListForm:viewButton').click();"/>
+                
+                 <!-- <p:column sortBy="#{item.tiposObjetivos.descripcion}" filterMatchMode="contains" filterBy="#{item.tiposObjetivos.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListAccionesTitle_tiposObjetivos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tiposObjetivos.descripcion}"/>
+                </p:column>-->
+                
+                 <p:column sortBy="#{item.tiposObjetivos.objetivo}" filterMatchMode="contains" filterBy="#{item.tiposObjetivos.objetivo}">
+                    <f:facet name="header">
+                        <h:outputText value="Objetivo"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tiposObjetivos.objetivo}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.descripcion}" filterMatchMode="contains" filterBy="#{item.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Accion"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+                
+                 <p:column sortBy="#{item.departamento.nombre}" filterMatchMode="contains" filterBy="#{item.departamento.nombre}">
+                    <f:facet name="header">
+                        <h:outputText value="Departamento Responsable"/>
+                    </f:facet>
+                    <h:outputText value="#{item.departamento.nombre}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
